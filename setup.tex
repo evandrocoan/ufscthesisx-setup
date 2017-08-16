@@ -1,0 +1,68 @@
+
+
+
+% Is it possible to keep my translation together with original text?
+% https://tex.stackexchange.com/questions/5076/is-it-possible-to-keep-my-translation-together-with-original-text
+\newif\ifenglish
+\englishtrue % Will show English text only
+%\englishfalse % Will show Portuguese text only
+
+\ifenglish
+    % How to make \PassOptionsToPackage add the option as the last option?
+    % https://tex.stackexchange.com/questions/385895/how-to-make-passoptionstopackage-add-the-option-as-the-last-option
+    \PassOptionsToPackage{brazil,main=english,spanish,french}{babel}
+\else
+    \PassOptionsToPackage{main=brazil,english,spanish,french}{babel}
+\fi
+
+% Fixes `pdfTeX warning (ext4): destination with the same identifier (name{figure.1.1}) has been
+% already used, duplicate ignored`.
+%
+% The `abntex2` package loads the `hyperref` package, however there are several packages which are
+% required to be loaded after and before `hyperref`.
+%
+% Which packages should be loaded after hyperref instead of before?
+% https://tex.stackexchange.com/questions/1863/which-packages-should-be-loaded-after-hyperref-instead-of-before
+%
+% Hyperref is loaded by the class, and I need to load packages that are supposed to be loaded before
+% https://tex.stackexchange.com/questions/50846/hyperref-is-loaded-by-the-class-and-i-need-to-load-packages-that-are-supposed-t
+%
+% Using \BeforePackage to load a package before hyperref does not work
+% https://tex.stackexchange.com/questions/51094/using-beforepackage-to-load-a-package-before-hyperref-does-not-work
+\RequirePackage{scrlfile}
+\AfterClass{memoir}
+{
+  \RequirePackage{float}
+}
+
+% The UFSC font size is 10.5, but memoir embbeded on `abntex2` only accepts 10 and 11pt. However
+% this will be fixed later by the abntex2-ufsc package.
+%
+% You can see whether the font sizes are correct with the \f@size at the `\begin{document}`.
+\documentclass[
+10pt,
+a5paper,
+twoside, % Impressão nos dois lados da folha
+chapter=TITLE, % Título de capítulos em caixa alta
+section=TITLE  % Título de seções em caixa alta
+]{abntex2}
+
+% Package hyperref Warning: Token not allowed in a PDF string?
+% https://tex.stackexchange.com/questions/384885/package-hyperref-warning-token-not-allowed-in-a-pdf-string
+\pdfstringdefDisableCommands{\let\uppercase\relax}
+
+% Citação alfabética por autor-data [alf]
+\usepackage[alf]{abntex2cite}
+
+% Load the UFSC thesis settings
+\usepackage{setup/abntex2-ufsc}
+
+% Configurações do pacote backref, paginas com as citações na bibliografia
+\usepackage[brazilian,hyperpageref]{backref}
+
+% Comment this, unless you are debugging pages' badness Underfull & Overflow
+% https://tex.stackexchange.com/questions/115908/geometry-showframe-landscape
+\usepackage[showframe]{geometry}
+
+
+
