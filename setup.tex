@@ -62,7 +62,9 @@ section=TITLE  % Título de seções em caixa alta
 
 % Comment this, unless you are debugging pages' badness Underfull & Overflow
 % https://tex.stackexchange.com/questions/115908/geometry-showframe-landscape
-\usepackage[showframe]{geometry}
-
-
+%
+% What is the difference between \usepackage{showframe} and \usepackage[showframe]{geometry}?
+% https://tex.stackexchange.com/questions/387077/what-is-the-difference-between-usepackageshowframe-and-usepackageshowframe
+\usepackage{showframe}
+\renewcommand\ShowFrameLinethickness{0.3pt}
 
