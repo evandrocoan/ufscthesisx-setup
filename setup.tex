@@ -15,6 +15,12 @@
     \PassOptionsToPackage{main=brazil,english,spanish,french}{babel}
 \fi
 
+% For web links and paths with \path{..} and \url{https://www.python.org/downloads/}
+%
+% https://tex.stackexchange.com/questions/3033/forcing-linebreaks-in-url
+% ftp://tug.ctan.org/pub/tex-archive/macros/latex/contrib/hyperref/doc/options.pdf
+\PassOptionsToPackage{hyphens}{url}
+
 % Fixes `pdfTeX warning (ext4): destination with the same identifier (name{figure.1.1}) has been
 % already used, duplicate ignored`.
 %
