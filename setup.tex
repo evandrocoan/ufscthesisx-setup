@@ -53,9 +53,16 @@ chapter=TITLE, % Título de capítulos em caixa alta
 section=TITLE  % Título de seções em caixa alta
 ]{abntex2}
 
-% Package hyperref Warning: Token not allowed in a PDF string?
-% https://tex.stackexchange.com/questions/384885/package-hyperref-warning-token-not-allowed-in-a-pdf-string
-\pdfstringdefDisableCommands{\let\uppercase\relax}
+% If document class is equal to something then do not use package
+% https://tex.stackexchange.com/questions/46223/if-document-class-is-equal-to-something-then-do-not-use-package
+\makeatletter
+\@ifclassloaded{abntex2}
+{
+    % Package hyperref Warning: Token not allowed in a PDF string?
+    % https://tex.stackexchange.com/questions/384885/package-hyperref-warning-token-not-allowed-in-a-pdf-string
+    \pdfstringdefDisableCommands{\let\uppercase\relax}
+}{}
+\makeatother
 
 % Citação alfabética por autor-data [alf]
 \usepackage[alf]{abntex2cite}
