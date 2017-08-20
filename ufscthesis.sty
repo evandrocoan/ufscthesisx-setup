@@ -29,102 +29,22 @@
 % Now we'll execute any options passed in
 \ProcessOptions\relax
 
-
-
-% Caption package and Memoir
+% The class memoir already provides these functionalities: Caption package and Memoir
 % https://groups.google.com/forum/#!topic/comp.text.tex/RzpI2ATMev0
 % https://tex.stackexchange.com/questions/18931/memoir-class-with-subcaption-and-hyperref-packages
 %
 % \RequirePackage{caption}
 % \RequirePackage{subfig}
-
 % \RequirePackage{etoolbox}
 
-% Warning: layout scale set to 0.5 on input line
+% The package `layouts` causes the: Warning: layout scale set to 0.5 on input line
 % https://tex.stackexchange.com/questions/299372/warning-layout-scale-set-to-0-5-on-input-line
 % \RequirePackage{layouts}
-
-% Manipulação de Strings
-\RequirePackage{xstring}
-
-% Identação do primeiro paragráfo
-\RequirePackage{indentfirst}
-
-% Número da última página
-\RequirePackage{lastpage}
-
-% Tamanho das fontes
-\RequirePackage{anyfontsize}
-
-% Usa a fonte Latin Modern
-\RequirePackage{lmodern}
-
-% Selecao de codigos de fonte
-% https://tex.stackexchange.com/questions/664/why-should-i-use-usepackaget1fontenc
-%
-% Will allow all displayable utf8 characters to be available as input
-% https://tex.stackexchange.com/questions/13067/utf8x-vs-utf8-inputenc
-\RequirePackage[T1]{fontenc}
-
-% Codificacao do documento (conversão automática dos acentos)
-\RequirePackage[utf8]{inputenc}
-
-\RequirePackage{graphicx}           % Inclusão de gráficos
-\RequirePackage{microtype}          % para melhorias de justificação
-
-\RequirePackage{pdfpages}
-\RequirePackage{fancyvrb}
-\RequirePackage{rotating}
-\RequirePackage{amsmath}
-\RequirePackage{amssymb}
-\RequirePackage{mathrsfs}
-\RequirePackage{pdflscape}
-\RequirePackage{epstopdf}
-\RequirePackage{multirow}
-\RequirePackage{listings}
-
-% Para incluir links
-\RequirePackage{url}
-
-% Pacote necessário para a lista de siglas.
-\RequirePackage{nomencl}
-\RequirePackage{booktabs}
-
-% A comprehensive (SI) units package
-\RequirePackage{siunitx}
-
-% Memoir class conflict with datetime
-% https://tex.stackexchange.com/questions/162353/memoir-class-conflict-with-datetime
-% https://tex.stackexchange.com/questions/49071/difference-between-let-foo-relax-and-def-foo-for-disabling
-\let\ordinal\relax
-\RequirePackage{datetime}
-
-% gives you the possibility to rotate any object of an arbitrary angle.
-\RequirePackage{rotating}
-
-% Rotação de páginas no documento pdf.
-\RequirePackage{pdflscape}
-
-% Customize the look of the frame
-\RequirePackage{mdframed}
-
-% Pacotes adicionais, usados apenas no âmbito do Modelo Canônico do abnteX2
-\RequirePackage{tablefootnote}
-\RequirePackage{longtable}
-\RequirePackage{ragged2e}
-\RequirePackage{tocloft}
-
 
 
 
 % CONFIGURAÇÕES DE PACOTES
-\sisetup{detect-all}
-\sisetup{scientific-notation = fixed, fixed-exponent = 0, round-mode = places,round-precision = 2,output-decimal-marker = {,} }
-
-% apparent power
-\DeclareSIUnit \VA {VA}
-
-% ---
+%
 \newcommand{\ifnotempty}[2]{\ifthenelse{\not\equal{#1}{}}{#2}{}}
 
 % Comandos de dados - programa
@@ -682,31 +602,6 @@
     \end{center}
 }
 \makeatother
-
-% Listing -> Codigo fonte
-\renewcommand{\lstlistingname}{Código--fonte }
-
-% List of Listings -> Lista de códigos-fonte
-\renewcommand{\lstlistlistingname}{Lista de códigos--fonte}
-
-% Setting Entries of List of Listings in LaTeX. Package Listings
-% http://tex.stackexchange.com/questions/228936/setting-entries-of-list-of-listings-in-latex-package-listings
-\newlength\mylen
-
-\begingroup
-\makeatletter
-\let\newcounter\@gobble\let\setcounter\@gobbletwo
-\globaldefs\@ne \let\c@loldepth\@ne
-\newlistof{listings}{lol}{\lstlistlistingname}
-\newlistof{lstlistoflistings}{lol}{\lstlistlistingname}
-\newlistentry{lstlisting}{lol}{0}
-\makeatother
-\endgroup
-
-\renewcommand\cftlstlistingpresnum{\lstlistingname~}
-\settowidth\mylen{\cftlstlistingpresnum\cftlstlistingaftersnum}
-\addtolength\cftlstlistingnumwidth{\mylen} %
-\renewcommand\cftlstlistingaftersnum{\hfill\textendash\hfill}
 
 
 % inclui subtitulo na capa, folha de rosto e ficha catalografica
