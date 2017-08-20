@@ -15,11 +15,29 @@
     \PassOptionsToPackage{main=brazil,english,spanish,french}{babel}
 \fi
 
-% For web links and paths with \path{..} and \url{https://www.python.org/downloads/}
+% Applying options to already loaded package
+% https://tex.stackexchange.com/questions/124049/applying-options-to-already-loaded-package
 %
+% For web links and paths with \path{..} and \url{https://www.python.org/downloads/}
 % https://tex.stackexchange.com/questions/3033/forcing-linebreaks-in-url
 % ftp://tug.ctan.org/pub/tex-archive/macros/latex/contrib/hyperref/doc/options.pdf
 \PassOptionsToPackage{hyphens}{url}
+
+% Use its macro adjustwidth* to extend tables out of outer text border.
+% https://tex.stackexchange.com/questions/366155/how-to-write-a-table-a-little-larger-than-the-paragraphs-with-centered-columns
+\PassOptionsToPackage{strict}{changepage}
+
+% The class `abntex2` loads the `enumitem` package with options.
+%
+% With the package option shortlabels you can use an enumerate-like syntax, where A, a, I, i and 1
+% stand for \Alph*, \alph*, \Roman*, \roman* and \arabic*. This is intended mainly as a sort of
+% compatibility mode with the enumerate package, and therefore the following special rule applies:
+% if the very first option (at any level) is not recognized as a valid key, then it will be
+% considered a label with the enumerate-like syntax.
+%
+% No spacing between enumerated items with \usepackage{enumerate}
+% https://tex.stackexchange.com/questions/119919/no-spacing-between-enumerated-items-with-usepackageenumerate
+\PassOptionsToPackage{shortlabels}{enumitem}
 
 % Fixes `pdfTeX warning (ext4): destination with the same identifier (name{figure.1.1}) has been
 % already used, duplicate ignored`.
