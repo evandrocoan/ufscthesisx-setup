@@ -615,13 +615,16 @@
 
 % Example about hyphenation with ttfamily font
 % https://tex.stackexchange.com/questions/386665/example-about-hyphenation-with-ttfamily-font
+%
+% Why the environment ttfamily is hyphenated, but macro ttfamily is not hyphenating?
+% https://tex.stackexchange.com/questions/387678/why-the-environment-ttfamily-is-hyphenated-but-macro-ttfamily-is-not-hyphenatin
 \usepackage{letltxmacro}
 \LetLtxMacro\origttfamily\ttfamily
 \DeclareRobustCommand*{\ttfamily}{%
   \origttfamily
   \hyphenchar\font=`\-\relax
   \fontdimen3\font=.25em\relax
-  \fontdimen4\font=.167em\relax
+  \fontdimen4\font=.13em\relax
   \fontdimen7\font=.167em\relax
 }
 
