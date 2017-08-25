@@ -190,8 +190,9 @@
 %
 % Set caption font size in memoir
 % https://tex.stackexchange.com/questions/58943/set-caption-font-size-in-memoir
-\captionnamefont{\fontsize{9.5pt}{10.5pt}}
-\captiontitlefont{\fontsize{9.5pt}{10.5pt}}
+\newcommand{\tabletitlesize}{\fontsize{9.5pt}{10.5pt}\selectfont}
+\captionnamefont{\tabletitlesize}
+\captiontitlefont{\tabletitlesize}
 
 % No caso de Sumario (TOC) UFSC
 \cftsetindents{part}{0em}{\cftlastnumwidth}
