@@ -84,6 +84,10 @@ section=TITLE  % Título de seções em caixa alta
 }{}
 \makeatother
 
+% backreferencing in classicthesis package does not work
+% https://tex.stackexchange.com/questions/115828/backreferencing-in-classicthesis-package-does-not-work
+\usepackage[brazilian,hyperpageref]{backref}
+
 % Citação alfabética por autor-data [alf]
 \usepackage[alf]{abntex2cite}
 
