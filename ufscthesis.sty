@@ -24,7 +24,12 @@
 
 % Define versão necessária do LaTeX
 \NeedsTeXFormat{LaTeX2e}
-% \ProvidesPackage{abntex2-ufsc}[2017/08/13 v0.0.1 Evandro]
+
+% How can I properly resolve relative paths in `\usepackage`?
+% https://tex.stackexchange.com/questions/123999/how-can-i-properly-resolve-relative-paths-in-usepackage
+%
+% Commenting this allow to use this as a relative package, with no warnings.
+% \ProvidesPackage{ufscthesis}[2017/08/13 v0.0.1 Evandro]
 
 % Now we'll execute any options passed in
 \ProcessOptions\relax
@@ -44,6 +49,10 @@
 % Why the environment ttfamily is hyphenated, but macro ttfamily is not hyphenating?
 % https://tex.stackexchange.com/questions/387678/why-the-environment-ttfamily-is-hyphenated-but-macro-ttfamily-is-not-hyphenatin
 \RequirePackage{letltxmacro}
+
+% Theorem packages: which to use, which conflict?
+% https://tex.stackexchange.com/questions/5599/theorem-packages-which-to-use-which-conflict
+\RequirePackage{amsthm}
 
 % The class memoir already provides these functionalities: Caption package and Memoir
 % https://groups.google.com/forum/#!topic/comp.text.tex/RzpI2ATMev0
@@ -84,7 +93,6 @@
 \newcommand{\centro}[1]{\renewcommand{\imprimircentro}{#1}}
 
 
-\RequirePackage{amsthm}
 \newtheorem{axioma}{Axioma}[chapter]
 \newtheorem{postulado}{Postulado}[chapter]
 \newtheorem{teorema}{Teorema}[chapter]
