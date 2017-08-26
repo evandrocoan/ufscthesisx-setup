@@ -37,6 +37,10 @@
 % https://tex.stackexchange.com/questions/5076/is-it-possible-to-keep-my-translation-together-with-original-text
 \RequirePackage{comment}
 
+% Please tutor the usage of patchcmd and xpatch
+% https://tex.stackexchange.com/questions/152773/please-tutor-the-usage-of-patchcmd-and-xpatch
+\RequirePackage{xpatch}
+
 % The class memoir already provides these functionalities: Caption package and Memoir
 % https://groups.google.com/forum/#!topic/comp.text.tex/RzpI2ATMev0
 % https://tex.stackexchange.com/questions/18931/memoir-class-with-subcaption-and-hyperref-packages
@@ -439,15 +443,14 @@
 %
 % How to disable automatic indentation on new paragraphs?
 % https://tex.stackexchange.com/questions/14375/how-to-disable-automatic-indentation-on-new-paragraphs
-\g@addto@macro{\resumo}{\setlength{\parindent}{0pt}}
-
+%
 % How to disable paragraphs inside my environment with \let\par\relax?
 % https://tex.stackexchange.com/questions/388369/how-to-disable-paragraphs-inside-my-environment-with-let-par-relax
-\let\parOriginal\par
-\let\oldresumo=\resumo
-\let\oldendresumo=\endresumo
-\def\resumo{\oldresumo\bgroup\let\par\relax}
-\def\endresumo{\egroup\oldendresumo\let\par\parOriginal}
+\xapptocmd{\resumo}{\setlength{\parindent}{0pt}\let\parOriginal\par \let\par\relax}{}{}
+\xpretocmd{\endresumo}{\endgraf}{}{}
+
+% \imprimirpalavraschave{Palavras-chaves}{latex. abntex. editoração de texto.}
+\newcommand{\imprimirpalavraschave}[2]{\parOriginal\vspace{\onelineskip}\textbf{#1}: #2}
 
 
 % ------------------------------------------------------------------------
