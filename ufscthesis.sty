@@ -117,6 +117,22 @@
 % Tamanho da fonte padrão do 'ABNTEX'
 \renewcommand{\normalsize}{\fontsize{10.5pt}{11pt}}
 
+% \renewcommand{\chapnumfont}{\chaptitlefont}
+% \renewcommand{\parttitlefont}{\ABNTEXpartfont\ABNTEXpartfontsize}
+% \renewcommand{\partnumfont}{\ABNTEXpartfont\ABNTEXpartfontsize}
+% \renewcommand{\partnamefont}{\ABNTEXpartfont\ABNTEXpartfontsize}
+
+% Caption package and Memoir
+% https://groups.google.com/forum/#!topic/comp.text.tex/RzpI2ATMev0
+% https://tex.stackexchange.com/questions/18931/memoir-class-with-subcaption-and-hyperref-packages
+% \DeclareCaptionFont{small}{\fontsize{9.5pt}{10.5pt}}
+%
+% Set caption font size in memoir
+% https://tex.stackexchange.com/questions/58943/set-caption-font-size-in-memoir
+\newcommand{\tabletitlesize}{\fontsize{9.5pt}{10.5pt}\selectfont}
+\captionnamefont{\tabletitlesize}
+\captiontitlefont{\tabletitlesize}
+
 % Set the UFSC epigrafe font size
 %
 % Changing font size in an example environment
@@ -185,23 +201,6 @@
     \addtocontents{toc}{\vspace{\cftbeforechapterskip}}
 }
 % -----
-
-
-% \renewcommand{\chapnumfont}{\chaptitlefont}
-% \renewcommand{\parttitlefont}{\ABNTEXpartfont\ABNTEXpartfontsize}
-% \renewcommand{\partnumfont}{\ABNTEXpartfont\ABNTEXpartfontsize}
-% \renewcommand{\partnamefont}{\ABNTEXpartfont\ABNTEXpartfontsize}
-
-% Caption package and Memoir
-% https://groups.google.com/forum/#!topic/comp.text.tex/RzpI2ATMev0
-% https://tex.stackexchange.com/questions/18931/memoir-class-with-subcaption-and-hyperref-packages
-% \DeclareCaptionFont{small}{\fontsize{9.5pt}{10.5pt}}
-%
-% Set caption font size in memoir
-% https://tex.stackexchange.com/questions/58943/set-caption-font-size-in-memoir
-\newcommand{\tabletitlesize}{\fontsize{9.5pt}{10.5pt}\selectfont}
-\captionnamefont{\tabletitlesize}
-\captiontitlefont{\tabletitlesize}
 
 % No caso de Sumario (TOC) UFSC
 \cftsetindents{part}{0em}{\cftlastnumwidth}
