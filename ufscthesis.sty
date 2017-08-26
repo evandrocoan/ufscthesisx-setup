@@ -436,6 +436,13 @@
     \PRIVATEclearpageifneeded
 }
 
+% Fix the resumo environment, which does not accept paragraphs on ufscthesis
+%
+% How to disable automatic indentation on new paragraphs?
+% https://tex.stackexchange.com/questions/14375/how-to-disable-automatic-indentation-on-new-paragraphs
+\expandafter\def\expandafter\resumo\expandafter{\resumo\setlength{\parindent}{0pt}\noindent}
+
+
 % ------------------------------------------------------------------------
 % ------------------------------------------------------------------------
 % Configura layout
