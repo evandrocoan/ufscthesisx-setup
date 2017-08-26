@@ -441,6 +441,15 @@
 % https://tex.stackexchange.com/questions/14375/how-to-disable-automatic-indentation-on-new-paragraphs
 \g@addto@macro{\resumo}{\setlength{\parindent}{0pt}}
 
+% How to disable paragraphs inside my environment with \let\par\relax?
+% https://tex.stackexchange.com/questions/388369/how-to-disable-paragraphs-inside-my-environment-with-let-par-relax
+\let\parOriginal\par
+\let\oldresumo=\resumo
+\let\oldendresumo=\endresumo
+\def\resumo{\oldresumo\bgroup\let\par\relax}
+\def\endresumo{\egroup\oldendresumo\let\par\parOriginal}
+
+
 % ------------------------------------------------------------------------
 % ------------------------------------------------------------------------
 % Configura layout
