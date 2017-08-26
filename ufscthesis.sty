@@ -434,10 +434,12 @@
 
 % Fix the resumo environment, which does not accept paragraphs on ufscthesis
 %
+% Changing font size in an example environment
+% https://tex.stackexchange.com/questions/123528/changing-font-size-in-an-example-environment
+%
 % How to disable automatic indentation on new paragraphs?
 % https://tex.stackexchange.com/questions/14375/how-to-disable-automatic-indentation-on-new-paragraphs
-\expandafter\def\expandafter\resumo\expandafter{\resumo\setlength{\parindent}{0pt}}
-
+\g@addto@macro{\resumo}{\setlength{\parindent}{0pt}}
 
 % ------------------------------------------------------------------------
 % ------------------------------------------------------------------------
