@@ -41,6 +41,10 @@
 % https://tex.stackexchange.com/questions/152773/please-tutor-the-usage-of-patchcmd-and-xpatch
 \RequirePackage{xpatch}
 
+% Why the environment ttfamily is hyphenated, but macro ttfamily is not hyphenating?
+% https://tex.stackexchange.com/questions/387678/why-the-environment-ttfamily-is-hyphenated-but-macro-ttfamily-is-not-hyphenatin
+\RequirePackage{letltxmacro}
+
 % The class memoir already provides these functionalities: Caption package and Memoir
 % https://groups.google.com/forum/#!topic/comp.text.tex/RzpI2ATMev0
 % https://tex.stackexchange.com/questions/18931/memoir-class-with-subcaption-and-hyperref-packages
@@ -660,7 +664,6 @@
 %
 % Why the environment ttfamily is hyphenated, but macro ttfamily is not hyphenating?
 % https://tex.stackexchange.com/questions/387678/why-the-environment-ttfamily-is-hyphenated-but-macro-ttfamily-is-not-hyphenatin
-\usepackage{letltxmacro}
 \LetLtxMacro\origttfamily\ttfamily
 \DeclareRobustCommand*{\ttfamily}{%
   \origttfamily
