@@ -69,7 +69,6 @@
 
 
 % CONFIGURAÇÕES DE PACOTES
-%
 \newcommand{\ifnotempty}[2]{\ifthenelse{\not\equal{#1}{}}{#2}{}}
 
 % Comandos de dados - programa
@@ -583,14 +582,15 @@
 
         \center
 
-        \ABNTEXchapterfont\bfseries\large{UNIVERSIDADE FEDERAL DE SANTA CATARINA\\PROGRAMA DE P\'OS--GRADUA\c C\~AO EM ENGENHARIA EL\'ETRICA}
+        \ABNTEXchapterfont\bfseries\large{\MakeTextUppercase{\imprimirinstituicao} \\ \MakeTextUppercase{\imprimirprograma}}
 
         \vfill
 
         \ABNTEXchapterfont\large\imprimirautor
 
         \vfill
-        \ABNTEXchapterfont\bfseries\Large\MakeUppercase{\imprimirtitulo}
+            \ABNTEXchapterfont\bfseries\Large\MakeUppercase{\imprimirtitulo}
+            \ifnotempty{\imprimirsubtitulo}{:\\ \MakeUppercase{\imprimirsubtitulo}}
         \vfill
 
         \large\imprimirlocal
@@ -623,7 +623,8 @@
 
         \vspace*{\fill}\vspace*{\fill}
         \begin{center}
-            \ABNTEXchapterfont\bfseries\Large\imprimirtitulo
+            \ABNTEXchapterfont\bfseries\Large\MakeUppercase{\imprimirtitulo}
+            \abntex@ifnotempty{\imprimirsubtitulo}{:\\ \MakeUppercase{\imprimirsubtitulo}}
         \end{center}
         \vspace*{\fill}
 
