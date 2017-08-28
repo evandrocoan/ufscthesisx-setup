@@ -1,4 +1,4 @@
-%% setup/ufscthesis.sty
+%% setup/ufscthesisx.sty
 %%
 %% Copyright 2017 Evandro Coan
 %% Copyright 2012-2016 by abnTeX2 group at https://www.abntex.net.br/
@@ -19,7 +19,7 @@
 %% https://www.abntex.net.br/
 %%
 %% This work consists of the file `abntex2-ufsc.sty` renamed as follows:
-%% Renamed the `abntex2.cls, v-1.9.6 laurocesar` to `setup/ufscthesis.sty`
+%% Renamed the `abntex2.cls, v-1.9.6 laurocesar` to `setup/ufscthesisx.sty`
 %%
 
 % Define versão necessária do LaTeX
@@ -29,7 +29,7 @@
 % https://tex.stackexchange.com/questions/123999/how-can-i-properly-resolve-relative-paths-in-usepackage
 %
 % Commenting this allow to use this as a relative package, with no warnings.
-% \ProvidesPackage{ufscthesis}[2017/08/13 v0.0.1 Evandro]
+% \ProvidesPackage{ufscthesisx}[2017/08/28 v0.0.1 Evandro]
 
 % Now we'll execute any options passed in
 \ProcessOptions\relax
@@ -75,15 +75,15 @@
 \providecommand{\imprimirprograma}{}
 \newcommand{\programa}[1]{\renewcommand{\imprimirprograma}{#1}}
 
-\newcounter{ufscthesis@assuntos}
+\newcounter{ufscthesisx@assuntos}
 \providecommand{\listaassuntos}{}
 \providecommand{\imprimirassuntos}
 {%
-    \setcounter{ufscthesis@assuntos}{1}
+    \setcounter{ufscthesisx@assuntos}{1}
     \@for\assunto:={\listaassuntos}\do
     {%
-        \arabic{ufscthesis@assuntos}.\assunto. %
-        \addtocounter{ufscthesis@assuntos}{1}
+        \arabic{ufscthesisx@assuntos}.\assunto. %
+        \addtocounter{ufscthesisx@assuntos}{1}
     }
 }
 \newcommand{\assuntos}[1]{\renewcommand{\listaassuntos}{#1}}
@@ -346,7 +346,7 @@
 \setlength{\parindent}{1.0cm}
 
 % Comando para inverter sobrenome e nome
-\newcommand{\ufscthesis@inverter}[1]
+\newcommand{\ufscthesisx@inverter}[1]
 {%
     \StrBehind{#1}{{}},
     \StrBefore{#1}{{}}
@@ -447,7 +447,7 @@
     \PRIVATEclearpageifneeded
 }
 
-% Fix the resumo environment, which does not accept paragraphs on ufscthesis
+% Fix the resumo environment, which does not accept paragraphs on ufscthesisx
 %
 % Changing font size in an example environment
 % https://tex.stackexchange.com/questions/123528/changing-font-size-in-an-example-environment
