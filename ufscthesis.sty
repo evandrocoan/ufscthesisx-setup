@@ -582,21 +582,25 @@
 
         \center
 
-        \ABNTEXchapterfont\bfseries\large{\MakeTextUppercase{\imprimirinstituicao} \\ \MakeTextUppercase{\imprimirprograma}}
+        {\ABNTEXchapterfont\tabletitlesize\MakeTextUppercase{\imprimirinstituicao}}
 
         \vfill
 
-        \ABNTEXchapterfont\large\imprimirautor
+        {\tabletitlesize\imprimirautor}
 
         \vfill
-            \ABNTEXchapterfont\bfseries\Large\MakeUppercase{\imprimirtitulo}
-            \ifnotempty{\imprimirsubtitulo}{:\\ \MakeUppercase{\imprimirsubtitulo}}
+        {
+            {\ABNTEXchapterfont\MakeUppercase{\imprimirtitulo}}
+            \ifnotempty{\imprimirsubtitulo}{{\ABNTEXchapterfont:} \newline \imprimirsubtitulo}
+        }
         \vfill
 
-        \large\imprimirlocal
+        {
+            \tabletitlesize
+            \imprimirlocal
 
-        \large\imprimirdata
-
+            \imprimirdata
+        }
         \vspace*{1cm}
 
     \end{capa}
@@ -618,41 +622,46 @@
 \renewcommand{\folhaderostocontent}
 {
     \begin{center}
-        %\vspace*{1cm}
-        {\ABNTEXchapterfont\large\imprimirautor}
+        {\tabletitlesize\imprimirautor}
 
         \vspace*{\fill}\vspace*{\fill}
         \begin{center}
-            \ABNTEXchapterfont\bfseries\Large\MakeUppercase{\imprimirtitulo}
-            \abntex@ifnotempty{\imprimirsubtitulo}{:\\ \MakeUppercase{\imprimirsubtitulo}}
+
+            {\ABNTEXchapterfont\MakeUppercase{\imprimirtitulo}}
+            \abntex@ifnotempty{\imprimirsubtitulo}{{\ABNTEXchapterfont:} \\ \imprimirsubtitulo}
+
         \end{center}
         \vspace*{\fill}
 
         \abntex@ifnotempty{\imprimirpreambulo}
-        {%
+        {
             \hspace{.45\textwidth}
             \begin{minipage}{5,5cm}
 
                 \SingleSpacing
-                \fontsize{9.5}{10.5} \selectfont \imprimirpreambulo
+                {\tabletitlesize\imprimirpreambulo}
                 \bigskip
 
-                \fontsize{9.5}{10.5} \selectfont{\textbf{\imprimirorientadorRotulo}~\imprimirorientador\par}
-                \abntex@ifnotempty{\imprimircoorientador}
-                {%
-                    {\textbf{\imprimircoorientadorRotulo}~\imprimircoorientador}%
-                }%
+                {
+                    \tabletitlesize\textbf{\imprimirorientadorRotulo}~\imprimirorientador\par
+                    \abntex@ifnotempty{\imprimircoorientador}
+                    {
+                        {\textbf{\imprimircoorientadorRotulo}~\imprimircoorientador}%
+                    }
+                }
 
-            \end{minipage}%
+            \end{minipage}
             \vspace*{\fill}
-        }%
+        }
 
         \vspace*{\fill}
 
-        {\large\imprimirlocal}
-        \par
-        {\large\imprimirdata}
-        \vspace*{1cm}
+        {
+            \tabletitlesize
+            \imprimirlocal
+
+            \imprimirdata
+        }
 
     \end{center}
 }
