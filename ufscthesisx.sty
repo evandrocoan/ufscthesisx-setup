@@ -151,15 +151,15 @@
 %
 % Set caption font size in memoir
 % https://tex.stackexchange.com/questions/58943/set-caption-font-size-in-memoir
-\newcommand{\tabletitlesize}{\fontsize{9.5pt}{10.5pt}\selectfont}
-\captionnamefont{\tabletitlesize}
-\captiontitlefont{\tabletitlesize}
+\newcommand{\ufsccaptionsize}{\fontsize{9.5pt}{10.5pt}\selectfont}
+\captionnamefont{\ufsccaptionsize}
+\captiontitlefont{\ufsccaptionsize}
 
 % Set the UFSC epigrafe font size
 %
 % Changing font size in an example environment
 % https://tex.stackexchange.com/questions/123528/changing-font-size-in-an-example-environment
-\expandafter\def\expandafter\epigrafe\expandafter{\epigrafe\tabletitlesize}
+\expandafter\def\expandafter\epigrafe\expandafter{\epigrafe\ufsccaptionsize}
 
 % Fonte padrão utilizada no texto
 % http://tug.org/fonts/
@@ -585,11 +585,11 @@
 
         \center
 
-        {\ABNTEXchapterfont\tabletitlesize\MakeTextUppercase{\imprimirinstituicao}}
+        {\ABNTEXchapterfont\ufsccaptionsize\MakeTextUppercase{\imprimirinstituicao}}
 
         \vfill
 
-        {\tabletitlesize\imprimirautor}
+        {\ufsccaptionsize\imprimirautor}
 
         \vfill
         {
@@ -599,7 +599,7 @@
         \vfill
 
         {
-            \tabletitlesize
+            \ufsccaptionsize
             \imprimirlocal
 
             \imprimirdata
@@ -625,7 +625,7 @@
 \renewcommand{\folhaderostocontent}
 {
     \begin{center}
-        {\tabletitlesize\imprimirautor}
+        {\ufsccaptionsize\imprimirautor}
 
         \vspace*{\fill}\vspace*{\fill}
         \begin{center}
@@ -642,11 +642,11 @@
             \begin{minipage}{5,5cm}
 
                 \SingleSpacing
-                {\tabletitlesize\imprimirpreambulo}
+                {\ufsccaptionsize\imprimirpreambulo}
                 \bigskip
 
                 {
-                    \tabletitlesize\textbf{\imprimirorientadorRotulo}:~\imprimirorientador\par
+                    \ufsccaptionsize\textbf{\imprimirorientadorRotulo}:~\imprimirorientador\par
                     \abntex@ifnotempty{\imprimircoorientador}
                     {
                         {\textbf{\imprimircoorientadorRotulo}:~\imprimircoorientador}%
@@ -660,7 +660,7 @@
         \vspace*{\fill}
 
         {
-            \tabletitlesize
+            \ufsccaptionsize
             \imprimirlocal
 
             \imprimirdata
