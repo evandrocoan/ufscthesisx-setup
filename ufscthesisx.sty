@@ -54,10 +54,13 @@
 % https://tex.stackexchange.com/questions/5599/theorem-packages-which-to-use-which-conflict
 \RequirePackage{amsthm}
 
+% Why is the ifthen package obsolete? (It is used by the abntex2 class)
+% https://tex.stackexchange.com/questions/13866/why-is-the-ifthen-package-obsolete
+\RequirePackage{ifthen}
+
 % The class memoir already provides these functionalities: Caption package and Memoir
 % https://groups.google.com/forum/#!topic/comp.text.tex/RzpI2ATMev0
 % https://tex.stackexchange.com/questions/18931/memoir-class-with-subcaption-and-hyperref-packages
-%
 % \RequirePackage{caption}
 % \RequirePackage{subfig}
 % \RequirePackage{etoolbox}
