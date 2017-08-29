@@ -537,25 +537,6 @@
 }
 
 
-% Unable to link to inserted pages with pdfpages
-% Solution from http://tex.stackexchange.com/questions/25105/unable-to-link-to-inserted-pages-with-pdfpages
-\newcounter{includepdfpage}
-\newcounter{currentpagecounter}
-
-\newcommand{\addlabelstoallincludedpages}[1]
-{
-    \refstepcounter{includepdfpage}
-    \stepcounter{currentpagecounter}
-    \label{#1.\thecurrentpagecounter}
-}
-
-\newcommand{\modifiedincludepdf}[4]
-{
-    \setcounter{currentpagecounter}{0}
-    \includepdf[pages=#1,pagecommand=\addlabelstoallincludedpages{#2},scale=#4]{#3}
-}
-
-
 % ---
 % Impressão da Capa
 \newcommand{\imprimircapaUFSC}
