@@ -81,6 +81,9 @@
 \providecommand{\imprimirformacao}{}
 \newcommand{\formacao}[1]{\renewcommand{\imprimirformacao}{#1}}
 
+\providecommand{\imprimirbiblioteca}{}
+\newcommand{\biblioteca}[1]{\renewcommand{\imprimirbiblioteca}{#1}}
+
 \providecommand{\imprimirinstituicaosigla}{}
 \newcommand{\instituicaosigla}[1]{\renewcommand{\imprimirinstituicaosigla}{#1}}
 
@@ -571,8 +574,10 @@
     \begin{capa}%
 
         \center
-
-        {\ABNTEXchapterfont\ufsccaptionsize\MakeTextUppercase{\imprimirinstituicao}}
+        {
+            \ABNTEXchapterfont\ufsccaptionsize\MakeTextUppercase{\imprimirinstituicao}
+            \newline\MakeTextUppercase{\imprimirbiblioteca}
+        }
 
         \vfill
 
