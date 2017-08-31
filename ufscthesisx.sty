@@ -304,7 +304,7 @@
 
 % Ajusta entrada Referencias
 \renewcommand{\bibsection}
-{
+{%
     \chapter*{\bibname}
     \bibmark
     \ifnobibintoc\else
@@ -368,7 +368,7 @@
 \newcommand{\showfont}
 {%
     (\foreignlanguage{english}
-    {
+    {%
         encoding: \f@encoding{},
         family: \f@family{},
         series: \f@series{},
@@ -382,7 +382,7 @@
 \newcommand{\justshowfont}
 {%
     (\foreignlanguage{english}
-    {
+    {%
         \f@encoding{},
         \f@family{},
         \f@series{},
@@ -416,7 +416,7 @@
 \newcommand\thickhrulefill{\leavevmode \leaders \hrule height 1ex \hfill \kern \z@}
 
 \makechapterstyle{VZ14}
-{
+{%
     % \thispagestyle{empty}
     \setlength\beforechapskip{50pt}
     \setlength\midchapskip{20pt}
@@ -449,14 +449,14 @@
 % Veja outros estilos em:
 % http://repositorios.cpai.unb.br/ctan/info/latex-samples/MemoirChapStyles/MemoirChapStyles.pdf
 \renewenvironment{resumo}[1][\resumoname]
-{
+{%
     % Fixed double bookmark entries as `\pretextualchapter` bellow is already calling `\PRIVATEbookmarkthis`
     % \PRIVATEbookmarkthis{#1}
     % \renewcommand{\abstractnamefont}{\chaptitlefont}
     % \renewcommand{\abstractname}{\ABNTEXchapterupperifneeded{#1}}
     \pretextualchapter{#1}
 }
-{
+{%
     \PRIVATEclearpageifneeded
 }
 
@@ -470,7 +470,7 @@
 %
 % How to disable paragraphs inside my environment with \let\par\relax?
 % https://tex.stackexchange.com/questions/388369/how-to-disable-paragraphs-inside-my-environment-with-let-par-relax
-\xapptocmd{\resumo}{\setlength{\parindent}{0pt}\let\parOriginal\par \let\par\relax}{}{}
+\xapptocmd{\resumo}{\setlength{\parindent}{0pt}\let\parOriginal\par\let\par\relax}{}{}
 \xpretocmd{\endresumo}{\endgraf}{}{}
 
 % \imprimirpalavraschave{Palavras-chaves}{latex. abntex. editoração de texto.}
@@ -498,7 +498,7 @@
 % Configura layout para elementos textuais, redefining the ABNT command `\textual`.
 % Delete his to restore the ABNT default behavior.
 \renewcommand{\textual}
-{
+{%
     % Estilo original do Abntex2
     \pagestyle{abntheadings}
 
@@ -513,12 +513,12 @@
 % ---
 % Configura layout para elementos textuais
 \newcommand{\textualINEPUFSC}
-{
+{%
     \ifthenelse{\equal{\ABNTEXisarticle}{true}}
-    {
+    {%
         \pagestyle{plain}
     }
-    {
+    {%
         % Estilo original do Abntex2
         \pagestyle{abntheadingsLogo}
 
@@ -539,7 +539,7 @@
 % ---
 % Imprime uma pagina de divisao no estilo parte
 \renewcommand{\partpage}
-{
+{%
     \cleardoublepage
     % \phantomsection
     % \addcontentsline{toc}{part}{\appendixtocname}
@@ -575,7 +575,7 @@
     \begin{capa}%
 
         \center
-        {
+        {%
             \ABNTEXchapterfont\ufsccaptionsize\MakeTextUppercase{\imprimirinstituicao}
             \newline\MakeTextUppercase{\imprimirbiblioteca}
         }
@@ -585,13 +585,13 @@
         {\ufsccaptionsize\imprimirautor}
 
         \vfill
-        {
+        {%
             {\ABNTEXchapterfont\MakeUppercase{\imprimirtitulo}}
             \ifnotempty{\imprimirsubtitulo}{{\ABNTEXchapterfont:} \newline \imprimirsubtitulo}
         }
         \vfill
 
-        {
+        {%
             \ufsccaptionsize
             \imprimirlocal
 
@@ -616,7 +616,7 @@
 % https://tex.stackexchange.com/questions/135134/how-to-add-an-empty-line-between-paragraphs
 \makeatletter
 \renewcommand{\folhaderostocontent}
-{
+{%
     \begin{center}
         {\ufsccaptionsize\imprimirautor}
 
@@ -630,7 +630,7 @@
         \vspace*{\fill}
 
         \abntex@ifnotempty{\imprimirpreambulo}
-        {
+        {%
             \hspace{.45\textwidth}
             \begin{minipage}{5,5cm}
 
@@ -652,7 +652,7 @@
 
         \vspace*{\fill}
 
-        {
+        {%
             \ufsccaptionsize
             \imprimirlocal
 
