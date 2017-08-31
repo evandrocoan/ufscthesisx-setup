@@ -45,6 +45,15 @@
     \RequirePackage{float}
 }
 
+% The class `abntex2` loads the package `enumitem`, but `paralist` must be loaded before it
+% https://tex.stackexchange.com/questions/162799/compilation-error-when-including-enumitem-and-paralist-packages
+\AfterClass{memoir}
+{
+    % How to make horizontal lists?
+    % https://tex.stackexchange.com/questions/146306/how-to-make-horizontal-lists
+    \RequirePackage{paralist}
+}
+
 % The UFSC font size is 10.5, but memoir embbeded on `abntex2` only accepts 10 and 11pt. However
 % this will be fixed later by the abntex2-ufsc package.
 %
