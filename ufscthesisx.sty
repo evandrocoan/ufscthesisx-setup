@@ -450,7 +450,8 @@
 % http://repositorios.cpai.unb.br/ctan/info/latex-samples/MemoirChapStyles/MemoirChapStyles.pdf
 \renewenvironment{resumo}[1][\resumoname]
 {
-    \PRIVATEbookmarkthis{#1}
+    % Fixed double bookmark entries as `\pretextualchapter` bellow is already calling `\PRIVATEbookmarkthis`
+    % \PRIVATEbookmarkthis{#1}
     % \renewcommand{\abstractnamefont}{\chaptitlefont}
     % \renewcommand{\abstractname}{\ABNTEXchapterupperifneeded{#1}}
     \pretextualchapter{#1}
