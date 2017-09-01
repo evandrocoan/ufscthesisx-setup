@@ -487,16 +487,8 @@
 % ------------------------------------------------------------------------
 
 % ------------------------------------------------------------------------
-%% criar um novo estilo incluindo logos da UFSC e do INEP
+%% criar um novo estilo incluindo logos da UFSC
 % ------------------------------------------------------------------------
-\makepagestyle{abntheadingsLogo} %
-\makeevenhead{abntheadingsLogo}{\ABNTEXfontereduzida\thepage}{\ABNTEXfontereduzida\textit\leftmark}{\includegraphics[width=20pt]{Logo/inep.pdf}}
-\makeoddhead{abntheadingsLogo}{\includegraphics[width=15pt]{Logo/ufsc.pdf}}{\ABNTEXfontereduzida\textit\rightmark}{\ABNTEXfontereduzida\thepage}
-\makeheadrule{abntheadingsLogo}{\textwidth}{\normalrulethickness}
-
-\makeevenfoot{abntheadingsLogo}{}{}{\ABNTEXfontereduzida\textsc \imprimirautor}
-\makeoddfoot{abntheadingsLogo}{\ABNTEXfontereduzida\textsc \imprimirautor}{}{}
-
 
 % Configura layout para elementos textuais, redefining the ABNT command `\textual`.
 % Delete his to restore the ABNT default behavior.
@@ -509,26 +501,6 @@
     % ABNT default value `{chapter}{abntchapfirst}`
     \aliaspagestyle{chapter}{empty}
 
-    \nouppercaseheads
-    \bookmarksetup{startatroot}
-}
-
-% ---
-% Configura layout para elementos textuais
-\newcommand{\textualINEPUFSC}
-{%
-    \ifthenelse{\equal{\ABNTEXisarticle}{true}}
-    {%
-        \pagestyle{plain}
-    }
-    {%
-        % Estilo original do Abntex2
-        \pagestyle{abntheadingsLogo}
-
-        % Remove a numeração das páginas no início dos capítulos.
-        % ABNT default value `{chapter}{abntchapfirst}`
-        \aliaspagestyle{chapter}{empty}
-    }
     \nouppercaseheads
     \bookmarksetup{startatroot}
 }
@@ -548,27 +520,6 @@
     % \addcontentsline{toc}{part}{\appendixtocname}
     \appendixpage*
 }
-
-
-% ---
-% Impressão da Capa
-\newcommand{\imprimircapaUFSC}
-{%
-    \begin{EnvCapaUFSC}%
-
-        \vspace*{5cm}
-        \parbox{307pt}{\center\ArialTreze \MakeUppercase{\imprimirtitulo}}
-        \vfill
-        \vspace*{3cm}
-        \ArialCatorze\imprimirautor
-        \vfill
-
-        % Precisa ser ajustado dependendo do tamanho do titulo
-        \vspace*{5.8cm}
-
-    \end{EnvCapaUFSC}
- }
-% ---
 
 
 % ---
