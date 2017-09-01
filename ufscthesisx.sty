@@ -90,6 +90,14 @@
 \providecommand{\imprimirinstituicaosigla}{}
 \newcommand{\instituicaosigla}[1]{\renewcommand{\imprimirinstituicaosigla}{#1}}
 
+% inclui subtitulo na capa, folha de rosto e ficha catalografica
+% https://github.com/lrsantos11/abntex2-ufsc/commit/fd30245353dcc49e193d281c78104afe54df9fe7
+%
+% Cria o comando \subtitulo. A norma define que o TITULO deve ser em caixa alta
+% negrito, mas o subtitulo deve ser em caixa baixa.
+\providecommand{\imprimirsubtitulo}{}
+\newcommand{\subtitulo}[1]{\renewcommand{\imprimirsubtitulo}{#1}}
+
 \newcounter{ufscthesisx@assuntos}
 \providecommand{\listaassuntos}{}
 \providecommand{\imprimirassuntos}
@@ -617,36 +625,4 @@
 }
 \makeatother
 
-
-% inclui subtitulo na capa, folha de rosto e ficha catalografica
-% https://github.com/lrsantos11/abntex2-ufsc/commit/fd30245353dcc49e193d281c78104afe54df9fe7
-%
-% Cria o comando \subtitulo. A norma define que o TITULO deve ser em caixa alta
-% negrito, mas o subtitulo deve ser em caixa baixa.
-\providecommand{\imprimirsubtitulo}{}
-\newcommand{\subtitulo}[1]{\renewcommand{\imprimirsubtitulo}{#1}}
-
-
-% Example about hyphenation with ttfamily font
-% https://tex.stackexchange.com/questions/386665/example-about-hyphenation-with-ttfamily-font
-%
-% Why the environment ttfamily is hyphenated, but macro ttfamily is not hyphenating?
-% https://tex.stackexchange.com/questions/387678/why-the-environment-ttfamily-is-hyphenated-but-macro-ttfamily-is-not-hyphenatin
-\LetLtxMacro\origttfamily\ttfamily
-\DeclareRobustCommand*{\ttfamily}{%
-  \origttfamily
-  \hyphenchar\font=`\-\relax
-  \fontdimen3\font=.25em\relax
-  \fontdimen4\font=.13em\relax
-  \fontdimen7\font=.167em\relax
-}
-
-\makeatletter
-\DeclareRobustCommand\vttfamily{%
-  \not@math@alphabet\vttfamily\relax
-  \fontfamily{cmvtt}% cmvtt (Computer Modern) or lmvtt (Latin Modern)
-  \selectfont
-}
-\DeclareTextFontCommand{\textvtt}{\vttfamily}
-\makeatother
 
