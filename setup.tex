@@ -54,6 +54,20 @@
     \RequirePackage{paralist}
 }
 
+% Biblatex error: Incompatible backref package
+% https://tex.stackexchange.com/questions/383054/biblatex-error-incompatible-backref-package
+%
+% backreferencing in classicthesis package does not work
+% https://tex.stackexchange.com/questions/115828/backreferencing-in-classicthesis-package-does-not-work
+%
+% Citação alfabética por autor-data [alf], Why my biblatex document is not accepting UTF-8 on the bibliography?
+% https://tex.stackexchange.com/questions/390349/why-my-biblatex-document-is-not-accepting-utf-8-on-the-bibliography
+\PassOptionsToPackage{style=abnt,backref=true,backend=biber}{biblatex}
+\AfterClass{memoir}
+{
+    \RequirePackage{biblatex}
+}
+
 % The UFSC font size is 10.5, but memoir embbeded on `abntex2` only accepts 10 and 11pt. However
 % this will be fixed later by the abntex2-ufsc package.
 %
@@ -70,6 +84,7 @@ section=TITLE  % Título de seções em caixa alta
 % https://tex.stackexchange.com/questions/388489/custom-list-throw-latex-error-command-mycustomfiction-already-defined
 \usepackage{morewrites}
 
+
 % If document class is equal to something then do not use package
 % https://tex.stackexchange.com/questions/46223/if-document-class-is-equal-to-something-then-do-not-use-package
 \makeatletter
@@ -81,16 +96,26 @@ section=TITLE  % Título de seções em caixa alta
 }{}
 \makeatother
 
-% backreferencing in classicthesis package does not work
-% https://tex.stackexchange.com/questions/115828/backreferencing-in-classicthesis-package-does-not-work
-\usepackage[brazilian,hyperpageref]{backref}
+% Package csquotes Warning: Load 'inputenc' before 'csquotes'
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
 
-% Citação alfabética por autor-data [alf]
-\usepackage[alf]{abntex2cite}
+% Package biblatex Warning: 'babel/polyglossia' detected but 'csquotes' missing
+% https://tex.stackexchange.com/questions/229638/package-biblatex-warning-babel-polyglossia-detected-but-csquotes-missing
+\usepackage{csquotes}
 
-% Is it possible to translate the 'and' separator in references using BibTeX?
-% https://tex.stackexchange.com/questions/305975/is-it-possible-to-translate-the-and-separator-in-references-using-bibtex
-\usepackage{babelbib}
+% How can I put more space between bibliography entries (biblatex)
+% https://tex.stackexchange.com/questions/19105/how-can-i-put-more-space-between-bibliography-entries-biblatex
+\setlength\bibitemsep{1.8\itemsep}
+
+% Backward compatibility with `abntex2cite` package `\citeonline` command with the new `biblatex` package
+\let\citeonline\textcite
+
+% Reduce font size of bibliography; overfull bibliography
+% https://tex.stackexchange.com/questions/203764/reduce-font-size-of-bibliography-overfull-bibliography
+\newcommand{\bibliographyfontsize}{\fontsize{10.0pt}{10.5pt}\selectfont}
+\renewcommand*{\bibfont}{\bibliographyfontsize}
+
 
 % Comment this, unless you are debugging pages' badness Underfull & Overflow
 % https://tex.stackexchange.com/questions/115908/geometry-showframe-landscape
