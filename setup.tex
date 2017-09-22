@@ -13,6 +13,11 @@
 % https://tex.stackexchange.com/questions/366155/how-to-write-a-table-a-little-larger-than-the-paragraphs-with-centered-columns
 \PassOptionsToPackage{strict}{changepage}
 
+% Linked footnotes are not supported inside environment `tabularx', because they
+% uses the optional argument of \footnotetext
+% http://ctan.sharelatex.com/tex-archive/macros/latex/contrib/hyperref/README.pdf
+\PassOptionsToPackage{hyperfootnotes=false}{hyperref}
+
 % The class `abntex2` loads the `enumitem` package with options.
 %
 % With the package option shortlabels you can use an enumerate-like syntax, where A, a, I, i and 1
@@ -66,6 +71,13 @@
 \AfterClass{memoir}
 {
     \RequirePackage{biblatex}
+}
+
+% Package longtable must be put before hyperref and arydshln, hyperref after arydshln generates an error
+% http://ctan.sharelatex.com/tex-archive/macros/latex/contrib/hyperref/README.pdf
+\AfterClass{memoir}
+{
+    \RequirePackage{longtable}
 }
 
 % The UFSC font size is 10.5, but memoir embbeded on `abntex2` only accepts 10 and 11pt. However
