@@ -123,7 +123,7 @@ section=TITLE  % Título de seções em caixa alta
 
 % How can I put more space between bibliography entries (biblatex)
 % https://tex.stackexchange.com/questions/19105/how-can-i-put-more-space-between-bibliography-entries-biblatex
-\setlength\bibitemsep{1.8\itemsep}
+\setlength\bibitemsep{2.1\itemsep}
 
 % Backward compatibility with `abntex2cite` package `\citeonline` command with the new `biblatex` package
 \let\citeonline\textcite
@@ -137,7 +137,7 @@ section=TITLE  % Título de seções em caixa alta
 % https://tex.stackexchange.com/questions/398666/how-to-correctly-insert-and-justify-abstract
 \DeclareFieldFormat{abstract}%
 {%
-    \par\justifying
+    \vspace*{-0.5mm}\par\justifying
     \begin{adjustwidth}{1cm}{}
         \textbf{\bibsentence\bibstring{abstract}:} #1
     \end{adjustwidth}
