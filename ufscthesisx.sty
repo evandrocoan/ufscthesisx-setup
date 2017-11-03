@@ -236,22 +236,37 @@
 {%
     \bookmarksetup{startatroot}%
     \phantomsection%
-    \addtocontents{toc}{\vspace{\cftbeforechapterskip}}
+    \addtocontents{toc}{\vspace{0em}}
 }
-% -----
+
+% Desativa o espaço entre capítulos por que fica misturado com o espaço entre subseções e subsubseções
+%
+% TOC Spacing in Memoir
+% https://tex.stackexchange.com/questions/60317/toc-spacing-in-memoir
+\setlength{\cftbeforechapterskip}{0em}
+
+% Adiciona corretamente o espaço entre capítulos, sem ficar misturado com o espaço entre subseções e subsubseções
+%
+% Change vertical space of chapters temporarly in Table of Contents
+% https://tex.stackexchange.com/questions/83348/change-vertical-space-of-chapters-temporarly-in-table-of-contents
+\pretocmd{\chapter}{\addtocontents{toc}{\addvspace{12pt}}}{}{}
+
 
 % No caso de Sumario (TOC) UFSC
-\cftsetindents{part}{0em}{\cftlastnumwidth}
-\cftsetindents{chapter}{0em}{\cftlastnumwidth}
-\cftsetindents{section}{0em}{\cftlastnumwidth}
-\cftsetindents{subsection}{0em}{\cftlastnumwidth}
-\cftsetindents{subsubsection}{0em}{\cftlastnumwidth}
-\cftsetindents{paragraph}{0em}{\cftlastnumwidth}
-\cftsetindents{subparagraph}{0em}{\cftlastnumwidth}
 %
+% memoir: indentation of unnumbered sections in table of contents
+% https://tex.stackexchange.com/questions/264668/memoir-indentation-of-unnumbered-sections-in-table-of-contents
+\cftsetindents{part}         {0em}{\cftlastnumwidth}
+\cftsetindents{chapter}      {0em}{\cftlastnumwidth}
+\cftsetindents{section}      {0em}{\cftlastnumwidth}
+\cftsetindents{subsection}   {0em}{\cftlastnumwidth}
+\cftsetindents{subsubsection}{0em}{\cftlastnumwidth}
+\cftsetindents{paragraph}    {0em}{\cftlastnumwidth}
+\cftsetindents{subparagraph} {0em}{\cftlastnumwidth}
+
 \renewcommand{\tocprintchapter}
 {%
-    \addtocontents{toc}{\cftsetindents{chapter}{0em}{\cftlastnumwidth}}
+    \addtocontents{toc}{\cftsetindents{chapter}{1em}{\cftlastnumwidth}}
 }
 %
 \renewcommand{\tocinnonumchapter}
@@ -275,8 +290,7 @@
     \addtocontents{toc}{\cftsetindents{part}{\cftlastnumwidth}{2em}}
     \cftinserthook{toc}{A}
 }
-%
-\setlength{\cftbeforechapterskip}{1em}
+
 
 %
 % Fontes das entradas do sumario
