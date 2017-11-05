@@ -251,6 +251,11 @@
 % https://tex.stackexchange.com/questions/83348/change-vertical-space-of-chapters-temporarly-in-table-of-contents
 \pretocmd{\chapter}{\addtocontents{toc}{\addvspace{12pt}}}{}{}
 
+% How to change this specific TOC margin in memoir
+% https://tex.stackexchange.com/questions/309186/how-to-change-this-specific-toc-margin-in-memoir
+\newlength{\aftertocskip}
+\setlength{\aftertocskip}{2\baselineskip}% Space after ToC title
+\renewcommand{\aftertoctitle}{\par\nobreak\vskip\aftertocskip}
 
 % No caso de Sumario (TOC) UFSC
 %
