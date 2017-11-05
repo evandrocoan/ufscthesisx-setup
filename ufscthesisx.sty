@@ -252,11 +252,7 @@
 %
 % How to make the table of contents section title upper case without messing with the space between the chapter and section?
 % https://tex.stackexchange.com/questions/399828/how-to-make-the-table-of-contents-section-title-upper-case-without-messing-with
-\renewcommand*{\l@chapter}[2]
-{%
-    \l@chapapp{\uppercase{#1}}{#2}{\cftchaptername}
-}
-
+%
 % How to make section name uppercase in ToC?
 % https://tex.stackexchange.com/questions/156916/how-to-make-section-name-uppercase-in-toc
 \let\oldcontentsline\contentsline
