@@ -58,6 +58,10 @@
 % https://tex.stackexchange.com/questions/13866/why-is-the-ifthen-package-obsolete
 \RequirePackage{ifthen}
 
+% How to make section name uppercase in ToC?
+% https://tex.stackexchange.com/questions/156916/how-to-make-section-name-uppercase-in-toc
+\RequirePackage{textcase}
+
 % The class memoir already provides these functionalities: Caption package and Memoir
 % https://groups.google.com/forum/#!topic/comp.text.tex/RzpI2ATMev0
 % https://tex.stackexchange.com/questions/18931/memoir-class-with-subcaption-and-hyperref-packages
@@ -239,17 +243,35 @@
     \addtocontents{toc}{\vspace{0em}}
 }
 
-% Desativa o espaço entre capítulos por que fica misturado com o espaço entre subseções e subsubseções
-%
 % TOC Spacing in Memoir
 % https://tex.stackexchange.com/questions/60317/toc-spacing-in-memoir
-\setlength{\cftbeforechapterskip}{0em}
+\setlength{\cftbeforechapterskip}{12pt}
 
-% Adiciona corretamente o espaço entre capítulos, sem ficar misturado com o espaço entre subseções e subsubseções
+
+% Fontes das entradas do sumario
 %
-% Change vertical space of chapters temporarly in Table of Contents
-% https://tex.stackexchange.com/questions/83348/change-vertical-space-of-chapters-temporarly-in-table-of-contents
-\pretocmd{\chapter}{\addtocontents{toc}{\addvspace{12pt}}}{}{}
+% How to make the table of contents section title upper case without messing with the space between the chapter and section?
+% https://tex.stackexchange.com/questions/399828/how-to-make-the-table-of-contents-section-title-upper-case-without-messing-with
+\renewcommand*{\l@chapter}[2]
+{%
+    \l@chapapp{\uppercase{#1}}{#2}{\cftchaptername}
+}
+
+% How to make section name uppercase in ToC?
+% https://tex.stackexchange.com/questions/156916/how-to-make-section-name-uppercase-in-toc
+\let\oldcontentsline\contentsline
+\def\contentsline#1#2{%
+  \expandafter\ifx\csname l@#1\endcsname\l@section
+    \expandafter\@firstoftwo
+  \else
+    \expandafter\@secondoftwo
+  \fi
+  {%
+    \oldcontentsline{#1}{\MakeTextUppercase{#2}}%
+  }{%
+    \oldcontentsline{#1}{#2}%
+  }%
+}
 
 % How to change this specific TOC margin in memoir
 % https://tex.stackexchange.com/questions/309186/how-to-change-this-specific-toc-margin-in-memoir
@@ -296,20 +318,6 @@
     \cftinserthook{toc}{A}
 }
 
-
-%
-% Fontes das entradas do sumario
-%
-\renewcommand*{\l@chapter}[2]
-{%
-    \l@chapapp{\uppercase{#1}}{#2}{\cftchaptername}
-}
-
-\renewcommand*{\l@section}[2]
-{%
-    \l@chapapp{\ABNTEXsectionfont\uppercase{#1}}{#2}{\cftsectionname}
-}
-
 \renewcommand{\cftpartfont}{\ABNTEXpartfont}
 \renewcommand{\cftpartpagefont}{\cftpartfont}
 
@@ -339,6 +347,7 @@
     \fi
     \prebibhook
 }
+
 
 % Caption package and Memoir
 % https://groups.google.com/forum/#!topic/comp.text.tex/RzpI2ATMev0
