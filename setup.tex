@@ -80,6 +80,15 @@
     \RequirePackage{longtable}
 }
 
+% How to silence memoir class warning against the use of caption package?
+% https://tex.stackexchange.com/questions/391993/how-to-silence-memoir-class-warning-against-the-use-of-caption-package
+\RequirePackage{silence}
+\WarningFilter*{memoir}{You are using the caption package with the memoir class}
+
+% Can I silence a warning which is coming from a file like `bigfoot.sty`?
+% https://tex.stackexchange.com/questions/402676/can-i-silence-a-warning-which-is-coming-from-a-file-like-bigfoot-sty
+\WarningFilter*{hyperref}{Option `hyperfootnotes' has already been used}
+
 % The UFSC font size is 10.5, but memoir embbeded on `abntex2` only accepts 10 and 11pt. However
 % this will be fixed later by the abntex2-ufsc package.
 %
@@ -91,11 +100,6 @@ twoside, % Impressão nos dois lados da folha
 chapter=TITLE, % Título de capítulos em caixa alta
 section=TITLE  % Título de seções em caixa alta
 ]{abntex2}
-
-% How to silence memoir class warning against the use of caption package?
-% https://tex.stackexchange.com/questions/391993/how-to-silence-memoir-class-warning-against-the-use-of-caption-package
-\usepackage{silence}
-\WarningFilter*{memoir}{You are using the caption package with the memoir class}
 
 % Custom list throw LaTeX Error: Command \mycustomfiction already defined?
 % https://tex.stackexchange.com/questions/388489/custom-list-throw-latex-error-command-mycustomfiction-already-defined
