@@ -27,7 +27,7 @@
 % com a ficha catalográfica definitiva após a defesa do trabalho. Quando estiver
 % com o documento, salve-o como PDF no diretório do seu projeto e substitua todo
 % o conteúdo de implementação deste arquivo pelo comando abaixo:
-\include{pretexto/fichacatalografica}
+\include{beforetext/fichacatalografica}
 \ifforcedinclude\else\cleardoublepage\fi
 
 % Custom list throw LaTeX Error: Command \mycustomfiction already defined?
@@ -54,21 +54,21 @@
 % substitua todo o conteúdo deste arquivo por uma imagem da página assinada pela banca com o comando
 % abaixo:
 \ifforcedinclude\else\cleardoublepage\fi
-\include{pretexto/folhadeaprovacao}
+\include{beforetext/folhadeaprovacao}
 % \includepdf{folhadeaprovacao_final.pdf}
 
 
 % Dedicatória
 \ifforcedinclude\else\cleardoublepage\fi
-\ifforcedinclude\else\input{pretexto/dedicatoria}\fi
+\ifforcedinclude\else\input{beforetext/dedicatoria}\fi
 
 % Agradecimentos
 \ifforcedinclude\else\cleardoublepage\fi
-\include{pretexto/agradecimentos}
+\include{beforetext/agradecimentos}
 
 % Epígrafe
 \ifforcedinclude\else\cleardoublepage\fi
-\include{pretexto/epigrafe}
+\include{beforetext/epigrafe}
 
 
 % Ajusta o espaçamento dos parágrafos do resumo
@@ -76,7 +76,7 @@
 
 % RESUMOS
 \ifforcedinclude\else\cleardoublepage\fi
-\include{pretexto/resumos}
+\include{beforetext/resumos}
 
 % Some tables of contents
 \ifforcedinclude\else
@@ -102,11 +102,11 @@
 
 % inserir lista de abreviaturas e siglas
 \ifforcedinclude\else\cleardoublepage\fi
-\include{pretexto/siglas}
+\include{beforetext/siglas}
 
 % Inserir lista de símbolos
 \ifforcedinclude\else\cleardoublepage\fi
-\include{pretexto/simbolos}
+\include{beforetext/simbolos}
 
 % Add the table of contents to the brief table of contents
 \addtotextpreliminarycontent{\lang{Table of Contents}{Sumário}}
