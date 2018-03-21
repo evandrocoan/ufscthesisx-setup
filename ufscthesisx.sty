@@ -34,6 +34,21 @@
 % Now we'll execute any options passed in
 \ProcessOptions\relax
 
+
+% Custom list throw LaTeX Error: Command \mycustomfiction already defined?
+% https://tex.stackexchange.com/questions/388489/custom-list-throw-latex-error-command-mycustomfiction-already-defined
+\RequirePackage{morewrites}
+
+
+
+% Package csquotes Warning: Load 'inputenc' before 'csquotes'
+\RequirePackage[utf8]{inputenc}
+\RequirePackage[T1]{fontenc}
+
+% Package biblatex Warning: 'babel/polyglossia' detected but 'csquotes' missing
+% https://tex.stackexchange.com/questions/229638/package-biblatex-warning-babel-polyglossia-detected-but-csquotes-missing
+\RequirePackage{csquotes}
+
 % Indent the first section paragraphs
 % https://tex.stackexchange.com/questions/39227/no-indent-in-the-first-paragraph-in-a-section
 \RequirePackage{indentfirst}
@@ -73,6 +88,18 @@
 % https://tex.stackexchange.com/questions/299372/warning-layout-scale-set-to-0-5-on-input-line
 % \RequirePackage{layouts}
 
+
+% Always use it as should improve full justification
+% https://tex.stackexchange.com/questions/10377/texttt-overfull-hbox-problem
+% https://tex.stackexchange.com/questions/66052/should-i-load-microtype-with-pdflatex
+\RequirePackage{microtype}
+
+% How to auto adjust my last table column width, and why is there Underfull \vbox badness on this table?
+% https://tex.stackexchange.com/questions/387238/how-to-auto-adjust-my-last-table-column-width-and-why-is-there-underfull-vbox/387251
+%
+% Why ltablex package breaks the changepage package?
+% https://tex.stackexchange.com/questions/404339/why-ltablex-package-breaks-the-changepage-package
+\RequirePackage{ltablex}\keepXColumns
 
 
 % CONFIGURAÇÕES DE PACOTES
@@ -658,6 +685,17 @@
 
     \end{center}
 }
+\makeatother
+
+% If document class is equal to something then do not use package
+% https://tex.stackexchange.com/questions/46223/if-document-class-is-equal-to-something-then-do-not-use-package
+\makeatletter
+\@ifclassloaded{abntex2}
+{
+    % Package hyperref Warning: Token not allowed in a PDF string?
+    % https://tex.stackexchange.com/questions/384885/package-hyperref-warning-token-not-allowed-in-a-pdf-string
+    \pdfstringdefDisableCommands{\let\uppercase\relax}
+}{}
 \makeatother
 
 

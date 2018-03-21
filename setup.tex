@@ -1,3 +1,35 @@
+%----------------------------------------------------------------------------------------
+%   PACKAGES AND OTHER DOCUMENT CONFIGURATIONS BEFORE LOADING abntex2
+%----------------------------------------------------------------------------------------
+
+% Uncomment the line `\englishtrue` to set the document default language to english.
+%
+% Is it possible to keep my translation together with original text?
+% https://tex.stackexchange.com/questions/5076/is-it-possible-to-keep-my-translation-together-with-original-text
+\newif\ifenglish\englishfalse
+% \englishtrue
+
+% How to expand \ifthenelse so that it can be used in \parshape?
+% https://tex.stackexchange.com/questions/131002/how-to-expand-ifthenelse-so-that-it-can-be-used-in-parshape
+\newcommand{\lang}[2]{\ifenglish#1\else#2\fi}
+
+% Disable the empty pages automatically put by memoir class, except the ones by \cleardoublepage
+% \PassOptionsToClass{openany}{memoir}
+
+% How to make \PassOptionsToPackage add the option as the last option?
+% https://tex.stackexchange.com/questions/385895/how-to-make-passoptionstopackage-add-the-option-as-the-last
+\ifenglish
+    \newcommand{\swapcontents}[2]{#1 #2}
+
+    \PassOptionsToPackage{language=english}{biblatex}
+    \PassOptionsToPackage{brazil,main=english,spanish,french}{babel}
+\else
+    \newcommand{\swapcontents}[2]{#2 #1}
+
+    \PassOptionsToPackage{language=brazil}{biblatex}
+    \PassOptionsToPackage{main=brazil,english,spanish,french}{babel}
+\fi
+
 
 
 
@@ -89,72 +121,5 @@
 % https://tex.stackexchange.com/questions/402676/can-i-silence-a-warning-which-is-coming-from-a-file-like-bigfoot-sty
 \WarningFilter*{hyperref}{Option `hyperfootnotes' has already been used}
 
-% The UFSC font size is 10.5, but memoir embbeded on `abntex2` only accepts 10 and 11pt. However
-% this will be fixed later by the abntex2-ufsc package.
-%
-% You can see whether the font sizes are correct with the \f@size at the `\begin{document}`.
-\documentclass[
-10pt,
-a5paper,
-twoside, % Impressão nos dois lados da folha
-chapter=TITLE, % Título de capítulos em caixa alta
-section=TITLE  % Título de seções em caixa alta
-]{abntex2}
 
-% Custom list throw LaTeX Error: Command \mycustomfiction already defined?
-% https://tex.stackexchange.com/questions/388489/custom-list-throw-latex-error-command-mycustomfiction-already-defined
-\usepackage{morewrites}
-
-
-% If document class is equal to something then do not use package
-% https://tex.stackexchange.com/questions/46223/if-document-class-is-equal-to-something-then-do-not-use-package
-\makeatletter
-\@ifclassloaded{abntex2}
-{
-    % Package hyperref Warning: Token not allowed in a PDF string?
-    % https://tex.stackexchange.com/questions/384885/package-hyperref-warning-token-not-allowed-in-a-pdf-string
-    \pdfstringdefDisableCommands{\let\uppercase\relax}
-}{}
-\makeatother
-
-% Package csquotes Warning: Load 'inputenc' before 'csquotes'
-\usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
-
-% Package biblatex Warning: 'babel/polyglossia' detected but 'csquotes' missing
-% https://tex.stackexchange.com/questions/229638/package-biblatex-warning-babel-polyglossia-detected-but-csquotes-missing
-\usepackage{csquotes}
-
-% How can I put more space between bibliography entries (biblatex)
-% https://tex.stackexchange.com/questions/19105/how-can-i-put-more-space-between-bibliography-entries-biblatex
-\setlength\bibitemsep{2.1\itemsep}
-
-% Backward compatibility with `abntex2cite` package `\citeonline` command with the new `biblatex` package
-\let\citeonline\textcite
-
-% Reduce font size of bibliography; overfull bibliography
-% https://tex.stackexchange.com/questions/203764/reduce-font-size-of-bibliography-overfull-bibliography
-\newcommand{\bibliographyfontsize}{\fontsize{10.0pt}{10.5pt}\selectfont}
-\renewcommand*{\bibfont}{\bibliographyfontsize}
-
-% How to correctly insert and justify abstract paragraph on my bibliography?
-% https://tex.stackexchange.com/questions/398666/how-to-correctly-insert-and-justify-abstract
-\DeclareFieldFormat{abstract}%
-{%
-    \vspace*{-0.5mm}\par\justifying
-    \begin{adjustwidth}{1cm}{}
-        \textbf{\bibsentence\bibstring{abstract}:} #1
-    \end{adjustwidth}
-}
-
-\renewbibmacro*{finentry}%
-{%
-    \iffieldundef{abstract}
-    {\finentry}
-    {\finentrypunct
-        \printfield{abstract}%
-        \renewcommand*{\finentrypunct}{}%
-        \finentry
-    }
-}
 
