@@ -5,6 +5,11 @@
 \hypersetup{pageanchor=false}
 
 
+% O preambulo deve conter tipo do trabalho, objetivo, nome da instituição e a área de concentração.
+\preambulo
+{%
+   \imprimirtipotrabalho~\ifnotdefined\tcc{submetida}{submetido} ao \imprimirprograma~da \imprimirinstituicao~para a obtenção do Grau de \imprimirformacao.
+}
 
 % ELEMENTOS PRÉ-TEXTUAIS
 \ifforcedinclude\else
@@ -32,27 +37,27 @@
 
 % Custom list throw LaTeX Error: Command \mycustomfiction already defined?
 % https://tex.stackexchange.com/questions/388489/custom-list-throw-latex-error-command-mycustomfiction-already-defined/
-\ifforcedinclude\else
+% \ifforcedinclude\else
     % Manually add the `\textpreliminarycontents` to the Table of Contents here
     % to keep the hyper link pointing to the beginning of the page, instead of
     % the beginning of `\textpreliminarycontents`
     %
     % When do I need to invoke \phantomsection?
     % https://tex.stackexchange.com/questions/44088/when-do-i-need-to-invoke-phantomsection
-    \phantomsection
-    \addcontentsline{toc}{chapter}{\mytextpreliminarylistname}
+    % \phantomsection
+    % \addcontentsline{toc}{chapter}{\mytextpreliminarylistname}
 
-    \begin{KeepFromToc}
-        \textpreliminarycontents
-    \end{KeepFromToc}
-\fi
+    % \begin{KeepFromToc}
+        % \textpreliminarycontents
+    % \end{KeepFromToc}
+% \fi
 
 % Inserir errata
 
-% Inserir folha de aprovação. Isto é um exemplo de Folha de aprovação, elemento obrigatório da NBR
-% 14724/2011 (seção 4.2.1.3). Você pode utilizar este modelo até a aprovação do trabalho. Após isso,
-% substitua todo o conteúdo deste arquivo por uma imagem da página assinada pela banca com o comando
-% abaixo:
+% Inserir folha de aprovação. Isto é um exemplo de Folha de aprovação, elemento obrigatório da 
+% NBR 14724/2011 (seção 4.2.1.3). Você pode utilizar este modelo até a aprovação do trabalho. 
+% Após isso, substitua todo o conteúdo deste arquivo por uma imagem da página assinada pela banca com o comando  abaixo:
+
 \ifforcedinclude\else\cleardoublepage\fi
 \include{beforetext/folhadeaprovacao}
 % \includepdf{folhadeaprovacao_final.pdf}
@@ -80,7 +85,10 @@
 
 % Some tables of contents
 \ifforcedinclude\else
-    % inserir lista de ilustrações
+    % inserir lista de figuras
+    % Ao contrario da norma abnt-6027-2012, que as figuras estejam listadas na Lista de 
+    % Ilustrações,  a UFSC pede que as figuras estejam na Lista de Figuras. 
+    \renewcommand{\listfigurename}{Lista de Figuras}
     \ifforcedinclude\else\cleardoublepage\fi
     \addtotextpreliminarycontent{\lang{List of Figures}{Lista de Figuras}}
     \pdfbookmark[0]{\listfigurename}{lof}

@@ -104,6 +104,7 @@
 
 % CONFIGURAÇÕES DE PACOTES
 \newcommand{\ifnotempty}[2]{\ifthenelse{\not\equal{#1}{}}{#2}{}}
+\newcommand{\ifnotdefined}[3]{\ifdefined #1 #3 \else #2 \fi}
 
 % Comandos de dados - programa
 \providecommand{\imprimirprograma}{}
@@ -120,6 +121,19 @@
 
 \providecommand{\imprimirinstituicaosigla}{}
 \newcommand{\instituicaosigla}[1]{\renewcommand{\imprimirinstituicaosigla}{#1}}
+
+\providecommand{\imprimirano}{}
+\newcommand{\ano}[1]{\renewcommand{\imprimirano}{#1}}
+
+
+% Comandos de dados - Coordenador
+\newcommand{\coordenadorname}{Coordenador}
+\providecommand{\imprimircoordenadorRotulo}{}
+\providecommand{\imprimircoordenador}{}
+\newcommand{\coordenador}[2][\coordenadorname]%
+  {\renewcommand{\imprimircoordenadorRotulo}{#1}%
+   \renewcommand{\imprimircoordenador}{#2}}
+
 
 % inclui subtitulo na capa, folha de rosto e ficha catalografica
 % https://github.com/lrsantos11/abntex2-ufsc/commit/fd30245353dcc49e193d281c78104afe54df9fe7
@@ -601,7 +615,7 @@
         \center
         {%
             \ABNTEXchapterfont\ufsccaptionsize\MakeTextUppercase{\imprimirinstituicao}
-            \newline\MakeTextUppercase{\imprimirbiblioteca}
+            \par\MakeTextUppercase{\imprimirbiblioteca}
         }
 
         \vfill
@@ -610,8 +624,9 @@
 
         \vfill
         {%
+        \center
             {\ABNTEXchapterfont\MakeUppercase{\imprimirtitulo}}
-            \ifnotempty{\imprimirsubtitulo}{{\ABNTEXchapterfont:} \newline \imprimirsubtitulo}
+            \ifnotempty{\imprimirsubtitulo}{{\ABNTEXchapterfont\!:} \par \imprimirsubtitulo}
         }
         \vfill
 
@@ -619,7 +634,7 @@
             \ufsccaptionsize
             \imprimirlocal
 
-            \imprimirdata
+            \imprimirano
         }
         \vspace*{1cm}
 
@@ -648,7 +663,7 @@
         \begin{center}
 
             {\ABNTEXchapterfont\MakeUppercase{\imprimirtitulo}}
-            \abntex@ifnotempty{\imprimirsubtitulo}{{\ABNTEXchapterfont:} \\ \imprimirsubtitulo}
+            \abntex@ifnotempty{\imprimirsubtitulo}{{\ABNTEXchapterfont\!:} \\ \imprimirsubtitulo}
 
         \end{center}
         \vspace*{\fill}
@@ -680,7 +695,7 @@
             \ufsccaptionsize
             \imprimirlocal
 
-            \imprimirdata
+            \imprimirano
         }
 
     \end{center}
@@ -697,5 +712,4 @@
     \pdfstringdefDisableCommands{\let\uppercase\relax}
 }{}
 \makeatother
-
 
