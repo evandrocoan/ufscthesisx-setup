@@ -180,6 +180,9 @@
 \theoremstyle{remark}
 \newtheorem{observacao}{Observa\c{c}\~ao}
 
+\renewcommand{\qedsymbol}{$\blacksquare$}
+
+
 
 % Margens
 \setlrmarginsandblock{2.5cm}{1.5cm}{*}
@@ -346,7 +349,7 @@
 \setlength{\cftnumberboxnumberwidth}{2em}
 \renewcommand{\tocprintchapter}
 {%
-    \addtocontents{toc}{\cftsetindents{chapter}{1em}{\cftlastnumwidth}}
+    \addtocontents{toc}{\cftsetindents{chapter}{0em}{\cftlastnumwidth}}
 }
 %
 \renewcommand{\tocinnonumchapter}
@@ -361,20 +364,20 @@
 %
 \renewcommand{\tocpartapendices}
 {%
-    \addtocontents{toc}{\cftsetindents{part}{\cftlastnumwidth}{\cftnumberboxnumberwidth}}
+    \addtocontents{toc}{\cftsetindents{chapter}{\cftlastnumwidth}{\cftnumberboxnumberwidth}}
     \cftinserthook{toc}{A}
 }
 %
 \renewcommand{\tocpartanexos}
 {%
-    \addtocontents{toc}{\cftsetindents{part}{\cftlastnumwidth}{\cftnumberboxnumberwidth}}
+    \addtocontents{toc}{\cftsetindents{chapter}{\cftlastnumwidth}{\cftnumberboxnumberwidth}}
     \cftinserthook{toc}{A}
 }
 
 \renewcommand{\cftpartfont}{\ABNTEXpartfont}
 \renewcommand{\cftpartpagefont}{\cftpartfont}
 
-%\renewcommand{\cftchapterfont}{\ABNTEXchapterfont}
+\renewcommand{\cftchapterfont}{\ABNTEXchapterfont}
 \renewcommand{\cftchapterpagefont}{\cftchapterfont}
 
 \renewcommand{\cftsectionfont}{\ABNTEXsectionfont}
@@ -500,39 +503,39 @@
 % ------------------------------------------------------------------------
 
 % % Custom settings
-\makeatletter
-\newcommand\thickhrulefill{\leavevmode \leaders \hrule height 1ex \hfill \kern \z@}
+% \makeatletter
+% \newcommand\thickhrulefill{\leavevmode \leaders \hrule height 1ex \hfill \kern \z@}
 
-\makechapterstyle{VZ14}
-{%
-    % \thispagestyle{empty}
-    \setlength\beforechapskip{50pt}
-    \setlength\midchapskip{20pt}
-    \setlength\afterchapskip{20pt}
-    \renewcommand\chapternamenum{}
-    \renewcommand\printchaptername{}
-    \renewcommand\chapnamefont{\Huge\scshape}
-    \renewcommand\printchapternum
-    {%
-        \chapnamefont\null\thickhrulefill\quad
-        \@chapapp\space\thechapter\quad\thickhrulefill
-    }
-    \renewcommand\printchapternonum
-    {%
-        \par\thickhrulefill\par\vskip\midchapskip
-        \hrule\vskip\midchapskip
-    }
-    \renewcommand\chaptitlefont{\huge\scshape\centering}
-    \renewcommand\afterchapternum
-    {%
-        \par\nobreak\vskip\midchapskip\hrule\vskip\midchapskip
-    }
-    \renewcommand\afterchaptertitle
-    {%
-        \par\vskip\midchapskip\hrule\nobreak\vskip\afterchapskip
-    }
-}
-\makeatother
+% \makechapterstyle{VZ14}
+% {%
+%     % \thispagestyle{empty}
+%     \setlength\beforechapskip{50pt}
+%     \setlength\midchapskip{20pt}
+%     \setlength\afterchapskip{20pt}
+%     \renewcommand\chapternamenum{}
+%     \renewcommand\printchaptername{}
+%     \renewcommand\chapnamefont{\Huge\scshape}
+%     \renewcommand\printchapternum
+%     {%
+%         \chapnamefont\null\thickhrulefill\quad
+%         \@chapapp\space\thechapter\quad\thickhrulefill
+%     }
+%     \renewcommand\printchapternonum
+%     {%
+%         \par\thickhrulefill\par\vskip\midchapskip
+%         \hrule\vskip\midchapskip
+%     }
+%     \renewcommand\chaptitlefont{\huge\scshape\centering}
+%     \renewcommand\afterchapternum
+%     {%
+%         \par\nobreak\vskip\midchapskip\hrule\vskip\midchapskip
+%     }
+%     \renewcommand\afterchaptertitle
+%     {%
+%         \par\vskip\midchapskip\hrule\nobreak\vskip\afterchapskip
+%     }
+% }
+% \makeatother
 
 % Veja outros estilos em:
 % http://repositorios.cpai.unb.br/ctan/info/latex-samples/MemoirChapStyles/MemoirChapStyles.pdf
@@ -615,12 +618,9 @@
         \center
         {%
             \ABNTEXchapterfont\ufsccaptionsize\MakeTextUppercase{\imprimirinstituicao}
-            \par\MakeTextUppercase{\imprimirbiblioteca}
+            \par\MakeTextUppercase{\imprimirautor}
         }
 
-        \vfill
-
-        {\ufsccaptionsize\imprimirautor}
 
         \vfill
         {%
