@@ -54,8 +54,8 @@
 
 % Inserir errata
 
-% Inserir folha de aprovação. Isto é um exemplo de Folha de aprovação, elemento obrigatório da 
-% NBR 14724/2011 (seção 4.2.1.3). Você pode utilizar este modelo até a aprovação do trabalho. 
+% Inserir folha de aprovação. Isto é um exemplo de Folha de aprovação, elemento obrigatório da
+% NBR 14724/2011 (seção 4.2.1.3). Você pode utilizar este modelo até a aprovação do trabalho.
 % Após isso, substitua todo o conteúdo deste arquivo por uma imagem da página assinada pela banca com o comando  abaixo:
 
 \ifforcedinclude\else\cleardoublepage\fi
@@ -86,15 +86,15 @@
 % Some tables of contents
 \ifforcedinclude\else
     % inserir lista de figuras
-    % Ao contrario da norma abnt-6027-2012, que as figuras estejam listadas na Lista de 
-    % Ilustrações,  a UFSC pede que as figuras estejam na Lista de Figuras. 
-    \renewcommand{\listfigurename}{Lista de Figuras}
+    % Ao contrario da norma abnt-6027-2012, que as figuras estejam listadas na Lista de
+    % Ilustrações,  a UFSC pede que as figuras estejam na Lista de Figuras.
+    \renewcommand{\listfigurename}{\lang{List of Figures}{Lista de Figuras}}
     \ifforcedinclude\else\cleardoublepage\fi
     \addtotextpreliminarycontent{\lang{List of Figures}{Lista de Figuras}}
     \pdfbookmark[0]{\listfigurename}{lof}
     \listoffigures*
 
-    % inserir lista de quados
+    % inserir lista de quadros
     \ifforcedinclude\else\cleardoublepage\fi
     \addtotextpreliminarycontent{\lang{List of Data Frames}{Lista de Quadros}}
     \pdfbookmark[0]{Lista de Quadros}{loq}
@@ -106,7 +106,7 @@
     \pdfbookmark[0]{\listtablename}{lot}
     \listoftables*
 
-    % inserir códigos fonte
+    % inserir códigos fonte (List of Listings `lol`)
     \ifforcedinclude\else\cleardoublepage\fi
     \addtotextpreliminarycontent{\lang{List of Source Codes}{Lista de Códigos Fonte}}
     \pdfbookmark[0]{\lstlistingname}{lol}
