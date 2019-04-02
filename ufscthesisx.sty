@@ -496,6 +496,13 @@
 \newcommand{\defref}[1]{Definição~\ref{#1}} %
 
 
+% Ao contrario da norma abnt-6027-2012, que as figuras estejam listadas na Lista de
+% Ilustrações,  a UFSC pede que as figuras estejam na Lista de Figuras.
+% https://tex.stackexchange.com/questions/482523/how-to-override-command-on-my-preamble-after-its-redefinition-by-my-class-with
+\addto\captionsbrazil{\renewcommand{\listfigurename}{Lista de Figuras}}
+\addto\captionsenglish{\renewcommand{\listfigurename}{List of Figures}}
+
+
 % ------------------------------------------------------------------------
 % ------------------------------------------------------------------------
 % Estilo de capítulos

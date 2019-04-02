@@ -86,11 +86,8 @@
 % Some tables of contents
 \ifforcedinclude\else
     % inserir lista de figuras
-    % Ao contrario da norma abnt-6027-2012, que as figuras estejam listadas na Lista de
-    % Ilustrações,  a UFSC pede que as figuras estejam na Lista de Figuras.
-    \renewcommand{\listfigurename}{\lang{List of Figures}{Lista de Figuras}}
     \ifforcedinclude\else\cleardoublepage\fi
-    \addtotextpreliminarycontent{\lang{List of Figures}{Lista de Figuras}}
+    \addtotextpreliminarycontent{\listfigurename}
     \pdfbookmark[0]{\listfigurename}{lof}
     \listoffigures*
 
