@@ -94,6 +94,9 @@
 % https://tex.stackexchange.com/questions/66052/should-i-load-microtype-with-pdflatex
 \RequirePackage{microtype}
 
+% https://tex.stackexchange.com/questions/482886/how-to-add-babel-captions-to-newfloat-package-environments
+\RequirePackage{newfloat}
+
 % How to auto adjust my last table column width, and why is there Underfull \vbox badness on this table?
 % https://tex.stackexchange.com/questions/387238/how-to-auto-adjust-my-last-table-column-width-and-why-is-there-underfull-vbox/387251
 %
@@ -719,4 +722,29 @@
     \pdfstringdefDisableCommands{\let\uppercase\relax}
 }{}
 \makeatother
+
+
+% https://tex.stackexchange.com/questions/329631/creating-new-captions-and-caption-counters
+\def\listofboardsname{List of Frames}
+\DeclareFloatingEnvironment[fileext=lob,placement={!hbtp},name=Frame,within=chapter,listname=\listofboardsname]{board}
+
+% https://tex.stackexchange.com/questions/482886/how-to-add-babel-captions-to-newfloat-package-environments
+\addto\captionsbrazil{\renewcommand{\boardname}{Quadro}}
+\addto\captionsbrazil{\renewcommand{\listofboardsname}{Lista de Quadros}}
+
+% https://tex.stackexchange.com/questions/176418/remove-list-of-newfloat-from-toc
+\makeatletter
+\newcommand{\AdjustForMemoir}[1]{%
+  \csletcs{kept@listof#1}{listof#1}%
+  \csdef{listof#1}{%
+    \@ifstar
+     {\csappto{newfloat@listof#1@hook}{\append@star}%
+      \csuse{kept@listof#1}}%
+     {\csuse{kept@listof#1}}%
+  }
+}
+\def\append@star#1{#1*}
+\makeatother
+\AdjustForMemoir{board}
+\newlistentry{board}{lob}{0}
 
