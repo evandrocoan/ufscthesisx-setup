@@ -748,3 +748,13 @@
 \AdjustForMemoir{board}
 \newlistentry{board}{lob}{0}
 
+% Patch the `abntex2` citacao environment removing the extra space from its top
+% https://tex.stackexchange.com/questions/300340/topsep-itemsep-partopsep-and-parsep-what-does-each-of-them-mean-and-wha
+\xpatchcmd{\citacao}
+{\list{}}
+{\list{}{\topsep=0pt}}
+{}
+{\PackageWarning{ufscthesisx}{Citation \topsep is not patched. The 'citacao' environment must be
+patched with 'topsep=0pt' but it failed. This is probably due an update on the main class 'abnTeX2',
+therefore the \topsep patch must need to be updated accordingly}}
+
