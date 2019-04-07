@@ -1,0 +1,6 @@
+[submodule "utilities"]
+	path = utilities
+	url = https://github.com/evandrocoan/latex_utilities
+[submodule "scripts"]
+	path = scripts
+	url = https://github.com/evandrocoan/script_utilities
