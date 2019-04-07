@@ -1,0 +1,61 @@
+{
+    "settings":
+    {
+        "TEXroot": "main.tex"
+    },
+    "folders":
+    [
+        {
+            "path": "../",
+            "folder_exclude_patterns":
+            [
+                "*cache*",
+            ],
+        },
+    ],
+    "build_systems":
+    [
+        {
+            "name": "Monograph",
+            "cmd": ["make", "thesis"],
+
+            "shell": true,
+            "working_dir": "$project_path/../",
+
+            "target": "exec",
+            "syntax": "Packages/Text/Plain text.tmLanguage",
+
+            "osx": { "file_regex": "^(...*?):([0-9]+): ([0-9]*)([^\\.]+)"},
+            "windows": { "file_regex": "^((?:.:)?[^:\n\r]*):([0-9]+):?([0-9]+)?:? (.*)$" },
+            "linux": {  "file_regex": "^(...*?):([0-9]+): ([0-9]*)([^\\.]+)" },
+
+            "variants":
+            [
+                {
+                    "name": "Thesis (Default)",
+                    "cmd": ["make", "thesis"],
+                },
+                {
+                    "name": "Thesis Biber",
+                    "cmd": ["make", "biber"],
+                },
+                {
+                    "name": "Thesis LaTeX",
+                    "cmd": ["make", "latex"],
+                },
+                {
+                    "name": "Thesis Verbose",
+                    "cmd": ["make", "thesis_verbose"],
+                },
+                {
+                    "name": "Thesis Clean",
+                    "cmd": ["make", "clean"],
+                },
+                {
+                    "name": "Thesis Veryclean",
+                    "cmd": ["make", "veryclean"],
+                },
+            ],
+        },
+    ]
+}
