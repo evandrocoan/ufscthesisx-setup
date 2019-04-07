@@ -57,9 +57,9 @@
 % https://tex.stackexchange.com/questions/55478/how-to-print-out-to-log-without-affecting-anything-else-lua-print-equiv
 % https://tex.stackexchange.com/questions/483570/how-to-detect-whether-passoptionstopackage-was-already-called
 \ifcsname opt@biblatex.sty\endcsname
-    \message{Options have already been passed or the biblatex package has already been loaded!^^J}
+    \message{Have options been passed for biblatex? YES!^^J}
 \else
-    \message{No options have been passed yet for biblatex!^^J}
+    \message{Have options been passed for biblatex? NO!^^J}
     \PassOptionsToPackage{style=abnt,repeatfields=true,backend=biber,backref=true,citecounter=true}{biblatex}
 \fi
 
