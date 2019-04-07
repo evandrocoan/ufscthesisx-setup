@@ -10,21 +10,18 @@ portanto tratou-se de buscar a criação deste novo modelo que utiliza a classe 
 
 ### Utilizando `git`
 
-No diretório do seu projeto faça um clone (recursivo) dos arquivos do repositório:
+No diretório do seu projeto faça um clone (recursivo) dos arquivos do repositório,
+em uma pasta chamada `setup` dentro do template da sua tese:
 ```bash
-git clone --recursive https://github.com/evandrocoan/ufscthesisx-setup
+git clone --recursive https://github.com/evandrocoan/ufscthesisx-setup setup
 ```
 
 Para usá-lo,
-você deve utilizar a classe `abnTeX2` como classe do seu documento e então incluir `ufscthesisx.sty` como um pacote LaTeX na seguinte ordem:
+você deve utilizar a classe `abnTeX2` como classe do seu documento,
+e então incluir `ufscthesisx` como um pacote LaTeX na seguinte ordem:
 ```latex
-\input{ufscthesisx/setup.tex}
-
-\PassOptionsToPackage{style=abnt,backend=biber,backref=true,citecounter=true}{biblatex}
-\AfterClass{memoir}
-{
-    \RequirePackage{biblatex}
-}
+% Fixes several `abntex2` class problems
+\input{setup/setup.tex}
 
 % The UFSC font size is 10.5, but memoir embedded by `abntex2` only accepts 10 and 11pt.
 % However, problem will be fixed the `ufscthesisx` package.
@@ -38,26 +35,13 @@ chapter=TITLE, % Título de capítulos em caixa alta
 section=TITLE, % Título de seções em caixa alta
 ]{abntex2}
 
+% Load the UFSC thesis package
 \usepackage{setup/ufscthesisx}
 
-% Load the UFSC thesis settings
-\usepackage{ufscthesisx/ufscthesisx.sty}
+% Load extra commands for tables, lists, summaries, etc.
+\input{setup/utilities.tex}
 
-% Load all required basic packages
-\input{ufscthesisx/utilities/basic.tex}
-\input{ufscthesisx/utilities/commands.tex}
-
-% Bad boxes settings and programming environments
-\input{ufscthesisx/utilities/badboxes.tex}
-\input{ufscthesisx/utilities/programming.tex}
-
-% Input a empty list of commands when on debug mode
-\input{ufscthesisx/utilities/commands_list.tex}
-
-% Altere o arquivo settings.tex para incluir suas configurações.
-\input{settings.tex}
-
-% Utilize ou altere o arquivo 'aftertext/references.bib' para incluir sua bibliografia.
+% Use the 'aftertext/references.bib' file to include your bibliography
 \addbibresource{aftertext/references.bib}
 ```
 Se você inverter a ordem de inclusão do biblatex,
@@ -67,7 +51,7 @@ Apesar das instruções iniciais do projeto serem para utilizar diretamente a cl
 existem algumas incompatibilidades com outros pacotes do LaTeX que precisam ser corrigidos.
 Para isso você pode utilizar você pode incluir o arquivo `setup.tex` que faz as correções do `abntex2`.
 
-Uma maneira  de utilizar esse *template*,
+Uma maneira  de utilizar esse **template**,
 caso você seja usuário de `git`,
 é fazer o clone desse repositório como um submodulo de sua tese,
 e em seu arquivo principal incluir o seguinte cabeçalho para carregar os pacotes básicos mentionados acima.
