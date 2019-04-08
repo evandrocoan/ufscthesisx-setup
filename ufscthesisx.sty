@@ -192,30 +192,15 @@
 \setulmarginsandblock{2cm}{1.5cm}{*}
 \checkandfixthelayout
 
-
-% \def\<type>autorefname{<new name>}
-\renewcommand{\tableautorefname}{Tabela}
-\renewcommand{\figureautorefname}{Figura}
-\renewcommand{\chapterautorefname}{Cap\'itulo}
-\renewcommand{\equationautorefname}{Equa\c{c}\~ao}
-
-
-
 % Fontes dos títulos e seções
-%
 % Tamanho da fonte padrão do 'ABNTEX'
 \renewcommand{\normalsize}{\fontsize{10.5pt}{11pt}}
-
-% \renewcommand{\chapnumfont}{\chaptitlefont}
-% \renewcommand{\parttitlefont}{\ABNTEXpartfont\ABNTEXpartfontsize}
-% \renewcommand{\partnumfont}{\ABNTEXpartfont\ABNTEXpartfontsize}
-% \renewcommand{\partnamefont}{\ABNTEXpartfont\ABNTEXpartfontsize}
 
 % Caption package and Memoir
 % https://groups.google.com/forum/#!topic/comp.text.tex/RzpI2ATMev0
 % https://tex.stackexchange.com/questions/18931/memoir-class-with-subcaption-and-hyperref-packages
 % \DeclareCaptionFont{small}{\fontsize{9.5pt}{10.5pt}}
-%
+
 % Set caption font size in memoir
 % https://tex.stackexchange.com/questions/58943/set-caption-font-size-in-memoir
 \newcommand{\ufsccaptionsize}{\fontsize{9.5pt}{10.5pt}\selectfont}
@@ -254,12 +239,6 @@
 
 % Selects a roman (i.e., serifed) font family
 \renewcommand{\rmdefault}{cmr}
-
-% Selects a sans serif font family
-% \renewcommand{\sfdefault}{cmss}
-
-% Selects a monospaced (“typewriter”) font family
-% \renewcommand{\ttdefault}{cmtt}
 
 % Fontes padroes de part, chapter, section, subsection e subsubsection
 \renewcommand{\ABNTEXchapterfont}{\usefont{T1}{cmr}{bx}{n}}
@@ -498,13 +477,6 @@
 \newcommand{\defref}[1]{Definição~\ref{#1}} %
 
 
-% Ao contrario da norma abnt-6027-2012, que as figuras estejam listadas na Lista de
-% Ilustrações,  a UFSC pede que as figuras estejam na Lista de Figuras.
-% https://tex.stackexchange.com/questions/482523/how-to-override-command-on-my-preamble-after-its-redefinition-by-my-class-with
-\addto\captionsbrazil{\renewcommand{\listfigurename}{Lista de Figuras}}
-\addto\captionsenglish{\renewcommand{\listfigurename}{List of Figures}}
-
-
 \renewenvironment{resumo}[1][\resumoname]
 {%
     % Fixed double bookmark entries as `\pretextualchapter` bellow is already calling `\PRIVATEbookmarkthis`
@@ -684,10 +656,6 @@
 \def\listofboardsname{List of Frames}
 \DeclareFloatingEnvironment[fileext=lob,placement={!hbtp},name=Frame,within=chapter,listname=\listofboardsname]{board}
 
-% https://tex.stackexchange.com/questions/482886/how-to-add-babel-captions-to-newfloat-package-environments
-\addto\captionsbrazil{\renewcommand{\boardname}{Quadro}}
-\addto\captionsbrazil{\renewcommand{\listofboardsname}{Lista de Quadros}}
-
 % https://tex.stackexchange.com/questions/176418/remove-list-of-newfloat-from-toc
 \makeatletter
 \newcommand{\AdjustForMemoir}[1]{%
@@ -713,4 +681,24 @@
 {\PackageWarning{ufscthesisx}{Citation \topsep is not patched. The 'citacao' environment must be
 patched with 'topsep=0pt' but it failed. This is probably due an update on the main class 'abnTeX2',
 therefore the \topsep patch must need to be updated accordingly}}
+
+% https://tex.stackexchange.com/questions/482886/how-to-add-babel-captions-to-newfloat-package-environments
+\addto\captionsbrazil{\renewcommand{\boardname}{Quadro}}
+\addto\captionsbrazil{\renewcommand{\listofboardsname}{Lista de Quadros}}
+
+% Ao contrario da norma abnt-6027-2012, que as figuras estejam listadas na Lista de
+% Ilustrações,  a UFSC pede que as figuras estejam na Lista de Figuras.
+% https://tex.stackexchange.com/questions/482523/how-to-override-command-on-my-preamble-after-its-redefinition-by-my-class-with
+\addto\captionsbrazil{\renewcommand{\listfigurename}{Lista de Figuras}}
+\addto\captionsenglish{\renewcommand{\listfigurename}{List of Figures}}
+
+\addto\captionsbrazil{\renewcommand{\tableautorefname}{Tabela}}
+\addto\captionsbrazil{\renewcommand{\figureautorefname}{Figura}}
+\addto\captionsbrazil{\renewcommand{\chapterautorefname}{Capítulo}}
+\addto\captionsbrazil{\renewcommand{\equationautorefname}{Equação}}
+
+\addto\captionsenglish{\renewcommand{\tableautorefname}{Table}}
+\addto\captionsenglish{\renewcommand{\figureautorefname}{Figure}}
+\addto\captionsenglish{\renewcommand{\chapterautorefname}{Chapter}}
+\addto\captionsenglish{\renewcommand{\equationautorefname}{Equation}}
 
