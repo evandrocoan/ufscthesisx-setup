@@ -702,3 +702,12 @@ therefore the \topsep patch must need to be updated accordingly}}
 \addto\captionsenglish{\renewcommand{\chapterautorefname}{Chapter}}
 \addto\captionsenglish{\renewcommand{\equationautorefname}{Equation}}
 
+% Remove the colon appended to variables by 'abntex2' because they show up on places they shouldn't
+\addto\captionsbrazil { %
+    \renewcommand{\orientadorname}{Orientador}
+    \renewcommand{\coorientadorname}{Coorientador}
+}
+\addto\captionsenglish { %
+    \renewcommand{\orientadorname}{Supervisor}
+    \renewcommand{\coorientadorname}{Co\hyp{}supervisor}
+}
