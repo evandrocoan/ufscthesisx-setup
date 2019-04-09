@@ -653,8 +653,8 @@
 
 
 % https://tex.stackexchange.com/questions/329631/creating-new-captions-and-caption-counters
-\def\listofboardsname{List of Frames}
-\DeclareFloatingEnvironment[fileext=lob,placement={!hbtp},name=Frame,within=chapter,listname=\listofboardsname]{board}
+\def\listofquadrosname{List of Frames}
+\DeclareFloatingEnvironment[fileext=lob,placement={!hbtp},name=Frame,within=chapter,listname=\listofquadrosname]{quadro}
 
 % https://tex.stackexchange.com/questions/176418/remove-list-of-newfloat-from-toc
 \makeatletter
@@ -669,8 +669,8 @@
 }
 \def\append@star#1{#1*}
 \makeatother
-\AdjustForMemoir{board}
-\newlistentry{board}{lob}{0}
+\AdjustForMemoir{quadro}
+\newlistentry{quadro}{lob}{0}
 
 % Patch the `abntex2` citacao environment removing the extra space from its top
 % https://tex.stackexchange.com/questions/300340/topsep-itemsep-partopsep-and-parsep-what-does-each-of-them-mean-and-wha
@@ -683,8 +683,8 @@ patched with 'topsep=0pt' but it failed. This is probably due an update on the m
 therefore the \topsep patch must need to be updated accordingly}}
 
 % https://tex.stackexchange.com/questions/482886/how-to-add-babel-captions-to-newfloat-package-environments
-\addto\captionsbrazil{\renewcommand{\boardname}{Quadro}}
-\addto\captionsbrazil{\renewcommand{\listofboardsname}{Lista de Quadros}}
+\addto\captionsbrazil{\renewcommand{\quadroname}{Quadro}}
+\addto\captionsbrazil{\renewcommand{\listofquadrosname}{Lista de Quadros}}
 
 % Ao contrario da norma abnt-6027-2012, que as figuras estejam listadas na Lista de
 % Ilustrações,  a UFSC pede que as figuras estejam na Lista de Figuras.
