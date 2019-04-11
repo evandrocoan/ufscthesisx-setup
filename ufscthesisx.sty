@@ -503,7 +503,11 @@
 \xpretocmd{\endresumo}{\endgraf}{}{}
 
 % \imprimirpalavraschave{Palavras-chaves}{latex. abntex. editoração de texto.}
-\newcommand{\imprimirpalavraschave}[2]{\parOriginal\vspace{\onelineskip}\textbf{#1}: #2}
+\makeatletter
+\newcommand{\imprimirpalavraschave}[2]{%
+    \@ifundefined{parOriginal}{}{\parOriginal}\vspace{\onelineskip}\textbf{#1}: #2
+}
+\makeatother
 
 
 % ------------------------------------------------------------------------
