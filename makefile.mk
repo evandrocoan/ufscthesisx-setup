@@ -19,7 +19,14 @@ LATEX_PDF_FILES := $(LATEX_SOURCE_FILES:.tex=.pdf)
 
 # https://stackoverflow.com/questions/24005166/gnu-make-silent-by-default
 MAKEFLAGS += --silent
-GITIGNORE_PATH := .gitignore
+
+# https://stackoverflow.com/questions/55642491/how-to-check-whether-a-file-exists-outside-a-makefile-rule
+ifneq (,$(wildcard .gitignore))
+	GITIGNORE_PATH := .gitignore
+else
+	GITIGNORE_PATH := ../.gitignore
+endif
+
 .PHONY: all help biber start_timer biber_hook pdflatex_hook1 pdflatex_hook2 latex thesis verbose clean
 
 # http://stackoverflow.com/questions/1789594/how-do-i-write-the-cd-command-in-a-makefile
