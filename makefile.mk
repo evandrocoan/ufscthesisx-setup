@@ -72,7 +72,7 @@ LATEX =	$(PDF_LATEX_COMMAND)\
 # Copies the PDF to the current folder
 define copy_resulting_pdf=
 cp $(CACHE_FOLDER)/$(THESIS_MAIN_FILE).pdf $(current_dir)/$(THESIS_OUTPUT_NAME).pdf
-# cp $(CACHE_FOLDER)/$(THESIS_MAIN_FILE).pdf /cygdrive/D/User/Downloads/$(THESIS_OUTPUT_NAME).pdf
+cp $(CACHE_FOLDER)/$(THESIS_MAIN_FILE).pdf /cygdrive/D/User/Downloads/$(THESIS_OUTPUT_NAME).pdf
 endef
 
 # Calculate the elapsed seconds and print them to the screen

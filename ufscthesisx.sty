@@ -34,12 +34,9 @@
 % Now we'll execute any options passed in
 \ProcessOptions\relax
 
-
 % Custom list throw LaTeX Error: Command \mycustomfiction already defined?
 % https://tex.stackexchange.com/questions/388489/custom-list-throw-latex-error-command-mycustomfiction-already-defined
 \RequirePackage{morewrites}
-
-
 
 % Package csquotes Warning: Load 'inputenc' before 'csquotes'
 \RequirePackage[utf8]{inputenc}
@@ -88,7 +85,6 @@
 % https://tex.stackexchange.com/questions/299372/warning-layout-scale-set-to-0-5-on-input-line
 % \RequirePackage{layouts}
 
-
 % Always use it as should improve full justification
 % https://tex.stackexchange.com/questions/10377/texttt-overfull-hbox-problem
 % https://tex.stackexchange.com/questions/66052/should-i-load-microtype-with-pdflatex
@@ -128,7 +124,6 @@
 \providecommand{\imprimirano}{}
 \newcommand{\ano}[1]{\renewcommand{\imprimirano}{#1}}
 
-
 % Comandos de dados - Coordenador
 \newcommand{\coordenadorname}{Coordenador}
 \providecommand{\imprimircoordenadorRotulo}{}
@@ -136,7 +131,6 @@
 \newcommand{\coordenador}[2][\coordenadorname]%
   {\renewcommand{\imprimircoordenadorRotulo}{#1}%
    \renewcommand{\imprimircoordenador}{#2}}
-
 
 % inclui subtitulo na capa, folha de rosto e ficha catalografica
 % https://github.com/lrsantos11/abntex2-ufsc/commit/fd30245353dcc49e193d281c78104afe54df9fe7
