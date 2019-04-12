@@ -27,6 +27,9 @@ else
 	GITIGNORE_PATH := ../.gitignore
 endif
 
+# Keep updated our copy of the .gitignore
+USELESS := $(shell cp -vr "${GITIGNORE_PATH}" ./setup/)
+
 .PHONY: all help biber start_timer biber_hook pdflatex_hook1 pdflatex_hook2 latex thesis verbose clean
 
 # http://stackoverflow.com/questions/1789594/how-do-i-write-the-cd-command-in-a-makefile
