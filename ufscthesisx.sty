@@ -658,7 +658,7 @@
 
 % https://tex.stackexchange.com/questions/329631/creating-new-captions-and-caption-counters
 \def\listofquadrosname{List of Frames}
-\DeclareFloatingEnvironment[fileext=lob,placement={!hbtp},name=Frame,within=chapter,listname=\listofquadrosname]{quadro}
+\DeclareFloatingEnvironment[fileext=loq,placement={!hbtp},name=Frame,within=chapter,listname=\listofquadrosname]{quadro}
 
 % https://tex.stackexchange.com/questions/176418/remove-list-of-newfloat-from-toc
 \makeatletter
@@ -674,7 +674,7 @@
 \def\append@star#1{#1*}
 \makeatother
 \AdjustForMemoir{quadro}
-\newlistentry{quadro}{lob}{0}
+\newlistentry{quadro}{loq}{0}
 
 % Patch the `abntex2` citacao environment removing the extra space from its top
 % https://tex.stackexchange.com/questions/300340/topsep-itemsep-partopsep-and-parsep-what-does-each-of-them-mean-and-wha
