@@ -50,7 +50,6 @@ useless := $(shell cp -vr "${GITIGNORE_PATH}" ./setup/)
 # Default target
 all: thesis
 
-
 ##
 ## Usage:
 ##   make <target>
@@ -77,6 +76,14 @@ help:
 PDF_LATEX_COMMAND = pdflatex --synctex=1 -halt-on-error -file-line-error
 PDF_LATEX_COMMAND += $(if $(shell pdflatex --help | grep time-statistics),--time-statistics,)
 PDF_LATEX_COMMAND += $(if $(shell pdflatex --help | grep max-print-line),--max-print-line=10000,)
+
+# https://tex.stackexchange.com/questions/258814/what-is-the-difference-between-interaction-nonstopmode-and-halt-on-error
+# https://tex.stackexchange.com/questions/25267/what-reasons-if-any-are-there-for-compiling-in-interactive-mode
+LATEXMK_COMMAND := latexmk \
+	--pdf \
+	--output-directory="$(CACHE_FOLDER)" \
+	--aux-directory="$(CACHE_FOLDER)" \
+	--pdflatex="$(PDF_LATEX_COMMAND) --interaction=nonstopmode"
 
 LATEX =	$(PDF_LATEX_COMMAND)\
 --interaction=batchmode\
@@ -173,16 +180,7 @@ latex: $(LATEX_PDF_FILES)
 # http://docs.miktex.org/manual/texfeatures.html#auxdirectory
 thesis:
 	$(setup_envinronment)
-
-	# https://tex.stackexchange.com/questions/258814/what-is-the-difference-between-interaction-nonstopmode-and-halt-on-error
-	# https://tex.stackexchange.com/questions/25267/what-reasons-if-any-are-there-for-compiling-in-interactive-mode
-	latexmk \
-	--pdf \
-	--silent \
-	--output-directory="$(CACHE_FOLDER)" \
-	--aux-directory="$(CACHE_FOLDER)" \
-	--pdflatex="$(PDF_LATEX_COMMAND) --interaction=batchmode" \
-	$(THESIS_MAIN_FILE).tex
+	$(LATEXMK_COMMAND) --silent $(THESIS_MAIN_FILE).tex
 
 	$(copy_resulting_pdf)
 	$(print_results)
@@ -190,15 +188,7 @@ thesis:
 
 verbose:
 	$(setup_envinronment)
-
-	# https://tex.stackexchange.com/questions/258814/what-is-the-difference-between-interaction-nonstopmode-and-halt-on-error
-	# https://tex.stackexchange.com/questions/25267/what-reasons-if-any-are-there-for-compiling-in-interactive-mode
-	latexmk \
-	--pdf \
-	--output-directory="$(CACHE_FOLDER)" \
-	--aux-directory="$(CACHE_FOLDER)" \
-	--pdflatex="$(PDF_LATEX_COMMAND) --interaction=nonstopmode" \
-	$(THESIS_MAIN_FILE).tex
+	$(LATEXMK_COMMAND) $(THESIS_MAIN_FILE).tex
 
 	$(copy_resulting_pdf)
 	$(print_results)
