@@ -42,7 +42,7 @@ endif
 # Keep updated our copy of the .gitignore
 useless := $(shell cp -vr "${GITIGNORE_PATH}" ./setup/)
 
-.PHONY: all help biber start_timer biber_hook pdflatex_hook1 pdflatex_hook2 latex thesis verbose clean
+.PHONY: all help biber start_timer biber_hook pdflatex_hook latex thesis verbose clean
 
 # http://stackoverflow.com/questions/1789594/how-do-i-write-the-cd-command-in-a-makefile
 .ONESHELL:
@@ -116,7 +116,7 @@ define setup_envinronment =
 endef
 
 # Run pdflatex, biber, pdflatex
-biber: start_timer biber_hook pdflatex_hook2
+biber: start_timer biber_hook pdflatex_hook
 	$(setup_envinronment)
 	$(copy_resulting_pdf)
 	$(print_results)
@@ -127,30 +127,23 @@ start_timer:
 	. ./setup/scripts/timer_calculator.sh
 
 
-# Internally called rule which does not attempt to show the elapsed time
+# Call biber to process the bibliography and does not attempt to show the elapsed time
+# https://www.mankier.com/1/biber --debug
 biber_hook:
 	$(setup_envinronment)
 
-	# Enters to the thesis folder to build the files
-	cd ./$(THESIS_FOLDER)
-
-	# Call biber to process the bibliography
 	echo "Running biber quietly..."
-
-	# https://www.mankier.com/1/biber --debug
 	biber --quiet --input-directory="$(CACHE_FOLDER)" --output-directory="$(CACHE_FOLDER)" $(THESIS_MAIN_FILE).bcf
 
 
 # https://stackoverflow.com/questions/46135614/how-to-call-makefile-recipe-rule-multiple-times
-pdflatex_hook1 pdflatex_hook2:
+pdflatex_hook:
 	@$(LATEX) $(LATEX_SOURCE_FILES)
 
 
 # This rule will be called for every latex file and pdf associated
 latex: $(LATEX_PDF_FILES)
 	$(setup_envinronment)
-
-	# Calculate the elapsed seconds and print them to the screen
 	$(print_results)
 
 
