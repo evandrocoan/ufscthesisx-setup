@@ -86,25 +86,26 @@ LATEX =	$(PDF_LATEX_COMMAND)\
 # Copies the PDF to the current folder
 # https://stackoverflow.com/questions/55671541/how-define-a-makefile-condition-and-reuse-it-in-several-build-rules/
 define copy_resulting_pdf=
-eval "if [[ -f "${THESIS_MAIN_FILE_PATH}" ]]; then \
-	printf 'Coping PDF...\\n'; \
-	cp \"${THESIS_MAIN_FILE_PATH}\" \"${current_dir}/${THESIS_OUTPUT_NAME}.pdf\"; \
-else \
-	printf \"\\nError: The PDF "${THESIS_MAIN_FILE_PATH}" was not generated!\\n\"; \
-	exit 1; \
-fi"
+	if [[ -f "${THESIS_MAIN_FILE_PATH}" ]]; \
+	then \
+		printf 'Coping PDF...\n'; \
+		cp "${THESIS_MAIN_FILE_PATH}" "${current_dir}/${THESIS_OUTPUT_NAME}.pdf"; \
+	else \
+		printf "\\nError: The PDF "${THESIS_MAIN_FILE_PATH}" was not generated!\\n"; \
+		exit 1; \
+	fi
 endef
 
 # Calculate the elapsed seconds and print them to the screen
 define print_results =
-. ./setup/scripts/timer_calculator.sh
-showTheElapsedSeconds "$(current_dir)"
-echo "$(CACHE_FOLDER)/main.log:10000000 "
+	. ./setup/scripts/timer_calculator.sh
+	showTheElapsedSeconds "$(current_dir)"
+	echo "$(CACHE_FOLDER)/main.log:10000000 "
 endef
 
 define setup_envinronment =
-. ./setup/scripts/timer_calculator.sh
-$(eval current_dir := $(shell pwd)) echo $(current_dir) > /dev/null
+	. ./setup/scripts/timer_calculator.sh
+	$(eval current_dir := $(shell pwd)) echo $(current_dir) > /dev/null
 endef
 
 # Run pdflatex, biber, pdflatex
