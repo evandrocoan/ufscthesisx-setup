@@ -1,6 +1,7 @@
 #!/usr/bin/make -f
 # https://stackoverflow.com/questions/7123241/makefile-as-an-executable-script-with-shebang
 ECHOCMD:=/bin/echo -e
+SHELL := /bin/bash
 
 # The main latex file
 THESIS_MAIN_FILE := main
@@ -10,6 +11,7 @@ THESIS_OUTPUT_NAME := thesis
 
 # This is the folder where the temporary files are going to be
 CACHE_FOLDER := setup/cache
+THESIS_MAIN_FILE_PATH := $(CACHE_FOLDER)/$(THESIS_MAIN_FILE).pdf
 
 # Find all files ending with `main.tex`
 LATEX_SOURCE_FILES := $(wildcard *main.tex)
@@ -21,6 +23,16 @@ LATEX_PDF_FILES := $(LATEX_SOURCE_FILES:.tex=.pdf)
 MAKEFLAGS += --silent
 
 # https://stackoverflow.com/questions/55642491/how-to-check-whether-a-file-exists-outside-a-makefile-rule
+FIND_EXEC := $(if $(wildcard /bin/find),,/usr)/bin/find
+
+# https://stackoverflow.com/questions/55662085/how-to-print-text-in-a-makefile-outside-a-target
+ifneq (,$(shell latexmk --version 2>/dev/null))
+	useless := $(shell printf "Success: latexmk is installed!\\n" 1>&2)
+else
+	useless := $(error Error: latexmk is not installed!)
+endif
+
+# https://stackoverflow.com/questions/55642491/how-to-check-whether-a-file-exists-outside-a-makefile-rule
 ifneq (,$(wildcard .gitignore))
 	GITIGNORE_PATH := .gitignore
 else
@@ -28,7 +40,7 @@ else
 endif
 
 # Keep updated our copy of the .gitignore
-USELESS := $(shell cp -vr "${GITIGNORE_PATH}" ./setup/)
+useless := $(shell cp -vr "${GITIGNORE_PATH}" ./setup/)
 
 .PHONY: all help biber start_timer biber_hook pdflatex_hook1 pdflatex_hook2 latex thesis verbose clean
 
@@ -62,17 +74,25 @@ help:
 
 # https://tex.stackexchange.com/questions/91592/where-to-find-official-and-extended-documentation-for-tex-latexs-commandlin
 # https://tex.stackexchange.com/questions/52988/avoid-linebreaks-in-latex-console-log-output-or-increase-columns-in-terminal
-PDF_LATEX_COMMAND = pdflatex --time-statistics --synctex=1 -halt-on-error -file-line-error --max-print-line=10000
+PDF_LATEX_COMMAND = pdflatex --synctex=1 -halt-on-error -file-line-error
+PDF_LATEX_COMMAND += $(if $(shell pdflatex --help | grep time-statistics),--time-statistics,)
+PDF_LATEX_COMMAND += $(if $(shell pdflatex --help | grep max-print-line),--max-print-line=10000,)
+
 LATEX =	$(PDF_LATEX_COMMAND)\
 --interaction=batchmode\
 -output-directory="$(CACHE_FOLDER)"\
 -aux-directory="$(CACHE_FOLDER)"
 
-
 # Copies the PDF to the current folder
+# https://stackoverflow.com/questions/55671541/how-define-a-makefile-condition-and-reuse-it-in-several-build-rules/
 define copy_resulting_pdf=
-cp $(CACHE_FOLDER)/$(THESIS_MAIN_FILE).pdf $(current_dir)/$(THESIS_OUTPUT_NAME).pdf
-cp $(CACHE_FOLDER)/$(THESIS_MAIN_FILE).pdf /cygdrive/D/User/Downloads/$(THESIS_OUTPUT_NAME).pdf
+eval "if [[ -f "${THESIS_MAIN_FILE_PATH}" ]]; then \
+	printf 'Coping PDF...\\n'; \
+	cp \"${THESIS_MAIN_FILE_PATH}\" \"${current_dir}/${THESIS_OUTPUT_NAME}.pdf\"; \
+else \
+	printf \"\\nError: The PDF "${THESIS_MAIN_FILE_PATH}" was not generated!\\n\"; \
+	exit 1; \
+fi"
 endef
 
 # Calculate the elapsed seconds and print them to the screen
@@ -129,9 +149,7 @@ latex: $(LATEX_PDF_FILES)
 # Dynamically generated recipes for all PDF and latex files
 %.pdf: %.tex
 	$(setup_envinronment)
-
 	@$(LATEX) $<
-	$(copy_resulting_pdf)
 
 
 # MAIN LATEXMK RULE
@@ -191,7 +209,7 @@ clean:
 
 
 # https://stackoverflow.com/questions/4210042/exclude-directory-from-find-command
-DIRECTORIES_TO_CLEAN := $(shell /bin/find -not -path "./**.git**" -not -path "./pictures**" -type d)
+DIRECTORIES_TO_CLEAN := $(shell "${FIND_EXEC}" -not -path "./**.git**" -not -path "./pictures**" -type d)
 
 # https://stackoverflow.com/questions/55527923/how-to-stop-makefile-from-expanding-my-shell-output
 RAW_GITIGNORE_CONTENTS := $(shell while read -r line; do printf "$$line "; done < "$(GITIGNORE_PATH)")
