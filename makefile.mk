@@ -74,10 +74,9 @@ else
 		useless := $(shell printf "Warning: Your latex installation is from ${LATEX_VERSION} and will run very slowly!\\n" 1>&2)
 		useless := $(shell printf "         Please, update your latex version to 2018 or newer!\\n" 1>&2)
 		useless := $(shell printf "\\n" 1>&2)
-
-		LATEXMK_THESIS := thesis_disabled
-		LATEXMK_VERBOSE := verbose_disabled
-		LATEXMK_REPLACEMENT := thesis verbose
+# 		LATEXMK_THESIS := thesis_disabled
+# 		LATEXMK_VERBOSE := verbose_disabled
+# 		LATEXMK_REPLACEMENT := thesis verbose
 	endif
 endif
 
@@ -91,7 +90,7 @@ endif
 # Keep updated our copy of the .gitignore
 useless := $(shell cp -vr "${GITIGNORE_PATH}" ./setup/)
 
-.PHONY: all help latex thesis verbose clean biber start_timer biber_hook biber_hook1 \
+.PHONY: all help latex thesis verbose clean biber index start_timer biber_hook biber_hook1 \
 pdflatex_hook pdflatex_hook1 pdflatex_hook2 pdflatex_hook3 pdflatex_hook4
 
 # http://stackoverflow.com/questions/1789594/how-do-i-write-the-cd-command-in-a-makefile
@@ -182,14 +181,19 @@ define setup_envinronment =
 endef
 
 
+# https://tex.stackexchange.com/questions/98204/index-not-working
+index:
+	makeindex "${CACHE_DIRECTORY}/${THESIS_MAIN_FILE}.idx"
+
+
 # Run pdflatex, biber, pdflatex
-biber: start_timer biber_hook pdflatex_hook
+biber: start_timer biber_hook index pdflatex_hook
 	$(copy_resulting_pdf)
 	$(print_results)
 
 
 # https://stackoverflow.com/questions/46135614/how-to-call-makefile-recipe-rule-multiple-times
-$(LATEXMK_REPLACEMENT): pdflatex_hook1 biber_hook1 pdflatex_hook2 pdflatex_hook3 pdflatex_hook4 biber
+$(LATEXMK_REPLACEMENT): pdflatex_hook1 biber_hook1 pdflatex_hook2 pdflatex_hook3 index pdflatex_hook4 biber
 
 
 start_timer:
