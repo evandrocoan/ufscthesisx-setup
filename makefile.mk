@@ -9,9 +9,9 @@ THESIS_MAIN_FILE := main
 # This will be the pdf generated
 THESIS_OUTPUT_NAME := thesis
 
-# This is the folder where the temporary files are going to be
-CACHE_FOLDER := setup/cache
-THESIS_MAIN_FILE_PATH := $(CACHE_FOLDER)/$(THESIS_MAIN_FILE).pdf
+# This is the directory where the temporary files are going to be
+CACHE_DIRECTORY := setup/cache
+THESIS_MAIN_FILE_PATH := $(CACHE_DIRECTORY)/$(THESIS_MAIN_FILE).pdf
 
 # Find all files ending with `main.tex`
 LATEX_SOURCE_FILES := $(wildcard *main.tex)
@@ -26,10 +26,59 @@ MAKEFLAGS += --silent
 FIND_EXEC := $(if $(wildcard /bin/find),,/usr)/bin/find
 
 # https://stackoverflow.com/questions/55662085/how-to-print-text-in-a-makefile-outside-a-target
+ifneq (,$(shell tex --version 2>/dev/null))
+	useless := $(shell printf "Success: latex is installed!\\n" 1>&2)
+else
+	useless := $(error Error: latex was not installed!)
+endif
+
 ifneq (,$(shell latexmk --version 2>/dev/null))
 	useless := $(shell printf "Success: latexmk is installed!\\n" 1>&2)
 else
-	useless := $(error Error: latexmk is not installed!)
+	useless := $(shell printf "Warning: latexmk is not found installed!\\n" 1>&2)
+endif
+
+
+# https://stackoverflow.com/questions/55681576/how-to-send-input-on-stdin-to-a-python-script-defined-inside-a-makefile
+define NEWLINE
+
+
+endef
+
+define LATEX_VERSION_CODE
+import re, sys;
+match = re.search("Copyright (\d+)", """$(shell tex --version)""");
+if match:
+	if int( match.group(1) ) >= 2018:
+		sys.stdout.write("1");
+	else:
+		sys.stdout.write(match.group(1));
+else:
+	sys.stdout.write("0");
+endef
+
+# https://stackoverflow.com/questions/55681576/how-to-send-input-on-stdin-to-a-python-script-defined-inside-a-makefile
+LATEX_VERSION := $(shell echo \
+	'$(subst $(NEWLINE),@NEWLINE@,${LATEX_VERSION_CODE})' | \
+	sed 's/@NEWLINE@/\n/g' | python -)
+
+LATEXMK_THESIS := thesis
+LATEXMK_VERBOSE := verbose
+LATEXMK_REPLACEMENT := latexmk_replacement
+
+ifeq (${LATEX_VERSION}, 1)
+	useless := $(shell printf "Success: Your latex version is compatible!\\n" 1>&2)
+else
+	ifneq (${LATEX_VERSION}, 0)
+		useless := $(shell printf "\\n" 1>&2)
+		useless := $(shell printf "Warning: Your latex installation is from ${LATEX_VERSION} and will run very slowly!\\n" 1>&2)
+		useless := $(shell printf "         Please, update your latex version to 2018 or newer!\\n" 1>&2)
+		useless := $(shell printf "\\n" 1>&2)
+
+		LATEXMK_THESIS := thesis_disabled
+		LATEXMK_VERBOSE := verbose_disabled
+		LATEXMK_REPLACEMENT := thesis verbose
+	endif
 endif
 
 # https://stackoverflow.com/questions/55642491/how-to-check-whether-a-file-exists-outside-a-makefile-rule
@@ -42,7 +91,8 @@ endif
 # Keep updated our copy of the .gitignore
 useless := $(shell cp -vr "${GITIGNORE_PATH}" ./setup/)
 
-.PHONY: all help biber start_timer biber_hook pdflatex_hook latex thesis verbose clean
+.PHONY: all help latex thesis verbose clean biber start_timer biber_hook biber_hook1 \
+pdflatex_hook pdflatex_hook1 pdflatex_hook2 pdflatex_hook3 pdflatex_hook4
 
 # http://stackoverflow.com/questions/1789594/how-do-i-write-the-cd-command-in-a-makefile
 .ONESHELL:
@@ -60,9 +110,9 @@ all: thesis
 ##   latex      build the main file with no bibliography pass
 ##   thesis     completely build the main file with minimum output logs
 ##   verbose    completely build the main file with maximum output logs
-##   clean      remove all cache folders and generated pdf files
+##   clean      remove all cache directories and generated pdf files
 ##   veryclean  same as `clean`, but searches for all generated files outside
-##              the cache folders.
+##              the cache directories.
 ##
 
 # Print the usage instructions
@@ -81,16 +131,15 @@ PDF_LATEX_COMMAND += $(if $(shell pdflatex --help | grep max-print-line),--max-p
 # https://tex.stackexchange.com/questions/25267/what-reasons-if-any-are-there-for-compiling-in-interactive-mode
 LATEXMK_COMMAND := latexmk \
 	--pdf \
-	--output-directory="$(CACHE_FOLDER)" \
-	--aux-directory="$(CACHE_FOLDER)" \
+	--output-directory="$(CACHE_DIRECTORY)" \
+	--aux-directory="$(CACHE_DIRECTORY)" \
 	--pdflatex="$(PDF_LATEX_COMMAND) --interaction=nonstopmode"
 
-LATEX =	$(PDF_LATEX_COMMAND)\
---interaction=batchmode\
--output-directory="$(CACHE_FOLDER)"\
--aux-directory="$(CACHE_FOLDER)"
+LATEX =	$(PDF_LATEX_COMMAND) --interaction=batchmode
+LATEX += $(if $(shell pdflatex --help | grep aux-directory),-aux-directory="$(CACHE_DIRECTORY)",)
+LATEX += $(if $(shell pdflatex --help | grep output-directory),-output-directory="$(CACHE_DIRECTORY)",)
 
-# Copies the PDF to the current folder
+# Copies the PDF to the current directory
 # https://stackoverflow.com/questions/55671541/how-define-a-makefile-condition-and-reuse-it-in-several-build-rules/
 define copy_resulting_pdf=
 	if [[ -f "${THESIS_MAIN_FILE_PATH}" ]]; \
@@ -107,37 +156,57 @@ endef
 define print_results =
 	. ./setup/scripts/timer_calculator.sh
 	showTheElapsedSeconds "$(current_dir)"
-	echo "$(CACHE_FOLDER)/main.log:10000000 "
+	echo "$(CACHE_DIRECTORY)/main.log:10000000 "
 endef
 
+# https://stackoverflow.com/questions/4210042/exclude-directory-from-find-command
+DIRECTORIES_TO_CREATE := $(shell "${FIND_EXEC}" -not -path "./**.git**" -not -path "./pictures**" -type d -not -path "./setup**" -type d)
+
+# https://tex.stackexchange.com/questions/323820/i-cant-write-on-file-foo-aux
+# https://stackoverflow.com/questions/11469989/how-can-i-strip-first-x-characters-from-string-using-sed
 define setup_envinronment =
 	. ./setup/scripts/timer_calculator.sh
 	$(eval current_dir := $(shell pwd)) echo $(current_dir) > /dev/null
+
+	printf "\\n";
+	readarray -td' ' DIRECTORIES_TO_CREATE_ARRAY <<<"$(DIRECTORIES_TO_CREATE) "; \
+	unset 'DIRECTORIES_TO_CREATE_ARRAY[-1]'; \
+	declare -p DIRECTORIES_TO_CREATE_ARRAY; \
+	for directory_name in "$${DIRECTORIES_TO_CREATE_ARRAY[@]}"; \
+	do \
+		full_cache_directory="${CACHE_DIRECTORY}/$${directory_name:2}"; \
+		printf "Creating %s\\n" "$${full_cache_directory}"; \
+		mkdir -p "$${full_cache_directory}"; \
+	done
+	printf "\\n";
 endef
+
 
 # Run pdflatex, biber, pdflatex
 biber: start_timer biber_hook pdflatex_hook
-	$(setup_envinronment)
 	$(copy_resulting_pdf)
 	$(print_results)
 
 
+# https://stackoverflow.com/questions/46135614/how-to-call-makefile-recipe-rule-multiple-times
+$(LATEXMK_REPLACEMENT): pdflatex_hook1 biber_hook1 pdflatex_hook2 pdflatex_hook3 pdflatex_hook4 biber
+
+
 start_timer:
-	# Start counting the elapsed seconds to print them to the screen later
-	. ./setup/scripts/timer_calculator.sh
+	$(setup_envinronment)
 
 
 # Call biber to process the bibliography and does not attempt to show the elapsed time
 # https://www.mankier.com/1/biber --debug
-biber_hook:
+biber_hook biber_hook1:
 	$(setup_envinronment)
 
 	echo "Running biber quietly..."
-	biber --quiet --input-directory="$(CACHE_FOLDER)" --output-directory="$(CACHE_FOLDER)" $(THESIS_MAIN_FILE).bcf
+	biber --quiet --input-directory="$(CACHE_DIRECTORY)" --output-directory="$(CACHE_DIRECTORY)" $(THESIS_MAIN_FILE).bcf
 
 
 # https://stackoverflow.com/questions/46135614/how-to-call-makefile-recipe-rule-multiple-times
-pdflatex_hook:
+pdflatex_hook pdflatex_hook1 pdflatex_hook2 pdflatex_hook3 pdflatex_hook4: start_timer
 	@$(LATEX) $(LATEX_SOURCE_FILES)
 
 
@@ -171,7 +240,7 @@ latex: $(LATEX_PDF_FILES)
 #
 # https://www.ctan.org/pkg/latexmk
 # http://docs.miktex.org/manual/texfeatures.html#auxdirectory
-thesis:
+$(LATEXMK_THESIS):
 	$(setup_envinronment)
 	$(LATEXMK_COMMAND) --silent $(THESIS_MAIN_FILE).tex
 
@@ -179,7 +248,7 @@ thesis:
 	$(print_results)
 
 
-verbose:
+$(LATEXMK_VERBOSE):
 	$(setup_envinronment)
 	$(LATEXMK_COMMAND) $(THESIS_MAIN_FILE).tex
 
@@ -188,7 +257,7 @@ verbose:
 
 
 clean:
-	$(RM) -rv $(CACHE_FOLDER)
+	$(RM) -rv $(CACHE_DIRECTORY)
 	$(RM) -v $(THESIS_OUTPUT_NAME).pdf
 
 
