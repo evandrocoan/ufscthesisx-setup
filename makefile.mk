@@ -26,24 +26,18 @@ MAKEFLAGS += --silent
 FIND_EXEC := $(if $(wildcard /bin/find),,/usr)/bin/find
 
 # https://stackoverflow.com/questions/55662085/how-to-print-text-in-a-makefile-outside-a-target
-ifneq (,$(shell tex --version 2>/dev/null))
+ifeq (,$(shell tex --version >/dev/null 2>&1 || (echo "Your command failed with $$?")))
 	useless := $(shell printf 'Success: latex is installed!\n' 1>&2)
 else
 	useless := $(error Error: latex was not installed!)
 endif
 
-ifneq (,$(shell latexmk --version 2>/dev/null))
+# https://stackoverflow.com/questions/5618615/check-if-a-program-exists-from-a-makefile
+ifeq (,$(shell latexmk --version >/dev/null 2>&1 || (echo "Your command failed with $$?")))
 	useless := $(shell printf 'Success: latexmk is installed!\n' 1>&2)
 else
 	useless := $(shell printf 'Warning: latexmk is not found installed!\n' 1>&2)
 endif
-
-ifneq (,$(shell python --version 2>/dev/null))
-	useless := $(shell printf 'Success: python is installed!\n' 1>&2)
-else
-	useless := $(shell printf 'Warning: python is not found installed!\n' 1>&2)
-endif
-
 
 # https://stackoverflow.com/questions/55681576/how-to-send-input-on-stdin-to-a-python-script-defined-inside-a-makefile
 define NEWLINE
@@ -53,7 +47,7 @@ endef
 
 define LATEX_VERSION_CODE
 import re, sys;
-match = re.search("Copyright (\d+)", """$(shell tex --version)""");
+match = re.search(r"Copyright (\d+)", """$(shell tex --version)""");
 if match:
 	if int( match.group(1) ) >= 0:
 		sys.stdout.write("1");
@@ -63,10 +57,18 @@ else:
 	sys.stdout.write("0");
 endef
 
-# https://stackoverflow.com/questions/55681576/how-to-send-input-on-stdin-to-a-python-script-defined-inside-a-makefile
-LATEX_VERSION := $(shell echo \
-	'$(subst ${NEWLINE},@NEWLINE@,${LATEX_VERSION_CODE})' | \
-	sed 's/@NEWLINE@/\n/g' | python -)
+# https://stackoverflow.com/questions/5618615/check-if-a-program-exists-from-a-makefile
+ifeq (,$(shell python --version >/dev/null 2>&1 || (echo "Your command failed with $$?")))
+	useless := $(shell printf 'Success: python is installed!\n' 1>&2)
+
+	# https://stackoverflow.com/questions/55681576/how-to-send-input-on-stdin-to-a-python-script-defined-inside-a-makefile
+	LATEX_VERSION := $(shell echo \
+		'$(subst ${NEWLINE},@NEWLINE@,${LATEX_VERSION_CODE})' | \
+		sed 's/@NEWLINE@/\n/g' | python -)
+else
+	useless := $(shell printf 'Warning: python is not found installed!\n' 1>&2)
+	LATEX_VERSION := 0
+endif
 
 LATEXMK_THESIS := thesis
 LATEXMK_VERBOSE := verbose
