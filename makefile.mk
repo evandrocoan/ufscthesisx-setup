@@ -195,10 +195,10 @@ define setup_envinronment =
 	$(eval current_dir := $(shell pwd)) echo ${current_dir} > /dev/null
 
 	printf '\n';
-	readarray -td' ' DIRECTORIES_TO_CREATE_ARRAY <<<"${DIRECTORIES_TO_CREATE} "; \
-	unset 'DIRECTORIES_TO_CREATE_ARRAY[-1]'; \
-	declare -p DIRECTORIES_TO_CREATE_ARRAY; \
-	for directory_name in "$${DIRECTORIES_TO_CREATE_ARRAY[@]}"; \
+	readarray -td' ' DIRECTORIES_TO_CREATE <<<"${DIRECTORIES_TO_CREATE} "; \
+	unset 'DIRECTORIES_TO_CREATE[-1]'; \
+	declare -p DIRECTORIES_TO_CREATE; \
+	for directory_name in "$${DIRECTORIES_TO_CREATE[@]}"; \
 	do \
 		full_cache_directory="${CACHE_DIRECTORY}/$${directory_name:2}"; \
 		printf 'Creating %s\n' "$${full_cache_directory}"; \
@@ -285,17 +285,17 @@ GITIGNORE_CONTENTS := $(shell echo "${RAW_GITIGNORE_CONTENTS}" | sed -E $$'s/[^\
 # https://stackoverflow.com/questions/55545253/how-to-expand-wildcard-inside-shell-code-block-in-a-makefile
 veryclean: veryclean_hidden clean
 veryclean_hidden:
-	readarray -td' ' GARBAGE_DIRECTORIES <<<"${DIRECTORIES_TO_CLEAN} "; \
-	unset 'GARBAGE_DIRECTORIES[-1]'; \
-	declare -p GARBAGE_DIRECTORIES; \
-	readarray -td' ' GARBAGE_EXTENSIONS <<<"${GITIGNORE_CONTENTS} "; \
-	unset 'GARBAGE_EXTENSIONS[-1]'; \
-	declare -p GARBAGE_EXTENSIONS; \
-	for filename in "$${GARBAGE_DIRECTORIES[@]}"; \
+	readarray -td' ' DIRECTORIES_TO_CLEAN <<<"${DIRECTORIES_TO_CLEAN} "; \
+	unset 'DIRECTORIES_TO_CLEAN[-1]'; \
+	declare -p DIRECTORIES_TO_CLEAN; \
+	readarray -td' ' GITIGNORE_CONTENTS <<<"${GITIGNORE_CONTENTS} "; \
+	unset 'GITIGNORE_CONTENTS[-1]'; \
+	declare -p GITIGNORE_CONTENTS; \
+	for filename in "$${DIRECTORIES_TO_CLEAN[@]}"; \
 	do \
-		arraylength="$${#GARBAGE_EXTENSIONS[@]}"; \
+		arraylength="$${#GITIGNORE_CONTENTS[@]}"; \
 		printf 'Cleaning %s extensions on %s\n' "$${arraylength}" "$$filename"; \
-		for extension in "$${GARBAGE_EXTENSIONS[@]}"; \
+		for extension in "$${GITIGNORE_CONTENTS[@]}"; \
 		do \
 			[[ ! -z "$$filename" ]] || continue; \
 			[[ ! -z "$$extension" ]] || continue; \
