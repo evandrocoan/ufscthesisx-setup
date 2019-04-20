@@ -165,9 +165,17 @@ LATEX =	${PDF_LATEX_COMMAND} --interaction=batchmode
 LATEX += $(if $(shell pdflatex --help | grep aux-directory),-aux-directory="${CACHE_DIRECTORY}",)
 LATEX += $(if $(shell pdflatex --help | grep output-directory),-output-directory="${CACHE_DIRECTORY}",)
 
+# Calculate the elapsed seconds and print them to the screen
+define print_results =
+	. ./setup/scripts/timer_calculator.sh
+	showTheElapsedSeconds "${current_dir}"
+	printf '%s/main.log:10000000 \n' "${CACHE_DIRECTORY}"
+endef
+
 # Copies the PDF to the current directory
 # https://stackoverflow.com/questions/55671541/how-define-a-makefile-condition-and-reuse-it-in-several-build-rules/
 define copy_resulting_pdf=
+	${print_results}
 	if [[ -f "${THESIS_MAIN_FILE_PATH}" ]]; \
 	then \
 		printf 'Coping PDF...\n'; \
@@ -176,13 +184,6 @@ define copy_resulting_pdf=
 		printf '\nError: The PDF %s was not generated!\n' "${THESIS_MAIN_FILE_PATH}"; \
 		exit 1; \
 	fi
-endef
-
-# Calculate the elapsed seconds and print them to the screen
-define print_results =
-	. ./setup/scripts/timer_calculator.sh
-	showTheElapsedSeconds "${current_dir}"
-	printf '%s/main.log:10000000 \n' "${CACHE_DIRECTORY}"
 endef
 
 # https://stackoverflow.com/questions/4210042/exclude-directory-from-find-command
@@ -216,7 +217,6 @@ index:
 # Run pdflatex, biber, pdflatex
 biber: start_timer biber_hook index pdflatex_hook
 	${copy_resulting_pdf}
-	${print_results}
 
 
 # https://stackoverflow.com/questions/46135614/how-to-call-makefile-recipe-rule-multiple-times
@@ -255,17 +255,13 @@ latex: start_timer ${LATEX_PDF_FILES}
 ${LATEXMK_THESIS}:
 	${setup_envinronment}
 	${LATEXMK_COMMAND} --silent ${THESIS_MAIN_FILE}.tex
-
 	${copy_resulting_pdf}
-	${print_results}
 
 
 ${LATEXMK_VERBOSE}:
 	${setup_envinronment}
 	${LATEXMK_COMMAND} ${THESIS_MAIN_FILE}.tex
-
 	${copy_resulting_pdf}
-	${print_results}
 
 
 clean:
