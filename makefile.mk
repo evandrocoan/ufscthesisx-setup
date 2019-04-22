@@ -5,6 +5,7 @@ SHELL := /bin/bash
 
 # The main latex file
 THESIS_MAIN_FILE := main
+ENABLE_DEBUG_MODE :=
 
 # Uncomment this if you have problems
 # ENABLE_DEBUG_MODE := true
@@ -30,18 +31,15 @@ endif
 # https://stackoverflow.com/questions/55642491/how-to-check-whether-a-file-exists-outside-a-makefile-rule
 FIND_EXEC := $(if $(wildcard /bin/find),,/usr)/bin/find
 
-# https://stackoverflow.com/questions/55662085/how-to-print-text-in-a-makefile-outside-a-target
-ifeq (,$(shell tex --version >/dev/null 2>&1 || (echo "Your command failed with $$?")))
-	useless := $(shell printf 'Success: latex is installed!\n' 1>&2)
-else
-	useless := $(error Error: latex was not installed!)
-endif
+LATEXMK_THESIS := thesis
+LATEXMK_VERBOSE := verbose
+LATEXMK_REPLACEMENT := latexmk
 
-# https://stackoverflow.com/questions/5618615/check-if-a-program-exists-from-a-makefile
-ifeq (,$(shell latexmk --version >/dev/null 2>&1 || (echo "Your command failed with $$?")))
-	useless := $(shell printf 'Success: latexmk is installed!\n' 1>&2)
+# https://stackoverflow.com/questions/55642491/how-to-check-whether-a-file-exists-outside-a-makefile-rule
+ifneq (,$(wildcard .gitignore))
+	GITIGNORE_PATH := .gitignore
 else
-	useless := $(shell printf 'Warning: latexmk is not found installed!\n' 1>&2)
+	GITIGNORE_PATH := ../.gitignore
 endif
 
 # https://stackoverflow.com/questions/55681576/how-to-send-input-on-stdin-to-a-python-script-defined-inside-a-makefile
@@ -62,46 +60,45 @@ else:
 	sys.stdout.write("0");
 endef
 
-# https://stackoverflow.com/questions/5618615/check-if-a-program-exists-from-a-makefile
-ifeq (,$(shell python --version >/dev/null 2>&1 || (echo "Your command failed with $$?")))
-	useless := $(shell printf 'Success: python is installed!\n' 1>&2)
+ifneq (,${ENABLE_DEBUG_MODE})
+	# https://stackoverflow.com/questions/55662085/how-to-print-text-in-a-makefile-outside-a-target
+	ifeq (,$(shell tex --version >/dev/null 2>&1 || (echo "Your command failed with $$?")))
+		useless := $(shell printf 'Success: latex is installed!\n' 1>&2)
+	else
+		useless := $(error Error: latex was not installed!)
+	endif
 
-	# https://stackoverflow.com/questions/55681576/how-to-send-input-on-stdin-to-a-python-script-defined-inside-a-makefile
-	LATEX_VERSION := $(shell echo \
-		'$(subst ${NEWLINE},@NEWLINE@,${LATEX_VERSION_CODE})' | \
-		sed 's/@NEWLINE@/\n/g' | python -)
-else
-	useless := $(shell printf 'Warning: python is not found installed!\n' 1>&2)
-	LATEX_VERSION := 0
-endif
+	# https://stackoverflow.com/questions/5618615/check-if-a-program-exists-from-a-makefile
+	ifeq (,$(shell latexmk --version >/dev/null 2>&1 || (echo "Your command failed with $$?")))
+		useless := $(shell printf 'Success: latexmk is installed!\n' 1>&2)
+	else
+		useless := $(shell printf 'Warning: latexmk is not found installed!\n' 1>&2)
+	endif
 
-LATEXMK_THESIS := thesis
-LATEXMK_VERBOSE := verbose
-LATEXMK_REPLACEMENT := latexmk
+	# https://stackoverflow.com/questions/5618615/check-if-a-program-exists-from-a-makefile
+	ifeq (,$(shell python --version >/dev/null 2>&1 || (echo "Your command failed with $$?")))
+		useless := $(shell printf 'Success: python is installed!\n' 1>&2)
 
-ifeq (${LATEX_VERSION}, 1)
-	useless := $(shell printf 'Success: Your latex version is compatible!\n' 1>&2)
-else
-	ifneq (${LATEX_VERSION}, 0)
-		useless := $(shell printf '\n' 1>&2)
-		useless := $(shell printf 'Warning: Your latex installation is Tex Live from %s which is very bugged!\n' "${LATEX_VERSION}" 1>&2)
-		useless := $(shell printf '         See more informations about this on: https://tex.stackexchange.com/questions/484878\n' 1>&2)
-		useless := $(shell printf '\n' 1>&2)
-# 		LATEXMK_THESIS := thesis_disabled
-# 		LATEXMK_VERBOSE := verbose_disabled
-# 		LATEXMK_REPLACEMENT := thesis verbose
+		# https://stackoverflow.com/questions/55681576/how-to-send-input-on-stdin-to-a-python-script-defined-inside-a-makefile
+		LATEX_VERSION := $(shell echo \
+			'$(subst ${NEWLINE},@NEWLINE@,${LATEX_VERSION_CODE})' | \
+			sed 's/@NEWLINE@/\n/g' | python -)
+	else
+		useless := $(shell printf 'Warning: python is not found installed!\n' 1>&2)
+		LATEX_VERSION := 0
+	endif
+
+	ifeq (${LATEX_VERSION}, 1)
+		useless := $(shell printf 'Success: Your latex version is compatible!\n' 1>&2)
+	else
+		ifneq (${LATEX_VERSION}, 0)
+			useless := $(shell printf '\n' 1>&2)
+			useless := $(shell printf 'Warning: Your latex installation is Tex Live from %s which is very bugged!\n' "${LATEX_VERSION}" 1>&2)
+			useless := $(shell printf '         See more informations about this on: https://tex.stackexchange.com/questions/484878\n' 1>&2)
+			useless := $(shell printf '\n' 1>&2)
+		endif
 	endif
 endif
-
-# https://stackoverflow.com/questions/55642491/how-to-check-whether-a-file-exists-outside-a-makefile-rule
-ifneq (,$(wildcard .gitignore))
-	GITIGNORE_PATH := .gitignore
-else
-	GITIGNORE_PATH := ../.gitignore
-endif
-
-# Keep updated our copy of the .gitignore
-useless := $(shell cp -vr "${GITIGNORE_PATH}" ./setup/)
 
 .PHONY: all help latex thesis verbose clean biber index start_timer biber_hook biber_hook1 \
 biber_hook2 pdflatex_hook pdflatex_hook1 pdflatex_hook2 pdflatex_hook3 pdflatex_hook4 pdflatex_hook5
@@ -222,6 +219,12 @@ define setup_envinronment =
 endef
 
 
+# Keep updated our copy of the .gitignore
+"${GITIGNORE_PATH}":
+# 	printf 'Copying %s file...\n' "${GITIGNORE_PATH}"
+	cp -r "${GITIGNORE_PATH}" ./setup/
+
+
 # https://tex.stackexchange.com/questions/98204/index-not-working
 index:
 	makeindex "${CACHE_DIRECTORY}/${THESIS_MAIN_FILE}.idx"
@@ -237,7 +240,7 @@ ${LATEXMK_REPLACEMENT}: start_timer pdflatex_hook1 biber_hook1 pdflatex_hook2 pd
 	${copy_resulting_pdf}
 
 
-start_timer:
+start_timer: "${GITIGNORE_PATH}"
 	${setup_envinronment}
 
 
