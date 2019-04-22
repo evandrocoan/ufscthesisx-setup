@@ -274,7 +274,7 @@ DIRECTORIES_TO_CLEAN := $(shell "${FIND_EXEC}" -not -path "./**.git**" -not -pat
 
 # https://stackoverflow.com/questions/55527923/how-to-stop-makefile-from-expanding-my-shell-output
 RAW_GITIGNORE_CONTENTS := $(shell while read -r line; do printf "$$line "; done < "${GITIGNORE_PATH}")
-GITIGNORE_CONTENTS := $(shell echo "${RAW_GITIGNORE_CONTENTS}" | sed -E $$'s/[^\#]+\# //g')
+GITIGNORE_CONTENTS := $(shell echo "${RAW_GITIGNORE_CONTENTS}" | sed -E $$'s/[^\#]+\# //g' | sed -E 's/\r//g')
 
 # https://stackoverflow.com/questions/10586153/split-string-into-an-array-in-bash
 # https://stackoverflow.com/questions/11289551/argument-list-too-long-error-for-rm-cp-mv-commands
