@@ -179,6 +179,13 @@ ifeq (,${ENABLE_DEBUG_MODE})
 	LATEX += --interaction=batchmode
 endif
 
+# biber settings
+BIBER_FLAGS := --input-directory="${CACHE_DIRECTORY}" --output-directory="${CACHE_DIRECTORY}"
+
+ifeq (,${ENABLE_DEBUG_MODE})
+	BIBER_FLAGS += --quiet
+endif
+
 # Calculate the elapsed seconds and print them to the screen
 define print_results =
 	. ./setup/scripts/timer_calculator.sh
@@ -252,8 +259,9 @@ start_timer: "${GITIGNORE_PATH}"
 # Call biber to process the bibliography and does not attempt to show the elapsed time
 # https://www.mankier.com/1/biber --debug
 biber_hook biber_hook1 biber_hook2:
-	printf 'Running biber quietly...\n'
-	biber --quiet --input-directory="${CACHE_DIRECTORY}" --output-directory="${CACHE_DIRECTORY}" ${THESIS_MAIN_FILE}.bcf
+	printf 'Running biber...\n'
+	biber ${BIBER_FLAGS} "${THESIS_MAIN_FILE}.bcf"
+	printf '\n'
 
 
 # https://stackoverflow.com/questions/46135614/how-to-call-makefile-recipe-rule-multiple-times
