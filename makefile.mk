@@ -5,10 +5,12 @@ SHELL := /bin/bash
 
 # The main latex file
 THESIS_MAIN_FILE := main
-ENABLE_DEBUG_MODE :=
 
-# Uncomment this if you have problems
+# Uncomment this if you have problems or call `make latex debug=a`
 # ENABLE_DEBUG_MODE := true
+ifdef debug
+	ENABLE_DEBUG_MODE := true
+endif
 
 # This will be the pdf generated
 THESIS_OUTPUT_NAME := thesis
@@ -111,7 +113,7 @@ all: thesis
 
 ##
 ## Usage:
-##   make <target>
+##   make <target> [debug=true]
 ##
 ## Targets:
 ##   all        call the `thesis` make rule
@@ -120,6 +122,7 @@ all: thesis
 ##   pdflatex   the same as latex rule, i.e., an alias for it
 ##   latexmk    build the main file with pdflatex biber pdflatex pdflatex
 ##              pdflatex makeindex biber pdflatex
+##
 ##   thesis     completely build the main file with minimum output logs
 ##   verbose    completely build the main file with maximum output logs
 ##   clean      remove all cache directories and generated pdf files
