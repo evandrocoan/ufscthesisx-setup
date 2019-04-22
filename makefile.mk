@@ -117,6 +117,7 @@ all: thesis
 ##   all        call the `thesis` make rule
 ##   biber      build the main file with bibliography pass
 ##   latex      build the main file with no bibliography pass
+##   pdflatex   the same as latex rule, i.e., an alias for it
 ##   latexmk    build the main file with pdflatex biber pdflatex pdflatex
 ##              pdflatex makeindex biber pdflatex
 ##   thesis     completely build the main file with minimum output logs
@@ -258,7 +259,7 @@ pdflatex_hook pdflatex_hook1 pdflatex_hook2 pdflatex_hook3 pdflatex_hook4 pdflat
 
 
 # This rule will be called for every latex file and pdf associated
-latex: start_timer ${LATEX_PDF_FILES}
+pdflatex latex: start_timer ${LATEX_PDF_FILES}
 	${copy_resulting_pdf}
 
 
