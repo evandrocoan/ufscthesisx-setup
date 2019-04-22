@@ -197,8 +197,6 @@ define copy_resulting_pdf=
 endef
 
 # https://stackoverflow.com/questions/4210042/exclude-directory-from-find-command
-DIRECTORIES_TO_CREATE := $(shell "${FIND_EXEC}" -not -path "./**.git**" -not -path "./pictures**" -type d -not -path "./setup**" -type d)
-
 # https://tex.stackexchange.com/questions/323820/i-cant-write-on-file-foo-aux
 # https://stackoverflow.com/questions/11469989/how-can-i-strip-first-x-characters-from-string-using-sed
 define setup_envinronment =
@@ -206,7 +204,10 @@ define setup_envinronment =
 	$(eval current_dir := $(shell pwd)) echo ${current_dir} > /dev/null
 
 	printf '\n';
-	readarray -td' ' DIRECTORIES_TO_CREATE <<<"${DIRECTORIES_TO_CREATE} "; \
+	readarray -td' ' DIRECTORIES_TO_CREATE <<<"$(shell "${FIND_EXEC}" \
+			-not -path "./**.git**" \
+			-not -path "./pictures**" -type d \
+			-not -path "./setup**" -type d) "; \
 	unset 'DIRECTORIES_TO_CREATE[-1]'; \
 	declare -p DIRECTORIES_TO_CREATE; \
 	for directory_name in "$${DIRECTORIES_TO_CREATE[@]}"; \
@@ -285,21 +286,19 @@ clean:
 
 
 # https://stackoverflow.com/questions/4210042/exclude-directory-from-find-command
-DIRECTORIES_TO_CLEAN := $(shell "${FIND_EXEC}" -not -path "./**.git**" -not -path "./pictures**" -type d)
-
-# https://stackoverflow.com/questions/55527923/how-to-stop-makefile-from-expanding-my-shell-output
-RAW_GITIGNORE_CONTENTS := $(shell while read -r line; do printf "$$line "; done < "${GITIGNORE_PATH}")
-GITIGNORE_CONTENTS := $(shell echo "${RAW_GITIGNORE_CONTENTS}" | sed -E $$'s/[^\#]+\# //g' | sed -E 's/\r//g')
-
 # https://stackoverflow.com/questions/10586153/split-string-into-an-array-in-bash
 # https://stackoverflow.com/questions/11289551/argument-list-too-long-error-for-rm-cp-mv-commands
+# https://stackoverflow.com/questions/55527923/how-to-stop-makefile-from-expanding-my-shell-output
 # https://stackoverflow.com/questions/55545253/how-to-expand-wildcard-inside-shell-code-block-in-a-makefile
 veryclean: veryclean_hidden clean
 veryclean_hidden:
-	readarray -td' ' DIRECTORIES_TO_CLEAN <<<"${DIRECTORIES_TO_CLEAN} "; \
+	readarray -td' ' DIRECTORIES_TO_CLEAN <<<"$(shell "${FIND_EXEC}" -not -path "./**.git**" -not -path "./pictures**" -type d) "; \
 	unset 'DIRECTORIES_TO_CLEAN[-1]'; \
 	declare -p DIRECTORIES_TO_CLEAN; \
-	readarray -td' ' GITIGNORE_CONTENTS <<<"${GITIGNORE_CONTENTS} "; \
+	readarray -td' ' GITIGNORE_CONTENTS <<<"$(shell echo \
+		"$(shell while read -r line; do printf "$$line "; done < "${GITIGNORE_PATH}")" \
+		| sed -E $$'s/[^\#]+\# //g' \
+		| sed -E 's/\r//g') "; \
 	unset 'GITIGNORE_CONTENTS[-1]'; \
 	declare -p GITIGNORE_CONTENTS; \
 	for filename in "$${DIRECTORIES_TO_CLEAN[@]}"; \
