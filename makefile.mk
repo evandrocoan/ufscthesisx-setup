@@ -6,6 +6,9 @@ SHELL := /bin/bash
 # The main latex file
 THESIS_MAIN_FILE := main
 
+# Uncomment this if you have problems
+# ENABLE_DEBUG_MODE := true
+
 # This will be the pdf generated
 THESIS_OUTPUT_NAME := thesis
 
@@ -20,7 +23,9 @@ LATEX_SOURCE_FILES := $(wildcard *main.tex)
 LATEX_PDF_FILES := ${LATEX_SOURCE_FILES:.tex=.pdf}
 
 # https://stackoverflow.com/questions/24005166/gnu-make-silent-by-default
-MAKEFLAGS += --silent
+ifeq (,${ENABLE_DEBUG_MODE})
+	MAKEFLAGS += --silent
+endif
 
 # https://stackoverflow.com/questions/55642491/how-to-check-whether-a-file-exists-outside-a-makefile-rule
 FIND_EXEC := $(if $(wildcard /bin/find),,/usr)/bin/find
@@ -136,6 +141,10 @@ PDF_LATEX_COMMAND = pdflatex --synctex=1 -halt-on-error -file-line-error
 PDF_LATEX_COMMAND += $(if $(shell pdflatex --help | grep time-statistics),--time-statistics,)
 PDF_LATEX_COMMAND += $(if $(shell pdflatex --help | grep max-print-line),--max-print-line=10000,)
 
+ifeq (,${ENABLE_DEBUG_MODE})
+	PDF_LATEX_COMMAND +=  --interaction=nonstopmode
+endif
+
 # MAIN LATEXMK RULE
 #
 # -pdf tells latexmk to generate PDF directly (instead of DVI).
@@ -159,11 +168,15 @@ LATEXMK_COMMAND := latexmk \
 	--pdf \
 	--output-directory="${CACHE_DIRECTORY}" \
 	--aux-directory="${CACHE_DIRECTORY}" \
-	--pdflatex="${PDF_LATEX_COMMAND} --interaction=nonstopmode"
+	--pdflatex="${PDF_LATEX_COMMAND}"
 
-LATEX =	${PDF_LATEX_COMMAND} --interaction=batchmode
+LATEX =	${PDF_LATEX_COMMAND}
 LATEX += $(if $(shell pdflatex --help | grep aux-directory),-aux-directory="${CACHE_DIRECTORY}",)
 LATEX += $(if $(shell pdflatex --help | grep output-directory),-output-directory="${CACHE_DIRECTORY}",)
+
+ifeq (,${ENABLE_DEBUG_MODE})
+	LATEX += --interaction=batchmode
+endif
 
 # Calculate the elapsed seconds and print them to the screen
 define print_results =
@@ -221,7 +234,7 @@ biber: start_timer biber_hook index pdflatex_hook
 
 # https://stackoverflow.com/questions/46135614/how-to-call-makefile-recipe-rule-multiple-times
 ${LATEXMK_REPLACEMENT}: start_timer pdflatex_hook1 biber_hook1 pdflatex_hook2 pdflatex_hook3 index pdflatex_hook4 biber_hook2 pdflatex_hook5
-	${print_results}
+	${copy_resulting_pdf}
 
 
 start_timer:
@@ -242,13 +255,12 @@ pdflatex_hook pdflatex_hook1 pdflatex_hook2 pdflatex_hook3 pdflatex_hook4 pdflat
 
 # This rule will be called for every latex file and pdf associated
 latex: start_timer ${LATEX_PDF_FILES}
-	${print_results}
+	${copy_resulting_pdf}
 
 
 # Dynamically generated recipes for all PDF and latex files
-%.pdf: start_timer %.tex
+%.pdf: %.tex
 	@${LATEX} $<
-	${print_results}
 
 
 # MAIN LATEXMK RULE
