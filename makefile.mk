@@ -341,8 +341,8 @@ import zipfile
 
 version = "${version}"
 if not version:
-    print("Error: You need pass the release version. For example: make release version=1.1" )
-    exit(1)
+	print("Error: You need pass the release version. For example: make release version=1.1" )
+	exit(1)
 
 CURRENT_DIRECTORY = os.path.dirname( os.path.realpath( __file__ ) )
 print("Packing files on %s" % CURRENT_DIRECTORY)
@@ -360,41 +360,41 @@ initial_file_names = [
 
 for direcory_name, dirs, files in os.walk(CURRENT_DIRECTORY):
 
-    if ".git" in direcory_name:
-        continue
+	if ".git" in direcory_name:
+		continue
 
-    for filename in files:
-        filepath = os.path.join( direcory_name, filename )
+	for filename in files:
+		filepath = os.path.join( direcory_name, filename )
 
-        if ".git" in filepath or not ( filepath.endswith( ".tex" )
-        		or filepath.endswith( ".bib" )
-        		or filepath.endswith( ".pdf" ) ):
-            continue
+		if ".git" in filepath or not ( filepath.endswith( ".tex" )
+				or filepath.endswith( ".bib" )
+				or filepath.endswith( ".pdf" ) ):
+			continue
 
-        print( "%s" % filename )
-        file_names.append( filepath )
+		print( "%s" % filename )
+		file_names.append( filepath )
 
 for filename in initial_file_names:
-    filepath = os.path.join( CURRENT_DIRECTORY, filename )
-    print( os.path.basename( filename ) )
-    file_names.append( filepath )
+	filepath = os.path.join( CURRENT_DIRECTORY, filename )
+	print( os.path.basename( filename ) )
+	file_names.append( filepath )
 
 zipfilepath = os.path.join( CURRENT_DIRECTORY, version + ".zip" )
 zipfileobject = zipfile.ZipFile(zipfilepath, mode="w")
 zipfilepathreduced = os.path.dirname( os.path.dirname( zipfilepath ) )
 
 try:
-    for file_name in file_names:
-        zipfileobject.write( file_name,
-                file_name.replace( zipfilepathreduced, "" ),
-                compress_type=zipfile.ZIP_DEFLATED )
+	for file_name in file_names:
+		zipfileobject.write( file_name,
+				file_name.replace( zipfilepathreduced, "" ),
+				compress_type=zipfile.ZIP_DEFLATED )
 
 except Exception as error:
-    print("An error occurred: %s" % error)
+	print("An error occurred: %s" % error)
 
 finally:
-    zipfileobject.close()
-    print( "Successfuly created the release version on: %s!" % zipfilepath )
+	zipfileobject.close()
+	print( "Successfuly created the release version on: %s!" % zipfilepath )
 endef
 
 release:
