@@ -13,7 +13,7 @@ ifdef debug
 endif
 
 # This will be the pdf generated
-THESIS_OUTPUT_NAME := thesis
+THESIS_OUTPUT_NAME := main
 
 # This is the directory where the temporary files are going to be
 CACHE_DIRECTORY := setup/cache
@@ -128,6 +128,11 @@ all: thesis
 ##   clean      remove all cache directories and generated pdf files
 ##   veryclean  same as `clean`, but searches for all generated files outside
 ##              the cache directories.
+##
+##   release version=1.1   creates the zip file `1.1.zip` on the root of this
+##                         project, within all latex required files. This is
+##                         useful to share or public your thesis source files
+##                         with others.
 ##
 
 # Print the usage instructions
