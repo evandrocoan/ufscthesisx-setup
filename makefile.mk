@@ -6,7 +6,7 @@ SHELL := /bin/bash
 # The main latex file
 THESIS_MAIN_FILE := main
 
-# Uncomment this if you have problems or call `make latex debug=a`
+# Uncomment this if you have problems or call `make latex debug=1`
 # ENABLE_DEBUG_MODE := true
 ifdef debug
 	ENABLE_DEBUG_MODE := true
@@ -113,7 +113,19 @@ all: thesis
 
 ##
 ## Usage:
-##   make <target> [debug=true]
+##   make <target> [debug=1]
+##
+## Use debug=1 to run make in debug mode. Use this if something does not work!
+## Examples:
+##   make debug=1
+##   make latex debug=1
+##   make thesis debug=1
+##
+## If you are using Windows Command Prompt `cmd.exe`, you must use this
+## command like this:
+##  set "debug=1" && make
+##  set "debug=1" && make latex
+##  set "debug=1" && make thesis
 ##
 ## Targets:
 ##   all        call the `thesis` make rule
@@ -130,9 +142,11 @@ all: thesis
 ##              the cache directories.
 ##
 ##   release version=1.1   creates the zip file `1.1.zip` on the root of this
-##                         project, within all latex required files. This is
-##                         useful to share or public your thesis source files
-##                         with others.
+##        project, within all latex required files. This is useful to share or
+##        public your thesis source files with others.
+##        If you are using Windows Command Prompt `cmd.exe`, you must use this
+##        command like this: set "version=1.1" && make release
+##
 ##
 
 # Print the usage instructions

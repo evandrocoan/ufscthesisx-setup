@@ -72,7 +72,43 @@ git log
 ## Compilação
 
 Se você quiser saber quais são todos os comandos de compilação disponíveis,
-basta chamar utilizar o comando `make help`
+basta chamar utilizar o comando `make help`. Exemplo:
+```
+ Usage:
+   make <target> [debug=1]
+
+ Use debug=1 to run make in debug mode. Use this if something does not work!
+ Examples:
+   make debug=1
+   make latex debug=1
+   make thesis debug=1
+
+ If you are using Windows Command Prompt `cmd.exe`, you must use this
+ command like this:
+  set "debug=1" && make
+  set "debug=1" && make latex
+  set "debug=1" && make thesis
+
+ Targets:
+   all        call the `thesis` make rule
+   biber      build the main file with bibliography pass
+   latex      build the main file with no bibliography pass
+   pdflatex   the same as latex rule, i.e., an alias for it
+   latexmk    build the main file with pdflatex biber pdflatex pdflatex
+              pdflatex makeindex biber pdflatex
+
+   thesis     completely build the main file with minimum output logs
+   verbose    completely build the main file with maximum output logs
+   clean      remove all cache directories and generated pdf files
+   veryclean  same as `clean`, but searches for all generated files outside
+              the cache directories.
+
+   release version=1.1   creates the zip file `1.1.zip` on the root of this
+        project, within all latex required files. This is useful to share or
+        public your thesis source files with others.
+        If you are using Windows Command Prompt `cmd.exe`, you must use this
+        command like this: set "version=1.1" && make release
+```
 
 Caso você tenha problemas,
 erros ou algo não funcione,
