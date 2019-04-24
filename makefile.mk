@@ -391,15 +391,18 @@ try:
 
 except Exception as error:
 	print("An error occurred: %s" % error)
+	exit(1)
 
 finally:
 	zipfileobject.close()
-	print( "Successfuly created the release version on: %s!" % zipfilepath )
+
+print( "Successfully created the release version on: %s!" % zipfilepath )
 endef
 
 release:
 	printf '%s\n' "$(shell echo \
 		'$(subst ${NEWLINE},@NEWLINE@,${RELEASE_CODE})' | \
-		sed 's/@NEWLINE@/\n/g' | python -)"
-	printf 'Successfuly created the zip file!\n'
+		sed 's/@NEWLINE@/\n/g' | python - && \
+		printf 'Successfully created the zip file!\n' || \
+		printf 'Error: Could not create the zip file!\n' )"
 
