@@ -129,6 +129,7 @@ all: thesis
 ##
 ## Targets:
 ##   all        call the `thesis` make rule
+##   index      build the main file with index pass
 ##   biber      build the main file with bibliography pass
 ##   latex      build the main file with no bibliography pass
 ##   pdflatex   the same as latex rule, i.e., an alias for it
@@ -256,8 +257,12 @@ endef
 	cp -r "${GITIGNORE_PATH}" ./setup/
 
 
+start_timer: "${GITIGNORE_PATH}"
+	${setup_envinronment}
+
+
 # https://tex.stackexchange.com/questions/98204/index-not-working
-index:
+index: $(if $(wildcard ${CACHE_DIRECTORY}/${THESIS_MAIN_FILE}.idx),,pdflatex_hook1)
 	makeindex "${CACHE_DIRECTORY}/${THESIS_MAIN_FILE}.idx"
 	printf '\n'
 
@@ -270,10 +275,6 @@ biber: start_timer biber_hook1 index pdflatex_hook2
 # https://stackoverflow.com/questions/46135614/how-to-call-makefile-recipe-rule-multiple-times
 ${LATEXMK_REPLACEMENT}: start_timer pdflatex_hook1 biber_hook1 pdflatex_hook2 pdflatex_hook3 index pdflatex_hook4 biber_hook2 pdflatex_hook5
 	${copy_resulting_pdf}
-
-
-start_timer: "${GITIGNORE_PATH}"
-	${setup_envinronment}
 
 
 # Call biber to process the bibliography and does not attempt to show the elapsed time
@@ -291,7 +292,7 @@ pdflatex_hook1 pdflatex_hook2 pdflatex_hook3 pdflatex_hook4 pdflatex_hook5:
 
 
 # This rule will be called for every latex file and pdf associated
-pdflatex latex: start_timer ${LATEX_PDF_FILES}
+latex pdflatex: start_timer ${LATEX_PDF_FILES}
 	${copy_resulting_pdf}
 
 
