@@ -34,7 +34,6 @@ endif
 FIND_EXEC := $(if $(wildcard /bin/find),,/usr)/bin/find
 
 LATEXMK_THESIS := thesis
-LATEXMK_VERBOSE := verbose
 LATEXMK_REPLACEMENT := latexmk
 
 # https://stackoverflow.com/questions/55642491/how-to-check-whether-a-file-exists-outside-a-makefile-rule
@@ -191,6 +190,10 @@ LATEXMK_COMMAND := latexmk \
 	--aux-directory="${CACHE_DIRECTORY}" \
 	--pdflatex="${PDF_LATEX_COMMAND}"
 
+ifeq (,${ENABLE_DEBUG_MODE})
+	LATEXMK_COMMAND += --silent
+endif
+
 LATEX =	${PDF_LATEX_COMMAND}
 LATEX += $(if $(shell pdflatex --help | grep aux-directory),-aux-directory="${CACHE_DIRECTORY}",)
 LATEX += $(if $(shell pdflatex --help | grep output-directory),-output-directory="${CACHE_DIRECTORY}",)
@@ -305,12 +308,6 @@ latex pdflatex: start_timer pdflatex_hook1
 
 # MAIN LATEXMK RULE
 ${LATEXMK_THESIS}:
-	${setup_envinronment}
-	${LATEXMK_COMMAND} --silent ${THESIS_MAIN_FILE}.tex
-	${copy_resulting_pdf}
-
-
-${LATEXMK_VERBOSE}:
 	${setup_envinronment}
 	${LATEXMK_COMMAND} ${THESIS_MAIN_FILE}.tex
 	${copy_resulting_pdf}
