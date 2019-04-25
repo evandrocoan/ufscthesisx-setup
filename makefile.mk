@@ -288,11 +288,13 @@ biber_hook1 biber_hook2: $(if $(wildcard ${CACHE_DIRECTORY}/${THESIS_MAIN_FILE}.
 
 # https://stackoverflow.com/questions/46135614/how-to-call-makefile-recipe-rule-multiple-times
 pdflatex_hook1 pdflatex_hook2 pdflatex_hook3 pdflatex_hook4 pdflatex_hook5:
+	printf 'LATEX_SOURCE_FILES: %s\n' "${LATEX_SOURCE_FILES}"
 	@${LATEX} ${LATEX_SOURCE_FILES}
 
 
 # This rule will be called for every latex file and pdf associated
-latex pdflatex: start_timer ${LATEX_PDF_FILES}
+latex pdflatex: start_timer pdflatex_hook1
+	printf 'LATEX_PDF_FILES: %s\n' "${LATEX_PDF_FILES}"
 	${copy_resulting_pdf}
 
 
