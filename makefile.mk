@@ -102,8 +102,8 @@ ifneq (,${ENABLE_DEBUG_MODE})
 	endif
 endif
 
-.PHONY: all help latex thesis verbose clean biber index start_timer biber_hook biber_hook1 \
-biber_hook2 pdflatex_hook pdflatex_hook1 pdflatex_hook2 pdflatex_hook3 pdflatex_hook4 pdflatex_hook5
+.PHONY: all help latex thesis verbose clean biber index start_timer biber_hook1 \
+biber_hook2 pdflatex_hook1 pdflatex_hook2 pdflatex_hook3 pdflatex_hook4 pdflatex_hook5
 
 # http://stackoverflow.com/questions/1789594/how-do-i-write-the-cd-command-in-a-makefile
 .ONESHELL:
@@ -259,10 +259,11 @@ endef
 # https://tex.stackexchange.com/questions/98204/index-not-working
 index:
 	makeindex "${CACHE_DIRECTORY}/${THESIS_MAIN_FILE}.idx"
+	printf '\n'
 
 
 # Run pdflatex, biber, pdflatex
-biber: start_timer biber_hook index pdflatex_hook
+biber: start_timer biber_hook1 index pdflatex_hook2
 	${copy_resulting_pdf}
 
 
@@ -277,14 +278,15 @@ start_timer: "${GITIGNORE_PATH}"
 
 # Call biber to process the bibliography and does not attempt to show the elapsed time
 # https://www.mankier.com/1/biber --debug
-biber_hook biber_hook1 biber_hook2:
+# https://stackoverflow.com/questions/35552028/gnu-make-add-a-file-as-a-dependency-only-if-it-doesnt-exist-yet
+biber_hook1 biber_hook2: $(if $(wildcard ${CACHE_DIRECTORY}/${THESIS_MAIN_FILE}.bcf),,pdflatex_hook1)
 	printf 'Running biber...\n'
 	biber ${BIBER_FLAGS} "${THESIS_MAIN_FILE}.bcf"
 	printf '\n'
 
 
 # https://stackoverflow.com/questions/46135614/how-to-call-makefile-recipe-rule-multiple-times
-pdflatex_hook pdflatex_hook1 pdflatex_hook2 pdflatex_hook3 pdflatex_hook4 pdflatex_hook5:
+pdflatex_hook1 pdflatex_hook2 pdflatex_hook3 pdflatex_hook4 pdflatex_hook5:
 	@${LATEX} ${LATEX_SOURCE_FILES}
 
 
