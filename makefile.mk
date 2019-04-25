@@ -350,16 +350,17 @@ veryclean_hidden:
 # https://stackoverflow.com/questions/47588379/zip-multiple-files-with-multiple-result-in-python
 # https://stackoverflow.com/questions/16091904/python-zip-how-to-eliminate-absolute-path-in-zip-archive-if-absolute-paths-for
 define RELEASE_CODE
+from __future__ import print_function
 import os
 import zipfile
 
 version = "${version}"
 if not version:
-	print("Error: You need pass the release version. For example: make release version=1.1" )
+	print( "Error: You need pass the release version. For example: make release version=1.1", end="@NEWNEWLINE@" )
 	exit(1)
 
 CURRENT_DIRECTORY = os.path.dirname( os.path.realpath( __file__ ) )
-print("Packing files on %s" % CURRENT_DIRECTORY)
+print( "Packing files on %s" % CURRENT_DIRECTORY, end="@NEWNEWLINE@" )
 
 file_names = []
 initial_file_names = [
@@ -385,12 +386,10 @@ for direcory_name, dirs, files in os.walk(CURRENT_DIRECTORY):
 				or filepath.endswith( ".pdf" ) ):
 			continue
 
-		print( "%s" % filename )
 		file_names.append( filepath )
 
 for filename in initial_file_names:
 	filepath = os.path.join( CURRENT_DIRECTORY, filename )
-	print( os.path.basename( filename ) )
 	file_names.append( filepath )
 
 zipfilepath = os.path.join( CURRENT_DIRECTORY, version + ".zip" )
@@ -398,25 +397,28 @@ zipfileobject = zipfile.ZipFile(zipfilepath, mode="w")
 zipfilepathreduced = os.path.dirname( os.path.dirname( zipfilepath ) )
 
 try:
-	for file_name in file_names:
-		zipfileobject.write( file_name,
-				file_name.replace( zipfilepathreduced, "" ),
-				compress_type=zipfile.ZIP_DEFLATED )
+	for filename in file_names:
+		relative_filename = filename.replace( zipfilepathreduced, "" )
+		print( relative_filename, end="@NEWNEWLINE@" )
+		zipfileobject.write( filename, relative_filename, compress_type=zipfile.ZIP_DEFLATED )
 
 except Exception as error:
-	print("An error occurred: %s" % error)
+	print( "", end="@NEWNEWLINE@" )
+	print( "An error occurred: %s" % error, end="@NEWNEWLINE@" )
 	exit(1)
 
 finally:
 	zipfileobject.close()
 
-print( "Successfully created the release version on: %s!" % zipfilepath )
+print( "", end="@NEWNEWLINE@" )
+print( "Successfully created the release version on:@NEWNEWLINE@  %s!" % zipfilepath , end="" )
 endef
 
+# https://stackoverflow.com/questions/55839773/how-to-get-the-exit-status-and-the-output-of-a-shell-command-before-make-4-2
 release:
 	printf '%s\n' "$(shell echo \
 		'$(subst ${NEWLINE},@NEWLINE@,${RELEASE_CODE})' | \
-		sed 's/@NEWLINE@/\n/g' | python - && \
-		printf 'Successfully created the zip file!\n' || \
-		printf 'Error: Could not create the zip file!\n' )"
+		sed 's/@NEWLINE@/\n/g' | python - || \
+		( printf 'Error: Could not create the zip file!\n'; exit 1 ) )" | sed 's/@NEWNEWLINE@/\n/g'
+	exit "${.SHELLSTATUS}"
 
