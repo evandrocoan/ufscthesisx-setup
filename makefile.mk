@@ -376,7 +376,7 @@ initial_file_names = [
 	os.path.join("setup", "scripts", "timer_calculator.sh"),
 ]
 
-for direcory_name, dirs, files in os.walk(CURRENT_DIRECTORY):
+for direcory_name, dirs, files in os.walk(CURRENT_DIRECTORY, followlinks=True):
 
 	if ".git" in direcory_name:
 		continue
