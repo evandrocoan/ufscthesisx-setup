@@ -211,15 +211,16 @@ endif
 
 # Calculate the elapsed seconds and print them to the screen
 define print_results =
-	. ./setup/scripts/timer_calculator.sh
-	showTheElapsedSeconds "${current_dir}"
-	printf '%s/main.log:10000000 \n' "${CACHE_DIRECTORY}"
+    . ./setup/scripts/timer_calculator.sh; \
+    showTheElapsedSeconds "${current_dir}"; \
+    printf '%s/main.log:10000000 ' "${CACHE_DIRECTORY}"; \
+    printf '\n'
 endef
 
 # Copies the PDF to the current directory
 # https://stackoverflow.com/questions/55671541/how-define-a-makefile-condition-and-reuse-it-in-several-build-rules/
-define copy_resulting_pdf=
-	${print_results}
+define copy_resulting_pdf =
+	${print_results}; \
 	if [[ -f "${THESIS_MAIN_FILE_PATH}" ]]; \
 	then \
 		printf 'Coping PDF...\n'; \
@@ -292,7 +293,7 @@ biber_hook1 biber_hook2: $(if $(wildcard ${CACHE_DIRECTORY}/${THESIS_MAIN_FILE}.
 # https://stackoverflow.com/questions/46135614/how-to-call-makefile-recipe-rule-multiple-times
 pdflatex_hook1 pdflatex_hook2 pdflatex_hook3 pdflatex_hook4 pdflatex_hook5:
 	printf 'LATEX_SOURCE_FILES: %s\n' "${LATEX_SOURCE_FILES}"
-	@${LATEX} ${LATEX_SOURCE_FILES}
+	@${LATEX} ${LATEX_SOURCE_FILES} || ( ${print_results}; exit 1 )
 
 
 # This rule will be called for every latex file and pdf associated
@@ -303,13 +304,13 @@ latex pdflatex: start_timer pdflatex_hook1
 
 # Dynamically generated recipes for all PDF and latex files
 %.pdf: %.tex
-	@${LATEX} $<
+	@${LATEX} $< || ( ${print_results}; exit 1 )
 
 
 # MAIN LATEXMK RULE
 ${LATEXMK_THESIS}:
 	${setup_envinronment}
-	${LATEXMK_COMMAND} ${THESIS_MAIN_FILE}.tex
+	${LATEXMK_COMMAND} ${THESIS_MAIN_FILE}.tex || ( ${print_results}; exit 1 )
 	${copy_resulting_pdf}
 
 
