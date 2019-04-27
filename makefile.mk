@@ -3,6 +3,53 @@
 ECHOCMD:=/bin/echo -e
 SHELL := /bin/bash
 
+# Default target
+all: thesis
+
+##
+## Usage:
+##   make <target> [debug=1]
+##
+## Use debug=1 to run make in debug mode. Use this if something does not work!
+## Examples:
+##   make debug=1
+##   make latex debug=1
+##   make thesis debug=1
+##
+## If you are using Windows Command Prompt `cmd.exe`, you must use this
+## command like this:
+##  set "debug=1" && make
+##  set "debug=1" && make latex
+##  set "debug=1" && make thesis
+##
+## Targets:
+##   all        call the `thesis` make rule
+##   index      build the main file with index pass
+##   biber      build the main file with bibliography pass
+##   latex      build the main file with no bibliography pass
+##   pdflatex   the same as latex rule, i.e., an alias for it
+##   latexmk    build the main file with pdflatex biber pdflatex pdflatex
+##              pdflatex makeindex biber pdflatex
+##
+##   thesis     completely build the main file with minimum output logs
+##   verbose    completely build the main file with maximum output logs
+##   clean      remove all cache directories and generated pdf files
+##   veryclean  same as `clean`, but searches for all generated files outside
+##              the cache directories.
+##
+##   release version=1.1   creates the zip file `1.1.zip` on the root of this
+##        project, within all latex required files. This is useful to share or
+##        public your thesis source files with others.
+##        If you are using Windows Command Prompt `cmd.exe`, you must use this
+##        command like this: set "version=1.1" && make release
+##
+##
+
+# Print the usage instructions
+# https://gist.github.com/prwhite/8168133
+help:
+	@fgrep -h "##" ${MAKEFILE_LIST} | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
+
 # The main latex file
 THESIS_MAIN_FILE := main
 
@@ -101,59 +148,12 @@ ifneq (,${ENABLE_DEBUG_MODE})
 	endif
 endif
 
+
 .PHONY: all help latex thesis verbose clean biber index start_timer biber_hook1 \
 biber_hook2 pdflatex_hook1 pdflatex_hook2 pdflatex_hook3 pdflatex_hook4 pdflatex_hook5
 
 # http://stackoverflow.com/questions/1789594/how-do-i-write-the-cd-command-in-a-makefile
 .ONESHELL:
-
-# Default target
-all: thesis
-
-##
-## Usage:
-##   make <target> [debug=1]
-##
-## Use debug=1 to run make in debug mode. Use this if something does not work!
-## Examples:
-##   make debug=1
-##   make latex debug=1
-##   make thesis debug=1
-##
-## If you are using Windows Command Prompt `cmd.exe`, you must use this
-## command like this:
-##  set "debug=1" && make
-##  set "debug=1" && make latex
-##  set "debug=1" && make thesis
-##
-## Targets:
-##   all        call the `thesis` make rule
-##   index      build the main file with index pass
-##   biber      build the main file with bibliography pass
-##   latex      build the main file with no bibliography pass
-##   pdflatex   the same as latex rule, i.e., an alias for it
-##   latexmk    build the main file with pdflatex biber pdflatex pdflatex
-##              pdflatex makeindex biber pdflatex
-##
-##   thesis     completely build the main file with minimum output logs
-##   verbose    completely build the main file with maximum output logs
-##   clean      remove all cache directories and generated pdf files
-##   veryclean  same as `clean`, but searches for all generated files outside
-##              the cache directories.
-##
-##   release version=1.1   creates the zip file `1.1.zip` on the root of this
-##        project, within all latex required files. This is useful to share or
-##        public your thesis source files with others.
-##        If you are using Windows Command Prompt `cmd.exe`, you must use this
-##        command like this: set "version=1.1" && make release
-##
-##
-
-# Print the usage instructions
-# https://gist.github.com/prwhite/8168133
-help:
-	@fgrep -h "##" ${MAKEFILE_LIST} | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
-
 
 # https://tex.stackexchange.com/questions/91592/where-to-find-official-and-extended-documentation-for-tex-latexs-commandlin
 # https://tex.stackexchange.com/questions/52988/avoid-linebreaks-in-latex-console-log-output-or-increase-columns-in-terminal
@@ -165,21 +165,6 @@ ifeq (,${ENABLE_DEBUG_MODE})
 	PDF_LATEX_COMMAND +=  --interaction=nonstopmode
 endif
 
-# MAIN LATEXMK RULE
-#
-# -pdf tells latexmk to generate PDF directly (instead of DVI).
-# -pdflatex="" tells latexmk to call a specific backend with specific options.
-#
-# -use-make tells latexmk to call make for generating missing files. When after a run of latex or
-# pdflatex, there are warnings about missing files (e.g., as requested by the LaTeX \input,
-# \include, and \includgraphics commands), latexmk tries to make them by a custom dependency. If no
-# relevant custom dependency with an appropriate source file is found, and if the -use-make option
-# is set, then as a last resort latexmk will try to use the make program to try to make the missing
-# files.
-#
-# -interaction=nonstopmode keeps the pdflatex backend from stopping at a missing file reference and
-# interactively asking you for an alternative.
-#
 # https://www.ctan.org/pkg/latexmk
 # http://docs.miktex.org/manual/texfeatures.html#auxdirectory
 # https://tex.stackexchange.com/questions/258814/what-is-the-difference-between-interaction-nonstopmode-and-halt-on-error
