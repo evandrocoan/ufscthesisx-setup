@@ -170,6 +170,7 @@ endif
 # https://tex.stackexchange.com/questions/258814/what-is-the-difference-between-interaction-nonstopmode-and-halt-on-error
 # https://tex.stackexchange.com/questions/25267/what-reasons-if-any-are-there-for-compiling-in-interactive-mode
 LATEXMK_COMMAND := latexmk \
+	-f \
 	--pdf \
 	--output-directory="${CACHE_DIRECTORY}" \
 	--aux-directory="${CACHE_DIRECTORY}" \
