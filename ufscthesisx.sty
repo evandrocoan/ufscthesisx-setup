@@ -680,6 +680,10 @@
 patched with 'topsep=0pt' but it failed. This is probably due an update on the main class 'abnTeX2',
 therefore the \topsep patch must need to be updated accordingly}}
 
+% Backward compatibility with `abntex2cite` package `\citeonline` command with the new `biblatex` package
+% https://tex.stackexchange.com/questions/655/what-is-the-difference-between-def-and-newcommand
+\let\citeonline\textcite
+
 % Ao contrario da norma abnt-6027-2012, que as figuras estejam listadas na Lista de
 % Ilustrações,  a UFSC pede que as figuras estejam na Lista de Figuras.
 %
