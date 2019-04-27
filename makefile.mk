@@ -172,8 +172,8 @@ endif
 LATEXMK_COMMAND := latexmk \
 	-f \
 	--pdf \
-	--output-directory="${CACHE_DIRECTORY}" \
 	--aux-directory="${CACHE_DIRECTORY}" \
+	--output-directory="${CACHE_DIRECTORY}" \
 	--pdflatex="${PDF_LATEX_COMMAND}"
 
 ifeq (,${ENABLE_DEBUG_MODE})
