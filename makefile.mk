@@ -292,7 +292,7 @@ biber_hook1 biber_hook2: $(if $(wildcard ${CACHE_DIRECTORY}/${THESIS_MAIN_FILE}.
 # https://stackoverflow.com/questions/46135614/how-to-call-makefile-recipe-rule-multiple-times
 pdflatex_hook1 pdflatex_hook2 pdflatex_hook3 pdflatex_hook4 pdflatex_hook5:
 	printf 'LATEX_SOURCE_FILES: %s\n' "${LATEX_SOURCE_FILES}"
-	@${LATEX} ${LATEX_SOURCE_FILES} || ( ${print_results}; exit 1 )
+	@${LATEX} ${LATEX_SOURCE_FILES} || eval "${print_results}; exit 1"
 	printf '\n'
 
 
@@ -304,14 +304,14 @@ latex pdflatex: start_timer pdflatex_hook1
 
 # MAIN LATEXMK RULE
 ${LATEXMK_THESIS}: start_timer
-	${LATEXMK_COMMAND} ${THESIS_MAIN_FILE}.tex || ( ${print_results}; exit 1 )
+	${LATEXMK_COMMAND} ${THESIS_MAIN_FILE}.tex || eval "${print_results}; exit 1"
 	${copy_resulting_pdf}
 	printf '\n'
 
 
 # Dynamically generated recipes for all PDF and latex files
 %.pdf: %.tex
-	@${LATEX} $< || ( ${print_results}; exit 1 )
+	@${LATEX} $< || eval "${print_results}; exit 1"
 
 
 clean:
