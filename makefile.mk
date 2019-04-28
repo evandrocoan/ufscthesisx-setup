@@ -171,6 +171,13 @@ ifneq (,${ENABLE_DEBUG_MODE})
 		useless := $(shell printf 'Warning: rsync is not found installed!\n' 1>&2)
 	endif
 
+	# https://stackoverflow.com/questions/5618615/check-if-a-program-exists-from-a-makefile
+	ifeq (,$(shell ssh -V >/dev/null 2>&1 || (echo "Your command failed with $$?")))
+		useless := $(shell printf 'Success: ssh is installed!\n' 1>&2)
+	else
+		useless := $(shell printf 'Warning: ssh is not found installed!\n' 1>&2)
+	endif
+
 	ifeq (${LATEX_VERSION}, 1)
 		useless := $(shell printf 'Success: Your latex version is compatible!\n' 1>&2)
 	else
@@ -203,6 +210,7 @@ else \
 	printf '\nError: The PDF %s was not generated!\n' "${THESIS_MAIN_FILE_PATH}"; \
 	exit 1; \
 fi
+printf '\n'
 endef
 
 # https://stackoverflow.com/questions/4210042/exclude-directory-from-find-command
@@ -286,7 +294,7 @@ biber_hook1 biber_hook2: $(if $(wildcard ${CACHE_DIRECTORY}/${THESIS_MAIN_FILE}.
 # https://stackoverflow.com/questions/46135614/how-to-call-makefile-recipe-rule-multiple-times
 pdflatex_hook1 pdflatex_hook2 pdflatex_hook3 pdflatex_hook4 pdflatex_hook5:
 	printf 'LATEX_SOURCE_FILES: %s\n' "${LATEX_SOURCE_FILES}"
-	@${LATEX} ${LATEX_SOURCE_FILES} || eval "${print_results}; exit 1"
+	@${LATEX} ${LATEX_SOURCE_FILES} || eval "${print_results}; exit $$?"
 	printf '\n'
 
 
@@ -298,19 +306,20 @@ latex pdflatex: start_timer pdflatex_hook1
 
 # MAIN LATEXMK RULE
 ${LATEXMK_THESIS}: start_timer
-	${LATEXMK_COMMAND} ${THESIS_MAIN_FILE}.tex || eval "${print_results}; exit 1"
+	${LATEXMK_COMMAND} ${THESIS_MAIN_FILE}.tex || eval "${print_results}; exit $$?"
 	${copy_resulting_pdf}
-	printf '\n'
 
 
 # Dynamically generated recipes for all PDF and latex files
 %.pdf: %.tex
-	@${LATEX} $< || eval "${print_results}; exit 1"
+	@${LATEX} $< || eval "${print_results}; exit $$?"
+	printf '\n'
 
 
 clean:
 	${RM} -rv ${CACHE_DIRECTORY}
 	${RM} -v ${THESIS_OUTPUT_NAME}.pdf
+	printf '\n'
 
 
 # https://stackoverflow.com/questions/4210042/exclude-directory-from-find-command
@@ -430,10 +439,10 @@ release:
 
 
 define REMOTE_COMMAND_TO_RUN :=
-cd $(if ${directory},${directory},~/LatexBuild); \
+cd $(if ${dir},${dir},~/LatexBuild); \
 printf '\nThe current directory is:\n'; pwd; \
 printf 'Running the command: make\n'; \
-make ${arguments};
+make ${rules};
 endef
 
 ##   remote     Runs the make command remotely on another machine by ssh.
@@ -444,17 +453,17 @@ endef
 ##       1. LATEXPASSWORD  - the remote machine SHH password
 ##       2. LATEXADDRESS   - the remote machine 'user@ipaddress'
 ##       3. rules          - the rules/arguments to pass to the remote invocation of make
-##       4. delete         - if non empty, will delete all remote file already transfered
-##       5. directory      - the directory to put the files, defaults to '~/LatexBuild'
+##       4. args           - arguments to pass to the rsync program
+##       5. dir            - the directory to put the files, defaults to '~/LatexBuild'
 ##
 ##     Example usage for Linux:
 ##       make remote LATEXPASSWORD=123 LATEXADDRESS=linux@192.168.79.135 rules=latex \
-##       		delete=1 directory=~/Downloads/Thesis
+##       		delete=1 dir=~/Downloads/Thesis
 ##
 ##     Example usage for Windows:
 ##       set "LATEXPASSWORD=123" && set "LATEXADDRESS=linux@192.168.79.135" &&
-##       		set "arguments=latex" && set "delete=1" &&
-##       		set "directory=~/Downloads/Thesis" &&
+##       		set "rules=latex" && set "delete=1" &&
+##       		set "dir=~/Downloads/Thesis" &&
 ##       		make remote
 ##
 #https://serverfault.com/questions/330503/scp-without-known-hosts-check
@@ -463,23 +472,24 @@ remote:
 	$(if ${ENABLE_DEBUG_MODE},printf '\n',)
 	$(eval current_dir := $(shell pwd)) echo ${current_dir} > /dev/null
 
-	printf 'Just ensures the directory is created...\n'
+	printf 'Just ensures the directory '%s' is created...\n' "${dir}"
 	passh -p $(if ${LATEXPASSWORD},${LATEXPASSWORD},admin123) \
 		ssh -o StrictHostKeyChecking=no $(if ${LATEXADDRESS},${LATEXADDRESS},linux@192.168.79.135) \
-		'mkdir -p $(if ${directory},${directory},~/LatexBuild)'
+		'mkdir -p $(if ${dir},${dir},~/LatexBuild)'
 
 	printf 'Running the command which will actually send the files...\n'
 	passh -p $(if ${LATEXPASSWORD},${LATEXPASSWORD},admin123) \
-		rsync -rvu --copy-links --exclude .git $(if ${delete},--delete,) ${current_dir}/* \
-		'$(if ${LATEXADDRESS},${LATEXADDRESS},linux@192.168.79.135):$(if ${directory},${directory},~/LatexBuild)'
+		rsync -rvu --copy-links --exclude .git --exclude ${CACHE_DIRECTORY} ${args} ${current_dir}/* \
+		'$(if ${LATEXADDRESS},${LATEXADDRESS},linux@192.168.79.135):$(if ${dir},${dir},~/LatexBuild)'
 
 	printf 'Running the command which will actually run make...\n'
 	passh -p $(if ${LATEXPASSWORD},${LATEXPASSWORD},admin123) \
 		ssh -o StrictHostKeyChecking=no $(if ${LATEXADDRESS},${LATEXADDRESS},linux@192.168.79.135) \
-		"${REMOTE_COMMAND_TO_RUN}"
+		"${REMOTE_COMMAND_TO_RUN}" || exit "$$?"
 
 	printf 'Running the command which will copy back the generated PDF...\n'
-	passh -p $(if ${LATEXPASSWORD},${LATEXPASSWORD},admin123) \
-		scp -o StrictHostKeyChecking=no '$(if ${LATEXADDRESS},${LATEXADDRESS},linux@192.168.79.135):~/LatexBuild/main.pdf' \
-		'${current_dir}/'
+	-passh -p $(if ${LATEXPASSWORD},${LATEXPASSWORD},admin123) \
+		scp -o StrictHostKeyChecking=no \
+		'$(if ${LATEXADDRESS},${LATEXADDRESS},linux@192.168.79.135):$(if ${dir},${dir},~/LatexBuild)/main.pdf' \
+		"${current_dir}/"
 

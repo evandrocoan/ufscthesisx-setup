@@ -39,7 +39,7 @@
                     "name": "Thesis (Default) [Remote]",
                     "shell": true,
                     "cmd": ["make", "remote"],
-                    "env": {"arguments": "thesis", "debug": ""},
+                    "env": {"rules": "thesis debug=''", "debug": "", "args": ""},
                 },
                 {
                     "name": "Thesis Biber",
@@ -49,7 +49,7 @@
                     "name": "Thesis Biber [Remote]",
                     "shell": true,
                     "cmd": ["make", "remote"],
-                    "env": {"arguments": "biber", "debug": ""},
+                    "env": {"rules": "biber debug=''", "debug": "", "args": ""},
                 },
                 {
                     "name": "Thesis LaTeX",
@@ -59,7 +59,7 @@
                     "name": "Thesis LaTeX [Remote]",
                     "shell": true,
                     "cmd": ["make", "remote"],
-                    "env": {"arguments": "latex", "debug": ""},
+                    "env": {"rules": "latex debug=''", "debug": "", "args": ""},
                 },
                 {
                     "name": "Thesis Veryclean",
@@ -69,7 +69,7 @@
                     "name": "Thesis Veryclean [Remote]",
                     "shell": true,
                     "cmd": ["make", "remote"],
-                    "env": {"arguments": "veryclean", "debug": ""},
+                    "env": {"rules": "veryclean debug=''", "debug": "", "args": "--delete"},
                 },
             ],
         },
