@@ -62,14 +62,8 @@ FIND_EXEC := $(if $(wildcard /bin/find),,/usr)/bin/find
 
 LATEXMK_THESIS := thesis
 LATEXMK_REPLACEMENT := latexmk
+GITIGNORE_SOURCE_PATH := .gitignore
 GITIGNORE_DESTINE_PATH := ./setup/.gitignore
-
-# https://stackoverflow.com/questions/55642491/how-to-check-whether-a-file-exists-outside-a-makefile-rule
-ifneq (,$(wildcard .gitignore))
-	GITIGNORE_SOURCE_PATH := .gitignore
-else
-	GITIGNORE_SOURCE_PATH := ../.gitignore
-endif
 
 .PHONY: all help latex thesis verbose clean biber index start_timer biber_hook1 \
 biber_hook2 pdflatex_hook1 pdflatex_hook2 pdflatex_hook3 pdflatex_hook4 pdflatex_hook5
@@ -250,7 +244,7 @@ endef
 ##   veryclean  Same as `clean`, but searches for all generated files outside
 ##              the cache directories.
 ##
-start_timer: ${GITIGNORE_DESTINE_PATH}
+start_timer: $(if $(wildcard ${GITIGNORE_DESTINE_PATH}),,${GITIGNORE_DESTINE_PATH})
 	${setup_envinronment}
 
 
@@ -330,8 +324,8 @@ veryclean_hidden:
 	readarray -td' ' DIRECTORIES_TO_CLEAN <<<"$(shell "${FIND_EXEC}" -not -path "./**.git**" -not -path "./pictures**" -type d) "; \
 	unset 'DIRECTORIES_TO_CLEAN[-1]'; \
 	declare -p DIRECTORIES_TO_CLEAN; \
-	readarray -td' ' GITIGNORE_CONTENTS <<<"$(shell echo \
-		"$(shell while read -r line; do printf "$$line "; done < "${GITIGNORE_SOURCE_PATH}")" \
+	readarray -td' ' GITIGNORE_CONTENTS <<<"$(shell printf '%s' \
+		"$(shell while read -r line; do printf "$$line "; done < "${GITIGNORE_DESTINE_PATH}")" \
 		| sed -E $$'s/[^\#]+\# //g' \
 		| sed -E 's/\r//g') "; \
 	unset 'GITIGNORE_CONTENTS[-1]'; \
