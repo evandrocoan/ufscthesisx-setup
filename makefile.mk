@@ -436,7 +436,7 @@ release:
 
 
 define REMOTE_COMMAND_TO_RUN :=
-cd $(if ${TARGET_DIRECTORY},${TARGET_DIRECTORY},~/LatexBuild); \
+cd $(if ${directory},${directory},~/LatexBuild); \
 printf '\nThe current directory is:\n'; pwd; \
 printf 'Running the command: make\n'; \
 make ${arguments};
@@ -446,20 +446,20 @@ endef
 ##              This requires `sshpass` program installed.
 ##
 ##       You can define the following parameters:
-##       1. PASSWORD  - the remote machine SHH password
-##       2. ADDRESS   - the remote machine 'user@ipaddress'
-##       3. rules     - the rules/arguments to pass to the remote invocation of make
-##       4. DELETE    - if non empty, will delete all remote file already transfered
-##       5. TARGET_DIRECTORY - the directory to put the files, defaults to '~/LatexBuild'
+##       1. LATEXPASSWORD  - the remote machine SHH password
+##       2. LATEXADDRESS   - the remote machine 'user@ipaddress'
+##       3. rules          - the rules/arguments to pass to the remote invocation of make
+##       4. delete         - if non empty, will delete all remote file already transfered
+##       5. directory      - the directory to put the files, defaults to '~/LatexBuild'
 ##
 ##     Example usage for Linux:
-##       make remote PASSWORD=123 ADDRESS=linux@192.168.79.135 rules=latex \
-##       		DELETE=1 TARGET_DIRECTORY=~/Downloads/Thesis
+##       make remote LATEXPASSWORD=123 LATEXADDRESS=linux@192.168.79.135 rules=latex \
+##       		delete=1 directory=~/Downloads/Thesis
 ##
 ##     Example usage for Windows:
-##       set "PASSWORD=123" && set "ADDRESS=linux@192.168.79.135" &&
-##       		set "arguments=latex" && set "DELETE=1" &&
-##       		set "TARGET_DIRECTORY=~/Downloads/Thesis" &&
+##       set "LATEXPASSWORD=123" && set "LATEXADDRESS=linux@192.168.79.135" &&
+##       		set "arguments=latex" && set "delete=1" &&
+##       		set "directory=~/Downloads/Thesis" &&
 ##       		make remote
 ##
 remote:
@@ -467,22 +467,22 @@ remote:
 	$(eval current_dir := $(shell pwd)) echo ${current_dir} > /dev/null
 
 	printf 'Just ensures the directory is created...\n'
-	sshpass -p $(if ${PASSWORD},${PASSWORD},admin123) \
-		ssh $(if ${ADDRESS},${ADDRESS},linux@192.168.79.135) \
-		'mkdir -p $(if ${TARGET_DIRECTORY},${TARGET_DIRECTORY},~/LatexBuild)'
+	sshpass -p $(if ${LATEXPASSWORD},${LATEXPASSWORD},admin123) \
+		ssh $(if ${LATEXADDRESS},${LATEXADDRESS},linux@192.168.79.135) \
+		'mkdir -p $(if ${directory},${directory},~/LatexBuild)'
 
 	printf 'Running the command which will actually send the files...\n'
-	sshpass -p $(if ${PASSWORD},${PASSWORD},admin123) \
-		rsync -rvu --copy-links --exclude .git $(if ${DELETE},--delete,) ${current_dir}/* \
-		'$(if ${ADDRESS},${ADDRESS},linux@192.168.79.135):$(if ${TARGET_DIRECTORY},${TARGET_DIRECTORY},~/LatexBuild)'
+	sshpass -p $(if ${LATEXPASSWORD},${LATEXPASSWORD},admin123) \
+		rsync -rvu --copy-links --exclude .git $(if ${delete},--delete,) ${current_dir}/* \
+		'$(if ${LATEXADDRESS},${LATEXADDRESS},linux@192.168.79.135):$(if ${directory},${directory},~/LatexBuild)'
 
 	printf 'Running the command which will actually run make...\n'
-	sshpass -p $(if ${PASSWORD},${PASSWORD},admin123) \
-		ssh $(if ${ADDRESS},${ADDRESS},linux@192.168.79.135) \
+	sshpass -p $(if ${LATEXPASSWORD},${LATEXPASSWORD},admin123) \
+		ssh $(if ${LATEXADDRESS},${LATEXADDRESS},linux@192.168.79.135) \
 		"${REMOTE_COMMAND_TO_RUN}"
 
 	printf 'Running the command which will copy back the generated PDF...\n'
-	sshpass -p $(if ${PASSWORD},${PASSWORD},admin123) \
-		scp '$(if ${ADDRESS},${ADDRESS},linux@192.168.79.135):~/LatexBuild/main.pdf' \
+	sshpass -p $(if ${LATEXPASSWORD},${LATEXPASSWORD},admin123) \
+		scp '$(if ${LATEXADDRESS},${LATEXADDRESS},linux@192.168.79.135):~/LatexBuild/main.pdf' \
 		'${current_dir}/'
 
