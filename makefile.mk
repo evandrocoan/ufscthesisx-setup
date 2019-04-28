@@ -164,10 +164,10 @@ ifneq (,${ENABLE_DEBUG_MODE})
 	endif
 
 	# https://stackoverflow.com/questions/5618615/check-if-a-program-exists-from-a-makefile
-	ifeq (,$(shell sshpass -V >/dev/null 2>&1 || (echo "Your command failed with $$?")))
-		useless := $(shell printf 'Success: sshpass is installed!\n' 1>&2)
+	ifeq (,$(shell passh -h -V >/dev/null 2>&1 || (echo "Your command failed with $$?")))
+		useless := $(shell printf 'Success: passh is installed!\n' 1>&2)
 	else
-		useless := $(shell printf 'Warning: sshpass is not found installed!\n' 1>&2)
+		useless := $(shell printf 'Warning: passh is not found installed!\n' 1>&2)
 	endif
 
 	# https://stackoverflow.com/questions/5618615/check-if-a-program-exists-from-a-makefile
@@ -443,7 +443,8 @@ make ${arguments};
 endef
 
 ##   remote     Runs the make command remotely on another machine by ssh.
-##              This requires `sshpass` program installed.
+##              This requires `passh` program installed. You can download it from:
+##              https://github.com/clarkwang/passh
 ##
 ##       You can define the following parameters:
 ##       1. LATEXPASSWORD  - the remote machine SHH password
@@ -462,27 +463,29 @@ endef
 ##       		set "directory=~/Downloads/Thesis" &&
 ##       		make remote
 ##
+#https://serverfault.com/questions/330503/scp-without-known-hosts-check
+#https://stackoverflow.com/questions/4780893/use-expect-in-bash-script-to-provide-password-to-ssh-command
 remote:
 	$(if ${ENABLE_DEBUG_MODE},printf '\n',)
 	$(eval current_dir := $(shell pwd)) echo ${current_dir} > /dev/null
 
 	printf 'Just ensures the directory is created...\n'
-	sshpass -p $(if ${LATEXPASSWORD},${LATEXPASSWORD},admin123) \
-		ssh $(if ${LATEXADDRESS},${LATEXADDRESS},linux@192.168.79.135) \
+	passh -p $(if ${LATEXPASSWORD},${LATEXPASSWORD},admin123) \
+		ssh -o StrictHostKeyChecking=no $(if ${LATEXADDRESS},${LATEXADDRESS},linux@192.168.79.135) \
 		'mkdir -p $(if ${directory},${directory},~/LatexBuild)'
 
 	printf 'Running the command which will actually send the files...\n'
-	sshpass -p $(if ${LATEXPASSWORD},${LATEXPASSWORD},admin123) \
+	passh -p $(if ${LATEXPASSWORD},${LATEXPASSWORD},admin123) \
 		rsync -rvu --copy-links --exclude .git $(if ${delete},--delete,) ${current_dir}/* \
 		'$(if ${LATEXADDRESS},${LATEXADDRESS},linux@192.168.79.135):$(if ${directory},${directory},~/LatexBuild)'
 
 	printf 'Running the command which will actually run make...\n'
-	sshpass -p $(if ${LATEXPASSWORD},${LATEXPASSWORD},admin123) \
-		ssh $(if ${LATEXADDRESS},${LATEXADDRESS},linux@192.168.79.135) \
+	passh -p $(if ${LATEXPASSWORD},${LATEXPASSWORD},admin123) \
+		ssh -o StrictHostKeyChecking=no $(if ${LATEXADDRESS},${LATEXADDRESS},linux@192.168.79.135) \
 		"${REMOTE_COMMAND_TO_RUN}"
 
 	printf 'Running the command which will copy back the generated PDF...\n'
-	sshpass -p $(if ${LATEXPASSWORD},${LATEXPASSWORD},admin123) \
-		scp '$(if ${LATEXADDRESS},${LATEXADDRESS},linux@192.168.79.135):~/LatexBuild/main.pdf' \
+	passh -p $(if ${LATEXPASSWORD},${LATEXPASSWORD},admin123) \
+		scp -o StrictHostKeyChecking=no '$(if ${LATEXADDRESS},${LATEXADDRESS},linux@192.168.79.135):~/LatexBuild/main.pdf' \
 		'${current_dir}/'
 
