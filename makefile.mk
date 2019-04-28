@@ -23,26 +23,19 @@ all: thesis
 ##  set "debug=1" && make thesis
 ##
 ## Targets:
-##   all        call the `thesis` make rule
-##   index      build the main file with index pass
-##   biber      build the main file with bibliography pass
-##   latex      build the main file with no bibliography pass
-##   pdflatex   the same as latex rule, i.e., an alias for it
-##   latexmk    build the main file with pdflatex biber pdflatex pdflatex
+##   all        Call the `thesis` make rule
+##   index      Build the main file with index pass
+##   biber      Build the main file with bibliography pass
+##   latex      Build the main file with no bibliography pass
+##   pdflatex   The same as latex rule, i.e., an alias for it
+##   latexmk    Build the main file with pdflatex biber pdflatex pdflatex
 ##              pdflatex makeindex biber pdflatex
 ##
-##   thesis     completely build the main file with minimum output logs
-##   verbose    completely build the main file with maximum output logs
-##   clean      remove all cache directories and generated pdf files
-##   veryclean  same as `clean`, but searches for all generated files outside
+##   thesis     Completely build the main file with minimum output logs
+##   verbose    Completely build the main file with maximum output logs
+##   clean      Remove all cache directories and generated pdf files
+##   veryclean  Same as `clean`, but searches for all generated files outside
 ##              the cache directories.
-##
-##   release version=1.1   creates the zip file `1.1.zip` on the root of this
-##        project, within all latex required files. This is useful to share or
-##        public your thesis source files with others.
-##        If you are using Windows Command Prompt `cmd.exe`, you must use this
-##        command like this: set "version=1.1" && make release
-##
 ##
 
 # Print the usage instructions
@@ -97,7 +90,7 @@ define NEWLINE
 
 endef
 
-define LATEX_VERSION_CODE
+define LATEX_VERSION_CODE :=
 import re, sys;
 match = re.search(r"Copyright (\d+)", """$(shell tex --version)""");
 if match:
@@ -135,6 +128,20 @@ ifneq (,${ENABLE_DEBUG_MODE})
 	else
 		useless := $(shell printf 'Warning: python is not found installed!\n' 1>&2)
 		LATEX_VERSION := 0
+	endif
+
+	# https://stackoverflow.com/questions/5618615/check-if-a-program-exists-from-a-makefile
+	ifeq (,$(shell sshpass -V >/dev/null 2>&1 || (echo "Your command failed with $$?")))
+		useless := $(shell printf 'Success: sshpass is installed!\n' 1>&2)
+	else
+		useless := $(shell printf 'Warning: sshpass is not found installed!\n' 1>&2)
+	endif
+
+	# https://stackoverflow.com/questions/5618615/check-if-a-program-exists-from-a-makefile
+	ifeq (,$(shell rsync --version >/dev/null 2>&1 || (echo "Your command failed with $$?")))
+		useless := $(shell printf 'Success: rsync is installed!\n' 1>&2)
+	else
+		useless := $(shell printf 'Warning: rsync is not found installed!\n' 1>&2)
 	endif
 
 	ifeq (${LATEX_VERSION}, 1)
@@ -198,47 +205,47 @@ endif
 
 # Calculate the elapsed seconds and print them to the screen
 define print_results =
-    . ./setup/scripts/timer_calculator.sh; \
-    showTheElapsedSeconds "${current_dir}"; \
-    printf '%s/main.log:10000000 ' "${CACHE_DIRECTORY}"; \
-    printf '\n'
+. ./setup/scripts/timer_calculator.sh; \
+showTheElapsedSeconds "${current_dir}"; \
+printf '%s/main.log:10000000 ' "${CACHE_DIRECTORY}"; \
+printf '\n'
 endef
 
 # Copies the PDF to the current directory
 # https://stackoverflow.com/questions/55671541/how-define-a-makefile-condition-and-reuse-it-in-several-build-rules/
 define copy_resulting_pdf =
-	${print_results}; \
-	if [[ -f "${THESIS_MAIN_FILE_PATH}" ]]; \
-	then \
-		printf 'Coping PDF...\n'; \
-		cp "${THESIS_MAIN_FILE_PATH}" "${current_dir}/${THESIS_OUTPUT_NAME}.pdf"; \
-	else \
-		printf '\nError: The PDF %s was not generated!\n' "${THESIS_MAIN_FILE_PATH}"; \
-		exit 1; \
-	fi
+${print_results}; \
+if [[ -f "${THESIS_MAIN_FILE_PATH}" ]]; \
+then \
+	printf 'Coping PDF...\n'; \
+	cp "${THESIS_MAIN_FILE_PATH}" "${current_dir}/${THESIS_OUTPUT_NAME}.pdf"; \
+else \
+	printf '\nError: The PDF %s was not generated!\n' "${THESIS_MAIN_FILE_PATH}"; \
+	exit 1; \
+fi
 endef
 
 # https://stackoverflow.com/questions/4210042/exclude-directory-from-find-command
 # https://tex.stackexchange.com/questions/323820/i-cant-write-on-file-foo-aux
 # https://stackoverflow.com/questions/11469989/how-can-i-strip-first-x-characters-from-string-using-sed
 define setup_envinronment =
-	. ./setup/scripts/timer_calculator.sh
-	$(eval current_dir := $(shell pwd)) echo ${current_dir} > /dev/null
+. ./setup/scripts/timer_calculator.sh
+$(eval current_dir := $(shell pwd)) echo ${current_dir} > /dev/null
 
-	printf '\n';
-	readarray -td' ' DIRECTORIES_TO_CREATE <<<"$(shell "${FIND_EXEC}" \
-			-not -path "./**.git**" \
-			-not -path "./pictures**" -type d \
-			-not -path "./setup**" -type d) "; \
-	unset 'DIRECTORIES_TO_CREATE[-1]'; \
-	declare -p DIRECTORIES_TO_CREATE; \
-	for directory_name in "$${DIRECTORIES_TO_CREATE[@]}"; \
-	do \
-		full_cache_directory="${CACHE_DIRECTORY}/$${directory_name:2}"; \
-		printf 'Creating %s\n' "$${full_cache_directory}"; \
-		mkdir -p "$${full_cache_directory}"; \
-	done
-	printf '\n';
+printf '\n';
+readarray -td' ' DIRECTORIES_TO_CREATE <<<"$(shell "${FIND_EXEC}" \
+		-not -path "./**.git**" \
+		-not -path "./pictures**" -type d \
+		-not -path "./setup**" -type d) "; \
+unset 'DIRECTORIES_TO_CREATE[-1]'; \
+declare -p DIRECTORIES_TO_CREATE; \
+for directory_name in "$${DIRECTORIES_TO_CREATE[@]}"; \
+do \
+	full_cache_directory="${CACHE_DIRECTORY}/$${directory_name:2}"; \
+	printf 'Creating %s\n' "$${full_cache_directory}"; \
+	mkdir -p "$${full_cache_directory}"; \
+done
+printf '\n';
 endef
 
 
@@ -318,6 +325,7 @@ clean:
 # https://stackoverflow.com/questions/55545253/how-to-expand-wildcard-inside-shell-code-block-in-a-makefile
 veryclean: veryclean_hidden clean
 veryclean_hidden:
+	$(if ${ENABLE_DEBUG_MODE},printf '\n',)
 	readarray -td' ' DIRECTORIES_TO_CLEAN <<<"$(shell "${FIND_EXEC}" -not -path "./**.git**" -not -path "./pictures**" -type d) "; \
 	unset 'DIRECTORIES_TO_CLEAN[-1]'; \
 	declare -p DIRECTORIES_TO_CLEAN; \
@@ -344,7 +352,7 @@ veryclean_hidden:
 # https://stackoverflow.com/questions/39767904/create-zip-archive-with-multiple-files
 # https://stackoverflow.com/questions/47588379/zip-multiple-files-with-multiple-result-in-python
 # https://stackoverflow.com/questions/16091904/python-zip-how-to-eliminate-absolute-path-in-zip-archive-if-absolute-paths-for
-define RELEASE_CODE
+define RELEASE_CODE :=
 from __future__ import print_function
 import os
 import zipfile
@@ -409,11 +417,71 @@ print( "", end="@NEWNEWLINE@" )
 print( "Successfully created the release version on:@NEWNEWLINE@  %s!" % zipfilepath , end="" )
 endef
 
+##   release version=1.1
+##       creates the zip file `1.1.zip` on the root of this project,
+##       within all latex required files. This is useful to share or
+##       public your thesis source files with others. If you are using
+##       Windows Command Prompt `cmd.exe`, you must use this command like this:
+##       set "version=1.1" && make release
+##
 # https://stackoverflow.com/questions/55839773/how-to-get-the-exit-status-and-the-output-of-a-shell-command-before-make-4-2
 release:
+	$(if ${ENABLE_DEBUG_MODE},printf '\n',)
 	printf '%s\n' "$(shell echo \
 		'$(subst ${NEWLINE},@NEWLINE@,${RELEASE_CODE})' | \
 		sed 's/@NEWLINE@/\n/g' | python - || \
 		( printf 'Error: Could not create the zip file!\n'; exit 1 ) )" | sed 's/@NEWNEWLINE@/\n/g'
 	exit "${.SHELLSTATUS}"
+
+
+define REMOTE_COMMAND_TO_RUN :=
+cd $(if ${TARGET_DIRECTORY},${TARGET_DIRECTORY},~/LatexBuild); \
+printf '\nThe current directory is:\n'; pwd; \
+printf 'Running the command: make\n'; \
+make ${arguments};
+endef
+
+##   remote     Runs the make command remotely on another machine by ssh.
+##              This requires `sshpass` program installed.
+##
+##       You can define the following parameters:
+##       1. PASSWORD  - the remote machine SHH password
+##       2. ADDRESS   - the remote machine 'user@ipaddress'
+##       3. rules     - the rules/arguments to pass to the remote invocation of make
+##       4. DELETE    - if non empty, will delete all remote file already transfered
+##       5. TARGET_DIRECTORY - the directory to put the files, defaults to '~/LatexBuild'
+##
+##     Example usage for Linux:
+##       make remote PASSWORD=123 ADDRESS=linux@192.168.79.135 rules=latex \
+##       		DELETE=1 TARGET_DIRECTORY=~/Downloads/Thesis
+##
+##     Example usage for Windows:
+##       set "PASSWORD=123" && set "ADDRESS=linux@192.168.79.135" &&
+##       		set "arguments=latex" && set "DELETE=1" &&
+##       		set "TARGET_DIRECTORY=~/Downloads/Thesis" &&
+##       		make remote
+##
+remote:
+	$(if ${ENABLE_DEBUG_MODE},printf '\n',)
+	$(eval current_dir := $(shell pwd)) echo ${current_dir} > /dev/null
+
+	printf 'Just ensures the directory is created...\n'
+	sshpass -p $(if ${PASSWORD},${PASSWORD},admin123) \
+		ssh $(if ${ADDRESS},${ADDRESS},linux@192.168.79.135) \
+		'mkdir -p $(if ${TARGET_DIRECTORY},${TARGET_DIRECTORY},~/LatexBuild)'
+
+	printf 'Running the command which will actually send the files...\n'
+	sshpass -p $(if ${PASSWORD},${PASSWORD},admin123) \
+		rsync -rvu --copy-links --exclude .git $(if ${DELETE},--delete,) ${current_dir}/* \
+		'$(if ${ADDRESS},${ADDRESS},linux@192.168.79.135):$(if ${TARGET_DIRECTORY},${TARGET_DIRECTORY},~/LatexBuild)'
+
+	printf 'Running the command which will actually run make...\n'
+	sshpass -p $(if ${PASSWORD},${PASSWORD},admin123) \
+		ssh $(if ${ADDRESS},${ADDRESS},linux@192.168.79.135) \
+		"${REMOTE_COMMAND_TO_RUN}"
+
+	printf 'Running the command which will copy back the generated PDF...\n'
+	sshpass -p $(if ${PASSWORD},${PASSWORD},admin123) \
+		scp '$(if ${ADDRESS},${ADDRESS},linux@192.168.79.135):~/LatexBuild/main.pdf' \
+		'${current_dir}/'
 
