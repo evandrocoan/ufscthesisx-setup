@@ -503,6 +503,29 @@
 }
 \makeatother
 
+% Create a list of things like (\usepackage{paralist})
+%   \palavraschaveufsc{englishkeywordslist}{keyword 1}
+%   \palavraschaveufsc{englishkeywordslist}{keyword 2}
+%   \begin{inparaitem}[]\englishkeywordslist\end{inparaitem}
+%   \begin{inparaenum}\englishkeywordslist\end{inparaenum}
+%
+% https://tex.stackexchange.com/questions/61811/how-to-define-inparaenum-in-the-preamble
+% https://tex.stackexchange.com/questions/468862/lonely-item-perhaps-a-missing-list-environment-missing-package
+% https://tex.stackexchange.com/questions/188476/how-do-you-define-one-macro-with-arguments-inside-another
+% https://tex.stackexchange.com/questions/191266/defining-macros-with-arguments
+% https://tex.stackexchange.com/questions/65780/macro-defining-macro
+% https://tex.stackexchange.com/questions/20456/removing-a-backslash-when-passing-arguments-to-newcommand
+\makeatletter
+\newcommand{\palavraschaveufsc}[2]{%
+    \@ifundefined{#1}{%
+        \message{palavraschaveufsc #1 is undefined}
+        \expandafter\newcommand\csname#1\endcsname{}
+    }{%
+        \message{palavraschaveufsc #1 is defined}
+    }
+    {\expandafter\g@addto@macro\csname#1\endcsname{\item #2. }}
+}
+\makeatother
 
 % ------------------------------------------------------------------------
 % ------------------------------------------------------------------------
