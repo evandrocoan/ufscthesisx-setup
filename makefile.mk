@@ -82,12 +82,13 @@ FIND_EXEC := $(if $(wildcard /bin/find),,/usr)/bin/find
 
 LATEXMK_THESIS := thesis
 LATEXMK_REPLACEMENT := latexmk
+GITIGNORE_DESTINE_PATH := ./setup/.gitignore
 
 # https://stackoverflow.com/questions/55642491/how-to-check-whether-a-file-exists-outside-a-makefile-rule
 ifneq (,$(wildcard .gitignore))
-	GITIGNORE_PATH := .gitignore
+	GITIGNORE_SOURCE_PATH := .gitignore
 else
-	GITIGNORE_PATH := ../.gitignore
+	GITIGNORE_SOURCE_PATH := ../.gitignore
 endif
 
 # https://stackoverflow.com/questions/55681576/how-to-send-input-on-stdin-to-a-python-script-defined-inside-a-makefile
@@ -241,20 +242,18 @@ define setup_envinronment =
 endef
 
 
-# Keep updated our copy of the .gitignore
-"${GITIGNORE_PATH}":
-# 	printf 'Copying %s file...\n' "${GITIGNORE_PATH}"
-	cp -r "${GITIGNORE_PATH}" ./setup/
-
-
-start_timer: "${GITIGNORE_PATH}"
+start_timer: "${GITIGNORE_SOURCE_PATH}"
 	${setup_envinronment}
 
 
-# https://tex.stackexchange.com/questions/98204/index-not-working
-index: $(if $(wildcard ${CACHE_DIRECTORY}/${THESIS_MAIN_FILE}.idx),,pdflatex_hook1)
-	makeindex "${CACHE_DIRECTORY}/${THESIS_MAIN_FILE}.idx"
-	printf '\n'
+# Keep updated our copy of the .gitignore
+# https://stackoverflow.com/questions/55886204/how-to-use-make-to-keep-a-file-synced
+"${GITIGNORE_SOURCE_PATH}":
+	if [[ ! -z "${ENABLE_DEBUG_MODE}" ]]; \
+	then \
+		printf 'Copying %s file...\n' "${GITIGNORE_SOURCE_PATH}";
+	fi
+	cp -$(if ${ENABLE_DEBUG_MODE},v,)r "${GITIGNORE_SOURCE_PATH}" "${GITIGNORE_DESTINE_PATH}"
 
 
 # Run pdflatex, biber, pdflatex
@@ -265,6 +264,12 @@ biber: start_timer biber_hook1 index pdflatex_hook2
 # https://stackoverflow.com/questions/46135614/how-to-call-makefile-recipe-rule-multiple-times
 ${LATEXMK_REPLACEMENT}: start_timer pdflatex_hook1 biber_hook1 pdflatex_hook2 pdflatex_hook3 index pdflatex_hook4 biber_hook2 pdflatex_hook5
 	${copy_resulting_pdf}
+
+
+# https://tex.stackexchange.com/questions/98204/index-not-working
+index: $(if $(wildcard ${CACHE_DIRECTORY}/${THESIS_MAIN_FILE}.idx),,pdflatex_hook1)
+	makeindex "${CACHE_DIRECTORY}/${THESIS_MAIN_FILE}.idx"
+	printf '\n'
 
 
 # Call biber to process the bibliography and does not attempt to show the elapsed time
@@ -280,6 +285,7 @@ biber_hook1 biber_hook2: $(if $(wildcard ${CACHE_DIRECTORY}/${THESIS_MAIN_FILE}.
 pdflatex_hook1 pdflatex_hook2 pdflatex_hook3 pdflatex_hook4 pdflatex_hook5:
 	printf 'LATEX_SOURCE_FILES: %s\n' "${LATEX_SOURCE_FILES}"
 	@${LATEX} ${LATEX_SOURCE_FILES} || ( ${print_results}; exit 1 )
+	printf '\n'
 
 
 # This rule will be called for every latex file and pdf associated
@@ -288,16 +294,16 @@ latex pdflatex: start_timer pdflatex_hook1
 	${copy_resulting_pdf}
 
 
+# MAIN LATEXMK RULE
+${LATEXMK_THESIS}: start_timer
+	${LATEXMK_COMMAND} ${THESIS_MAIN_FILE}.tex || ( ${print_results}; exit 1 )
+	${copy_resulting_pdf}
+	printf '\n'
+
+
 # Dynamically generated recipes for all PDF and latex files
 %.pdf: %.tex
 	@${LATEX} $< || ( ${print_results}; exit 1 )
-
-
-# MAIN LATEXMK RULE
-${LATEXMK_THESIS}:
-	${setup_envinronment}
-	${LATEXMK_COMMAND} ${THESIS_MAIN_FILE}.tex || ( ${print_results}; exit 1 )
-	${copy_resulting_pdf}
 
 
 clean:
@@ -316,7 +322,7 @@ veryclean_hidden:
 	unset 'DIRECTORIES_TO_CLEAN[-1]'; \
 	declare -p DIRECTORIES_TO_CLEAN; \
 	readarray -td' ' GITIGNORE_CONTENTS <<<"$(shell echo \
-		"$(shell while read -r line; do printf "$$line "; done < "${GITIGNORE_PATH}")" \
+		"$(shell while read -r line; do printf "$$line "; done < "${GITIGNORE_SOURCE_PATH}")" \
 		| sed -E $$'s/[^\#]+\# //g' \
 		| sed -E 's/\r//g') "; \
 	unset 'GITIGNORE_CONTENTS[-1]'; \
