@@ -3,43 +3,30 @@
 ECHOCMD:=/bin/echo -e
 SHELL := /bin/bash
 
-# Default target
-all: thesis
-
+# Print the usage instructions
+# https://gist.github.com/prwhite/8168133
 ##
 ## Usage:
 ##   make <target> [debug=1]
 ##
 ## Use debug=1 to run make in debug mode. Use this if something does not work!
 ## Examples:
+##   make help
 ##   make debug=1
 ##   make latex debug=1
 ##   make thesis debug=1
 ##
 ## If you are using Windows Command Prompt `cmd.exe`, you must use this
 ## command like this:
+##  make help
 ##  set "debug=1" && make
 ##  set "debug=1" && make latex
 ##  set "debug=1" && make thesis
 ##
-## Targets:
-##   all        Call the `thesis` make rule
-##   index      Build the main file with index pass
-##   biber      Build the main file with bibliography pass
-##   latex      Build the main file with no bibliography pass
-##   pdflatex   The same as latex rule, i.e., an alias for it
-##   latexmk    Build the main file with pdflatex biber pdflatex pdflatex
-##              pdflatex makeindex biber pdflatex
-##
-##   thesis     Completely build the main file with minimum output logs
-##   verbose    Completely build the main file with maximum output logs
-##   clean      Remove all cache directories and generated pdf files
-##   veryclean  Same as `clean`, but searches for all generated files outside
-##              the cache directories.
-##
 
-# Print the usage instructions
-# https://gist.github.com/prwhite/8168133
+# Default target
+all: thesis
+
 help:
 	@fgrep -h "##" ${MAKEFILE_LIST} | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
 
@@ -82,6 +69,52 @@ ifneq (,$(wildcard .gitignore))
 	GITIGNORE_SOURCE_PATH := .gitignore
 else
 	GITIGNORE_SOURCE_PATH := ../.gitignore
+endif
+
+.PHONY: all help latex thesis verbose clean biber index start_timer biber_hook1 \
+biber_hook2 pdflatex_hook1 pdflatex_hook2 pdflatex_hook3 pdflatex_hook4 pdflatex_hook5
+
+# http://stackoverflow.com/questions/1789594/how-do-i-write-the-cd-command-in-a-makefile
+.ONESHELL:
+
+# https://tex.stackexchange.com/questions/91592/where-to-find-official-and-extended-documentation-for-tex-latexs-commandlin
+# https://tex.stackexchange.com/questions/52988/avoid-linebreaks-in-latex-console-log-output-or-increase-columns-in-terminal
+PDF_LATEX_COMMAND = pdflatex --synctex=1 -halt-on-error -file-line-error
+PDF_LATEX_COMMAND += $(if $(shell pdflatex --help | grep time-statistics),--time-statistics,)
+PDF_LATEX_COMMAND += $(if $(shell pdflatex --help | grep max-print-line),--max-print-line=10000,)
+
+ifeq (,${ENABLE_DEBUG_MODE})
+	PDF_LATEX_COMMAND +=  --interaction=nonstopmode
+endif
+
+# https://www.ctan.org/pkg/latexmk
+# http://docs.miktex.org/manual/texfeatures.html#auxdirectory
+# https://tex.stackexchange.com/questions/258814/what-is-the-difference-between-interaction-nonstopmode-and-halt-on-error
+# https://tex.stackexchange.com/questions/25267/what-reasons-if-any-are-there-for-compiling-in-interactive-mode
+LATEXMK_COMMAND := latexmk \
+	-f \
+	--pdf \
+	--aux-directory="${CACHE_DIRECTORY}" \
+	--output-directory="${CACHE_DIRECTORY}" \
+	--pdflatex="${PDF_LATEX_COMMAND}"
+
+ifeq (,${ENABLE_DEBUG_MODE})
+	LATEXMK_COMMAND += --silent
+endif
+
+LATEX =	${PDF_LATEX_COMMAND}
+LATEX += $(if $(shell pdflatex --help | grep aux-directory),-aux-directory="${CACHE_DIRECTORY}",)
+LATEX += $(if $(shell pdflatex --help | grep output-directory),-output-directory="${CACHE_DIRECTORY}",)
+
+ifeq (,${ENABLE_DEBUG_MODE})
+	LATEX += --interaction=batchmode
+endif
+
+# biber settings
+BIBER_FLAGS := --input-directory="${CACHE_DIRECTORY}" --output-directory="${CACHE_DIRECTORY}"
+
+ifeq (,${ENABLE_DEBUG_MODE})
+	BIBER_FLAGS += --quiet
 endif
 
 # https://stackoverflow.com/questions/55681576/how-to-send-input-on-stdin-to-a-python-script-defined-inside-a-makefile
@@ -156,53 +189,6 @@ ifneq (,${ENABLE_DEBUG_MODE})
 	endif
 endif
 
-
-.PHONY: all help latex thesis verbose clean biber index start_timer biber_hook1 \
-biber_hook2 pdflatex_hook1 pdflatex_hook2 pdflatex_hook3 pdflatex_hook4 pdflatex_hook5
-
-# http://stackoverflow.com/questions/1789594/how-do-i-write-the-cd-command-in-a-makefile
-.ONESHELL:
-
-# https://tex.stackexchange.com/questions/91592/where-to-find-official-and-extended-documentation-for-tex-latexs-commandlin
-# https://tex.stackexchange.com/questions/52988/avoid-linebreaks-in-latex-console-log-output-or-increase-columns-in-terminal
-PDF_LATEX_COMMAND = pdflatex --synctex=1 -halt-on-error -file-line-error
-PDF_LATEX_COMMAND += $(if $(shell pdflatex --help | grep time-statistics),--time-statistics,)
-PDF_LATEX_COMMAND += $(if $(shell pdflatex --help | grep max-print-line),--max-print-line=10000,)
-
-ifeq (,${ENABLE_DEBUG_MODE})
-	PDF_LATEX_COMMAND +=  --interaction=nonstopmode
-endif
-
-# https://www.ctan.org/pkg/latexmk
-# http://docs.miktex.org/manual/texfeatures.html#auxdirectory
-# https://tex.stackexchange.com/questions/258814/what-is-the-difference-between-interaction-nonstopmode-and-halt-on-error
-# https://tex.stackexchange.com/questions/25267/what-reasons-if-any-are-there-for-compiling-in-interactive-mode
-LATEXMK_COMMAND := latexmk \
-	-f \
-	--pdf \
-	--aux-directory="${CACHE_DIRECTORY}" \
-	--output-directory="${CACHE_DIRECTORY}" \
-	--pdflatex="${PDF_LATEX_COMMAND}"
-
-ifeq (,${ENABLE_DEBUG_MODE})
-	LATEXMK_COMMAND += --silent
-endif
-
-LATEX =	${PDF_LATEX_COMMAND}
-LATEX += $(if $(shell pdflatex --help | grep aux-directory),-aux-directory="${CACHE_DIRECTORY}",)
-LATEX += $(if $(shell pdflatex --help | grep output-directory),-output-directory="${CACHE_DIRECTORY}",)
-
-ifeq (,${ENABLE_DEBUG_MODE})
-	LATEX += --interaction=batchmode
-endif
-
-# biber settings
-BIBER_FLAGS := --input-directory="${CACHE_DIRECTORY}" --output-directory="${CACHE_DIRECTORY}"
-
-ifeq (,${ENABLE_DEBUG_MODE})
-	BIBER_FLAGS += --quiet
-endif
-
 # Calculate the elapsed seconds and print them to the screen
 define print_results =
 . ./setup/scripts/timer_calculator.sh; \
@@ -249,6 +235,21 @@ printf '\n';
 endef
 
 
+## Targets:
+##   all        Call the `thesis` make rule
+##   index      Build the main file with index pass
+##   biber      Build the main file with bibliography pass
+##   latex      Build the main file with no bibliography pass
+##   pdflatex   The same as latex rule, i.e., an alias for it
+##   latexmk    Build the main file with pdflatex biber pdflatex pdflatex
+##              pdflatex makeindex biber pdflatex
+##
+##   thesis     Completely build the main file with minimum output logs
+##   verbose    Completely build the main file with maximum output logs
+##   clean      Remove all cache directories and generated pdf files
+##   veryclean  Same as `clean`, but searches for all generated files outside
+##              the cache directories.
+##
 start_timer: "${GITIGNORE_SOURCE_PATH}"
 	${setup_envinronment}
 
