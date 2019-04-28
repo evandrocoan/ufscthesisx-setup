@@ -250,16 +250,16 @@ endef
 ##   veryclean  Same as `clean`, but searches for all generated files outside
 ##              the cache directories.
 ##
-start_timer: "${GITIGNORE_SOURCE_PATH}"
+start_timer: ${GITIGNORE_DESTINE_PATH}
 	${setup_envinronment}
 
 
 # Keep updated our copy of the .gitignore
 # https://stackoverflow.com/questions/55886204/how-to-use-make-to-keep-a-file-synced
-"${GITIGNORE_SOURCE_PATH}":
+${GITIGNORE_DESTINE_PATH}: ${GITIGNORE_SOURCE_PATH}
 	if [[ ! -z "${ENABLE_DEBUG_MODE}" ]]; \
 	then \
-		printf 'Copying %s file...\n' "${GITIGNORE_SOURCE_PATH}";
+		printf 'Copying %s file...\n' "${GITIGNORE_SOURCE_PATH}"; \
 	fi
 	cp -$(if ${ENABLE_DEBUG_MODE},v,)r "${GITIGNORE_SOURCE_PATH}" "${GITIGNORE_DESTINE_PATH}"
 
