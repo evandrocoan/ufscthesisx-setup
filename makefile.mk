@@ -479,7 +479,8 @@ remote:
 
 	printf 'Running the command which will actually send the files...\n'
 	passh -p $(if ${LATEXPASSWORD},${LATEXPASSWORD},admin123) \
-		rsync -rvu --copy-links --exclude .git --exclude ${CACHE_DIRECTORY} ${args} ${current_dir}/* \
+		rsync -rvu --copy-links --exclude ".git" --exclude "${CACHE_DIRECTORY}" --exclude "${THESIS_MAIN_FILE}.pdf" \
+		${args} ${current_dir}/* \
 		'$(if ${LATEXADDRESS},${LATEXADDRESS},linux@192.168.0.222):$(if ${dir},${dir},~/LatexBuild)'
 
 	printf 'Running the command which will actually run make...\n'
