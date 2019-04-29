@@ -457,11 +457,11 @@ endef
 ##       5. dir            - the directory to put the files, defaults to '~/LatexBuild'
 ##
 ##     Example usage for Linux:
-##       make remote LATEXPASSWORD=123 LATEXADDRESS=linux@192.168.79.135 rules=latex \
+##       make remote LATEXPASSWORD=123 LATEXADDRESS=linux@192.168.0.222 rules=latex \
 ##       		delete=1 dir=~/Downloads/Thesis
 ##
 ##     Example usage for Windows:
-##       set "LATEXPASSWORD=123" && set "LATEXADDRESS=linux@192.168.79.135" &&
+##       set "LATEXPASSWORD=123" && set "LATEXADDRESS=linux@192.168.0.222" &&
 ##       		set "rules=latex" && set "delete=1" &&
 ##       		set "dir=~/Downloads/Thesis" &&
 ##       		make remote
@@ -474,22 +474,22 @@ remote:
 
 	printf 'Just ensures the directory '%s' is created...\n' "${dir}"
 	passh -p $(if ${LATEXPASSWORD},${LATEXPASSWORD},admin123) \
-		ssh -o StrictHostKeyChecking=no $(if ${LATEXADDRESS},${LATEXADDRESS},linux@192.168.79.135) \
+		ssh -o StrictHostKeyChecking=no $(if ${LATEXADDRESS},${LATEXADDRESS},linux@192.168.0.222) \
 		'mkdir -p $(if ${dir},${dir},~/LatexBuild)'
 
 	printf 'Running the command which will actually send the files...\n'
 	passh -p $(if ${LATEXPASSWORD},${LATEXPASSWORD},admin123) \
 		rsync -rvu --copy-links --exclude .git --exclude ${CACHE_DIRECTORY} ${args} ${current_dir}/* \
-		'$(if ${LATEXADDRESS},${LATEXADDRESS},linux@192.168.79.135):$(if ${dir},${dir},~/LatexBuild)'
+		'$(if ${LATEXADDRESS},${LATEXADDRESS},linux@192.168.0.222):$(if ${dir},${dir},~/LatexBuild)'
 
 	printf 'Running the command which will actually run make...\n'
 	passh -p $(if ${LATEXPASSWORD},${LATEXPASSWORD},admin123) \
-		ssh -o StrictHostKeyChecking=no $(if ${LATEXADDRESS},${LATEXADDRESS},linux@192.168.79.135) \
+		ssh -o StrictHostKeyChecking=no $(if ${LATEXADDRESS},${LATEXADDRESS},linux@192.168.0.222) \
 		"${REMOTE_COMMAND_TO_RUN}" || exit "$$?"
 
 	printf 'Running the command which will copy back the generated PDF...\n'
 	-passh -p $(if ${LATEXPASSWORD},${LATEXPASSWORD},admin123) \
 		scp -o StrictHostKeyChecking=no \
-		'$(if ${LATEXADDRESS},${LATEXADDRESS},linux@192.168.79.135):$(if ${dir},${dir},~/LatexBuild)/main.pdf' \
+		'$(if ${LATEXADDRESS},${LATEXADDRESS},linux@192.168.0.222):$(if ${dir},${dir},~/LatexBuild)/main.pdf' \
 		"${current_dir}/"
 
