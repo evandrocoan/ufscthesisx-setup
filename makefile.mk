@@ -441,7 +441,7 @@ release:
 define REMOTE_COMMAND_TO_RUN :=
 cd $(if ${dir},${dir},~/LatexBuild); \
 printf '\nThe current directory is:\n'; pwd; \
-printf 'Running the command: make\n'; \
+printf 'Running the command: make ${rules}\n'; \
 make ${rules};
 endef
 
