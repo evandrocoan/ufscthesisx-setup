@@ -96,12 +96,12 @@ full = r"""
 """
 
 def main():
-    results = remove_lang_tag(full)
-    log('results', results)
+    # results = remove_lang_tag(full)
+    # log('results', results)
     sys.setrecursionlimit(10000)
 
     current_directory = os.path.dirname( os.path.realpath( __file__ ) )
-    parent_directory = os.path.basename( current_directory )
+    parent_directory = os.path.dirname( current_directory )
     parse_all_files( parent_directory )
 
 
