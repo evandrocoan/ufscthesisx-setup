@@ -389,9 +389,6 @@ initial_file_names = [
 
 for direcory_name, dirs, files in os.walk(CURRENT_DIRECTORY, followlinks=True):
 
-	if ".git" in direcory_name:
-		continue
-
 	for filename in files:
 		filepath = os.path.join( direcory_name, filename )
 
