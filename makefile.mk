@@ -158,6 +158,13 @@ ifneq (,${ENABLE_DEBUG_MODE})
 	endif
 
 	# https://stackoverflow.com/questions/5618615/check-if-a-program-exists-from-a-makefile
+	ifeq (,$(shell fgrep --version >/dev/null 2>&1 || (echo "Your command failed with $$?")))
+		useless := $(shell printf 'Success: fgrep is installed!\n' 1>&2)
+	else
+		useless := $(shell printf 'Warning: fgrep is not found installed!\n' 1>&2)
+	endif
+
+	# https://stackoverflow.com/questions/5618615/check-if-a-program-exists-from-a-makefile
 	ifeq (,$(shell passh -h -V >/dev/null 2>&1 || (echo "Your command failed with $$?")))
 		useless := $(shell printf 'Success: passh is installed!\n' 1>&2)
 	else
