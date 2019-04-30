@@ -25,14 +25,24 @@
 % Define versão necessária do LaTeX
 \NeedsTeXFormat{LaTeX2e}
 
+% Prove acesso a classe 'ufscthesisx'
+\ProvidesClass{setup/ufscthesisx}[2016/11/15 setup/ufscthesisx]
+
 % How can I properly resolve relative paths in `\usepackage`?
 % https://tex.stackexchange.com/questions/123999/how-can-i-properly-resolve-relative-paths-in-usepackage
 %
 % Commenting this allow to use this as a relative package, with no warnings.
 % \ProvidesPackage{ufscthesisx}[2017/08/28 v0.0.1 Evandro]
 
+%
+% Repassa todos os parâmetros a classe abntex2,
+\DeclareOption*{%
+    \PassOptionsToClass{\CurrentOption}{abntex2}%
+}
+
 % Now we'll execute any options passed in
 \ProcessOptions\relax
+\LoadClass{abntex2}
 
 % Custom list throw LaTeX Error: Command \mycustomfiction already defined?
 % https://tex.stackexchange.com/questions/388489/custom-list-throw-latex-error-command-mycustomfiction-already-defined
