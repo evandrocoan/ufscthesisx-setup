@@ -838,3 +838,1148 @@ therefore the \topsep patch must need to be updated accordingly}}
 }}{}}{}
 \makeatother
 
+
+
+
+
+%% README.md
+%% Copyright 2017 Evandro Coan
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.3
+% of this license or (at your option) any later version.
+% The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.3 or later is part of all distributions of LaTeX
+% version 2005/12/01 or later.
+%
+% This work has the LPPL maintenance status `maintained'.
+%
+% The Current Maintainer of this work is M. Y. Name.
+%
+% This work consists of the files:
+% 1. `README.md`,
+% 2. `basic.tex`,
+% 3. `commands.tex`,
+% 4. `commands_list.tex`
+% 5. `programming.tex`
+% 6. `badboxes.tex`
+
+
+
+% Bad Boxes settings
+
+% Underfull \hbox in bibliography
+% https://tex.stackexchange.com/questions/10924/underfull-hbox-in-bibliography
+\apptocmd{\thebibliography}{\raggedright}{}{}
+
+% Underfull \hbox (badness 10000) has occurred while \output is active
+% https://tex.stackexchange.com/questions/367369/underfull-hbox-badness-10000-has-occurred-while-output-is-active
+%
+% how to suppress “Underfull \vbox (badness 10000) … while \output is active”?
+% https://tex.stackexchange.com/questions/62296/how-to-suppress-underfull-vbox-badness-10000-while-output-is-active
+\makeatletter
+    \def\@textbottom{\vskip \z@ \@plus 7pt}
+    \let\@texttop\relax
+\makeatother
+
+% Why Latex is hyphenating some words automatically, but others dont? hyphenmins{22} %left=2, right=2
+% https://tex.stackexchange.com/questions/387076/why-latex-is-hyphenating-some-words-automatically-but-others-dont
+\makeatletter
+    \@ifpackagewith{babel}{brazil}{  \def\brazilhyphenmins{11} }{}
+    \@ifpackagewith{babel}{english}{ \def\englishhyphenmins{11} }{}
+    \@ifpackagewith{babel}{french}{  \def\frenchhyphenmins{11} }{}
+\makeatother
+
+\makeatletter
+\@ifpackageloaded{url}
+{
+    % Bad formatting using URLs in bibtex
+    % https://tex.stackexchange.com/questions/22888/bad-formatting-using-urls-in-bibtex
+    \usepackage{etoolbox}
+
+    % How to avoid overfull error with url package?
+    % See also the `\usepackage{url}` declarationon the file `basic.tex`.
+    % Set this to 2mu or 3mu if URL start troubling again.
+    % https://tex.stackexchange.com/questions/261776/how-to-avoid-overfull-error-with-url-package
+    \Urlmuskip=0mu plus 1mu
+
+    % How to fix URL overfull & underfull on emumeration?
+    % https://tex.stackexchange.com/questions/366803/how-to-fix-url-overfull-underfull-on-emumeration
+    %
+    % Forcing linebreaks in \url
+    % https://tex.stackexchange.com/questions/3033/forcing-linebreaks-in-url/10401
+    \makeatletter
+        \g@addto@macro{\UrlBreaks}{\UrlOrds}
+    \makeatother
+
+    % How to fix this url bad box for stackoverflow link?
+    % https://tex.stackexchange.com/questions/384427/how-to-fix-this-url-bad-box-for-stackoverflow-link
+    \makeatletter
+    \g@addto@macro{\UrlBreaks}
+    {%
+        \do\a\do\b\do\c\do\d\do\e\do\f\do\g%
+        \do\h\do\i\do\j\do\k\do\l\do\m\do\n%
+        \do\o\do\p\do\q\do\r\do\s\do\t\do\u%
+        \do\v\do\w\do\x\do\y\do\z%
+        \do\A\do\B\do\C\do\D\do\E\do\F\do\G%
+        \do\H\do\I\do\J\do\K\do\L\do\M\do\N%
+        \do\O\do\P\do\Q\do\R\do\S\do\T\do\U%
+        \do\V\do\W\do\X\do\Y\do\Z%
+        \do\/\do\_\do\-
+    }
+    \makeatother
+}{}
+\makeatother
+
+
+
+
+
+
+%% README.md
+%% Copyright 2017 Evandro Coan
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.3
+% of this license or (at your option) any later version.
+% The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.3 or later is part of all distributions of LaTeX
+% version 2005/12/01 or later.
+%
+% This work has the LPPL maintenance status `maintained'.
+%
+% The Current Maintainer of this work is M. Y. Name.
+%
+% This work consists of the files:
+% 1. `README.md`,
+% 2. `basic.tex`,
+% 3. `commands.tex`,
+% 4. `commands_list.tex`
+% 5. `programming.tex`
+% 6. `badboxes.tex`
+\makeatletter
+
+
+
+% Please tutor the usage of patchcmd and xpatch
+% https://tex.stackexchange.com/questions/152773/please-tutor-the-usage-of-patchcmd-and-xpatch
+\usepackage{xpatch}
+
+% Incompatible color definition when using tikz with color package
+% https://tex.stackexchange.com/questions/150369/incompatible-color-definition-when-using-tikz-with-color-package
+\usepackage{xcolor}
+
+% Package setspace must be put before hyperref
+% http://ctan.sharelatex.com/tex-archive/macros/latex/contrib/hyperref/README.pdf
+\@ifclassloaded{memoir}{}{\usepackage{setspace}}
+
+% Allows putting an [H] in \begin{figure} to specify the exact location of the figure
+% https://tex.stackexchange.com/questions/8625/force-figure-placement-in-text
+%
+% Package float must be put before hyperref
+% http://ctan.sharelatex.com/tex-archive/macros/latex/contrib/hyperref/README.pdf
+\usepackage{float}
+
+% bigfoot.sty:61: Package hyperref Warning: Option `hyperfootnotes' has already been used
+% https://tex.stackexchange.com/questions/402652/bigfoot-sty61-package-hyperref-warning-option-hyperfootnotes-has-already-be
+\@ifpackageloaded{hyperref}{\hypersetup{hyperfootnotes=false}}{\PassOptionsToPackage{hyperfootnotes=false}{hyperref}}
+\usepackage{hyperref}
+
+
+% \lettrine{O}{nce} upon a time...
+% \lettrine[findent=2pt]{\fbox{\textbf{T}}}{ }his thesis deals with...
+%
+% https://tex.stackexchange.com/questions/164298/starting-a-paragraph-with-a-big-letter
+\usepackage{lettrine}
+
+% Required for including pictures, resizebox
+\usepackage{graphicx}
+
+% Allows in-line images such as the example fish picture
+\usepackage{wrapfig}
+
+% How to automatically force latex to not justify the text when it is not wise?
+% https://tex.stackexchange.com/questions/365801/how-to-automatically-force-latex-to-not-justify-the-text-when-it-is-not-wise
+\usepackage{array,ragged2e}
+
+% Use its macro adjustwidth* to extend tables out of outer text border.
+% https://tex.stackexchange.com/questions/366155/how-to-write-a-table-a-little-larger-than-the-paragraphs-with-centered-columns
+%
+% The `memoir` class emulates this package, so not try to load it when using `memoir`, ifpackageloaded question
+% https://tex.stackexchange.com/questions/70212/ifpackageloaded-question
+\@ifpackageloaded{changepage}{}{\usepackage[strict]{changepage}}
+
+% How to make horizontal lists?
+% https://tex.stackexchange.com/questions/146306/how-to-make-horizontal-lists
+%
+% Compilation error when including enumitem and paralist packages
+% https://tex.stackexchange.com/questions/162799/compilation-error-when-including-enumitem-and-paralist-packages
+\usepackage{paralist}
+
+% Replace the `paralist` package implementation of enumerate lists
+\usepackage{enumerate}
+
+% With the package option shortlabels you can use an enumerate-like syntax, where A, a, I, i and 1
+% stand for \Alph*, \alph*, \Roman*, \roman* and \arabic*. This is intended mainly as a sort of
+% compatibility mode with the enumerate package, and therefore the following special rule applies:
+% if the very first option (at any level) is not recognized as a valid key, then it will be
+% considered a label with the enumerate-like syntax.
+%
+% No spacing between enumerated items with \usepackage{enumerate}
+% https://tex.stackexchange.com/questions/119919/no-spacing-between-enumerated-items-with-usepackageenumerate
+\usepackage[shortlabels]{enumitem}
+
+\usepackage{tabularx}
+\usepackage{multirow}
+
+
+
+% The package supports the Text Companion fonts, which provide many text symbols (such as
+% baht, bullet, copyright, musicalnote, onequarter, section, and yen), in the TS1 encoding.
+%
+% `LaTeX Error: Option clash for package textcomp` with the package `mathcomp`, it need to be loaded before it.
+% https://tex.stackexchange.com/questions/343546/how-do-you-resolve-the-error-in-latex-option-clash-for-package-inputenc-usepa
+\usepackage[full]{textcomp}
+\usepackage{mathcomp}
+
+% Manipulação de Strings
+\usepackage{xstring}
+
+% Número da última página
+\usepackage{lastpage}
+
+% Tamanho das fontes
+\usepackage{anyfontsize}
+
+% Usa a fonte Latin Modern
+\usepackage{lmodern}
+
+% Selecao de codigos de fonte
+% https://tex.stackexchange.com/questions/664/why-should-i-use-usepackaget1fontenc
+%
+% Will allow all displayable utf8 characters to be available as input
+% https://tex.stackexchange.com/questions/13067/utf8x-vs-utf8-inputenc
+\usepackage[T1]{fontenc}
+
+% Codificacao do documento (conversão automática dos acentos)
+\usepackage[utf8]{inputenc}
+
+\usepackage{graphicx}
+\usepackage{pdfpages}
+\usepackage{rotating}
+
+% Needs to be loaded after hyperref
+% http://ctan.sharelatex.com/tex-archive/macros/latex/contrib/hyperref/README.pdf
+%
+% Package incompatibilty between alphalph, and hyperref with amsmath subequations
+% https://tex.stackexchange.com/questions/134665/package-incompatibilty-between-alphalph-and-hyperref-with-amsmath-subequations
+\usepackage{amsmath}
+\let\equation\gather
+\let\endequation\endgather
+
+\usepackage{amssymb}
+\usepackage{mathrsfs}
+\usepackage{pdflscape}
+\usepackage{epstopdf}
+\usepackage{multirow}
+\usepackage{listings}
+
+% Para incluir links
+\usepackage{url}
+
+% Pacote necessário para a lista de siglas.
+\usepackage{nomencl}
+\usepackage{booktabs}
+
+% A comprehensive (SI) units package
+\usepackage{siunitx}
+\sisetup{detect-all}
+\sisetup{scientific-notation = fixed, fixed-exponent = 0, round-mode = places,round-precision = 2,output-decimal-marker = {,} }
+\DeclareSIUnit \VA {VA} % apparent power
+
+% We need to load it after `siunitx` package, otherwise it will cause to the package `bigfoot` to throw
+% the error `input stack size=5000`
+% https://tex.stackexchange.com/questions/403651/while-loading-fancyvrb-siunitx-and-bigfoot-i-got-input-stack-size-5000-tex-st
+\usepackage{fancyvrb}
+
+% Memoir class conflict with datetime
+% https://tex.stackexchange.com/questions/162353/memoir-class-conflict-with-datetime
+% https://tex.stackexchange.com/questions/49071/difference-between-let-foo-relax-and-def-foo-for-disabling
+\let\ordinal\relax
+\usepackage{datetime}
+
+% gives you the possibility to rotate any object of an arbitrary angle.
+\usepackage{rotating}
+
+% Rotação de páginas no documento pdf.
+\usepackage{pdflscape}
+
+% Customize the look of the frame
+\usepackage{mdframed}
+
+% Pacotes adicionais, usados apenas no âmbito do Modelo Canônico do abnteX2
+\usepackage{tablefootnote}
+\usepackage{longtable}
+\usepackage{tocloft}
+
+% https://tex.stackexchange.com/questions/2441/how-to-add-a-forced-line-break-inside-a-table-cell
+\usepackage{makecell}
+\usepackage{pbox}
+
+% LaTeX not hyphenating properly, text running off page
+% https://tex.stackexchange.com/questions/28136/latex-not-hyphenating-properly-text-running-off-page
+\usepackage{hyphenat}
+
+% How to auto adjust my last table column width, and why is there Underfull \vbox badness on this table?
+% https://tex.stackexchange.com/questions/387238/how-to-auto-adjust-my-last-table-column-width-and-why-is-there-underfull-vbox/387251
+%
+% Why ltablex package breaks the changepage package?
+% https://tex.stackexchange.com/questions/404339/why-ltablex-package-breaks-the-changepage-package
+% \usepackage{ltablex}\keepXColumns
+
+% How to use \scalebox around my environment?
+% https://tex.stackexchange.com/questions/387515/how-to-use-scalebox-around-my-environment
+\usepackage{verbatimbox}
+
+% LaTeX/Indexing
+% https://www.sharelatex.com/learn/Indices
+% https://en.wikibooks.org/wiki/LaTeX/Indexing
+\usepackage{makeidx}
+\makeindex
+
+% Is it possible to keep my translation together with original text?
+% https://tex.stackexchange.com/questions/5076/is-it-possible-to-keep-my-translation-together-with-original-text
+\usepackage{comment}
+
+% Scoping \raggedbottom to a single page
+% https://tex.stackexchange.com/questions/226716/scoping-raggedbottom-to-a-single-page
+\usepackage{afterpage}
+
+% Logical String Length
+% https://tex.stackexchange.com/questions/87638/logical-string-length
+\usepackage{xstring}
+\usepackage{xifthen}
+
+% cannot use \caption under minipage
+% https://tex.stackexchange.com/questions/57433/cannot-use-caption-under-minipage
+\usepackage{capt-of}
+
+% How to create my own caption type with \DeclareCaptionType on memoir class?
+% https://tex.stackexchange.com/questions/391901/how-to-create-my-own-caption-type-with-declarecaptiontype-on-memoir-class
+\usepackage{caption}
+
+% Para incluir links com characteres especiais como # em URLs em `\footnote`
+% https://tex.stackexchange.com/questions/12855/getting-those-signs-in-the-footnote
+% https://tex.stackexchange.com/questions/299348/animate-gives-errors-when-i-also-use-bigfoot-or-cprotect
+%
+% Adding this will cause the warning``bigfoot.sty:61: Package hyperref Warning:
+% Option `hyperfootnotes' has 1`hyperfootnotes' has already been used
+% https://tex.stackexchange.com/questions/402652/bigfoot-sty61-package-hyperref-warning-option-hyperfootnotes-has-already-be
+\let\truehypersetup\hypersetup
+\renewcommand\hypersetup[1]{}
+\usepackage{bigfoot}
+\let\hypersetup\truehypersetup
+
+% While loading fancyvrb, siunitx and bigfoot, I got input stack size=5000, TeX STOPPED: fatal errors occurred
+% https://tex.stackexchange.com/questions/403651/while-loading-fancyvrb-siunitx-and-bigfoot-i-got-input-stack-size-5000-tex-st
+\xpatchcmd{\FN@allmarks}{266}{256}{}{}
+
+
+
+\makeatother
+
+
+
+
+
+
+%% README.md
+%% Copyright 2017 Evandro Coan
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.3
+% of this license or (at your option) any later version.
+% The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.3 or later is part of all distributions of LaTeX
+% version 2005/12/01 or later.
+%
+% This work has the LPPL maintenance status `maintained'.
+%
+% The Current Maintainer of this work is M. Y. Name.
+%
+% This work consists of the files:
+% 1. `README.md`,
+% 2. `basic.tex`,
+% 3. `commands.tex`,
+% 4. `commands_list.tex`
+% 5. `programming.tex`
+% 6. `badboxes.tex`
+
+
+
+%
+% Settings
+%
+
+% RGB colors in absolute values from 0 to 255 by using `RGB` tag
+\definecolor{darkblue}{RGB}{26,13,178}
+
+% RGB colors in percentage notation by using `rgb` tag
+\definecolor{darkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+% Basic settings for hyperref package
+\hypersetup{colorlinks,linkcolor=darkblue,citecolor=darkgreen}
+
+
+
+% How could the `\everypar` justification statement be used?
+% https://tex.stackexchange.com/questions/365818/how-could-the-everypar-justification-statement-be-used
+\newbox\linebox \newbox\snapbox
+\def\eatlines
+{%
+    \setbox\linebox\lastbox % check the last line
+    \ifvoid\linebox
+    \else % if it’s not empty
+        \unskip\unpenalty % take whatever is
+        {\eatlines} % above it;
+        \setbox\snapbox\hbox{\unhcopy\linebox}
+        \ifdim\wd\snapbox<.98\wd\linebox
+            \box\snapbox % take the one or the other,
+        \else \box\linebox \fi
+    \fi
+}
+
+
+
+% How could the `\everypar` justification statement be used?
+% https://tex.stackexchange.com/questions/365818/how-could-the-everypar-justification-statement-be-used
+\everypar=
+{%
+    \setbox0=\lastbox \par%
+    \vbox\bgroup \everypar={}\def\par{\endgraf\eatlines\egroup}%
+}
+
+% Creates a new environment which can be used as:
+%
+% \begin{foo}
+%   Text...
+%
+%   Text ...
+% \end{foo}
+%
+% https://tex.stackexchange.com/questions/62333/push-long-words-in-a-new-line
+\newenvironment{foo}
+{%
+    \par%
+    \hyphenpenalty=10000%
+    \exhyphenpenalty=10000%
+}
+{\par}
+
+
+
+% Some text \brkurl{http://www.example.com/this/directory/here}
+%
+% How to break long URLs using common hyphenation but adding a line feed indicator?
+% https://tex.stackexchange.com/questions/69824/how-to-break-long-urls-using-common-hyphenation-but
+\def\addurlspace#1
+{%
+    \ifx\relax#1%
+    \else%
+    \ifx/#1\space\fi%
+    \ifx.#1\space\fi%
+    #1%
+    \ifx/#1\space\fi%
+    \ifx.#1\space\fi%
+    \expandafter\addurlspace%
+    \fi%
+}
+
+\makeatletter
+\@namedef{OT1-zwidthchar}{255}
+\@namedef{T1-zwidthchar}{"17}
+
+\def\brkurl#1
+{%
+    \edef\savedhchar{\the\hyphenchar\font}%
+    \global\setbox1\hbox{}%
+    \setbox0=\vbox
+    {%
+        \hsize=2pt\rightskip=0pt plus 1fill%
+        \hfuzz\maxdimen%
+        \tracinglostchars0%
+        \overfullrule0pt%
+        \hyphenchar\font=\csname \f@encoding-zwidthchar\endcsname%
+        \noindent \hskip0pt \addurlspace #1\relax%
+        \par%
+        \loop%
+        \setbox4 \lastbox%
+        \ifvoid4 \else%
+        \global\setbox1\hbox%
+        {%
+            \unhbox4\unskip\unskip\discretionary{\hbox{\rlap{$\leftarrow$}}}{}{}\unhbox1%
+        }%
+        \unskip%
+        \unskip%
+        \unpenalty%
+        \unskip%
+        \repeat%
+    }%
+    \unhbox1%
+    \hyphenchar\font\savedhchar%
+    \relax%
+}
+\makeatother
+
+
+
+% Change background color for text block
+% https://tex.stackexchange.com/questions/238294/change-background-color-for-text-block
+\usepackage{framed}
+\usepackage[most]{tcolorbox}
+\definecolor{shadecolor}{RGB}{219, 229, 241}
+\newtcolorbox{bluebox}
+{%
+    colback=shadecolor,
+    grow to right by=-2mm,
+    grow to left by=-2mm,
+    boxrule=0pt,
+    boxsep=0pt,
+    breakable,
+}
+
+
+
+% Make first row of table all bold
+%
+% Usage:
+% 1. Add `B` on the borders and `^` before each column definition.
+% 2. `\rowstyle{\bfseries}` before the row you want to bold.
+%
+% Example:
+% \begin{tabularx}{\linewidth}
+% {|
+%     *1{                 >{\RaggedRight\arraybackslash\hsize=1.1\hsize }BX       |} % Riscos
+%     *3{@{\hspace{3.0pt}}>{\Centering\arraybackslash                   }^p{0.9cm}|} % Probabilidade, Impacto, Prioridade
+%     *2{                 >{\RaggedRight\arraybackslash\hsize=0.95\hsize}^X       |} % Resposta, Prevenção
+% }
+%
+% \hline
+%
+% \rowstyle{\bfseries}
+% Riscos  & 1 & 2 & 3 & Estratégia de resposta & Ações de prevenção \\ \hline
+%
+%
+% https://tex.stackexchange.com/questions/4811/make-first-row-of-table-all-bold
+\usepackage{array}
+\newcolumntype{B}{>{\global\let\currentrowstyle\relax}}
+\newcolumntype{^}{>{\currentrowstyle}}
+\newcommand{\rowstyle}[1]
+{%
+    \gdef\currentrowstyle{#1}#1\ignorespaces
+}
+
+
+% https://tex.stackexchange.com/questions/485834/why-abntex2-class-is-inserting-a-new-line-after-the-chapter-title
+% https://tex.stackexchange.com/questions/367859/how-to-automatically-put-a-go-to-summary-go-back-on-each-section
+% https://tex.stackexchange.com/questions/388045/how-can-the-go-to-summary-be-fixed-so-the-sectionsomesome-more
+% https://tex.stackexchange.com/questions/399635/what-is-the-equivalent-to-sectionformat-on-memoir-class-for-chapterformat
+% https://tex.stackexchange.com/questions/485857/why-xapptocmd-is-reducing-the-vertical-space-between-partname-and-parttile
+\definecolor{ultramarine}{RGB}{0,32,96}
+\RequirePackage{xpatch}
+\RequirePackage{amssymb}
+\RequirePackage{hyperref}
+\newcommand{\goToSummaryText}{{%
+    \small\mdseries
+    \hyperlink{summary}{\textcolor{ultramarine}{$\leftleftarrows$}}
+    {$|$}
+    \Acrobatmenu{GoBack}{\textcolor{ultramarine}{$\leftarrow$}}
+}}
+\makeatletter
+    \newif\ifismemoirloaded\ismemoirloadedfalse
+    \newif\ifisabntexloaded\isabntexloadedfalse
+    \@ifclassloaded{memoir}{%
+        \ismemoirloadedtrue%
+    }{}
+    \@ifclassloaded{abntex2}{%
+        \isabntexloadedtrue%
+    }{}
+    \newcommand{\addGoToSummary}
+    {%
+        \@ifundefined{printparttitle}{\message{printparttitle patch for addGoToSummary could NOT
+                    be applied because there is no printparttitle command available!^^J}}{%
+            \let\oldAddGoToprintparttitle\printparttitle
+            \xapptocmd{\printparttitle}{~\protect\goToSummaryText}{}{}
+        }
+        \@ifundefined{Sectionformat}{\message{Sectionformat patch for addGoToSummary could NOT
+                    be applied because there is no Sectionformat command available!^^J}}{%
+            \let\oldAddGoToSectionformat\Sectionformat
+            \xapptocmd{\Sectionformat}{~\protect\goToSummaryText}{}{}
+        }
+        \ifismemoirloaded
+            \ifisabntexloaded
+                \let\oldAddGoToABNTEXchapterupperifneeded\ABNTEXchapterupperifneeded
+                \xapptocmd{\ABNTEXchapterupperifneeded}{~\protect\goToSummaryText}{}{}
+            \else
+                \let\oldAddGoToprintchaptertitle\printchaptertitle
+                \xapptocmd{\printchaptertitle}{~\protect\goToSummaryText}{}{}
+            \fi
+        \else
+            \@ifundefined{Chapterformat}{\message{Chapterformat patch for addGoToSummary could NOT
+                        be applied because there is no Chapterformat command available!^^J}}{%
+                \let\oldAddGoToChapterformat\Chapterformat
+                \xapptocmd{\Chapterformat}{~\protect\goToSummaryText}{}{}
+            }
+        \fi
+    }
+    \newcommand{\removeGoToSummary}
+    {%
+        \@ifundefined{oldAddGoToprintparttitle}{}{\let\printparttitle\oldAddGoToprintparttitle}
+        \@ifundefined{oldAddGoToSectionformat}{}{\let\Sectionformat\oldAddGoToSectionformat}
+        \ifismemoirloaded
+            \ifisabntexloaded
+                \@ifundefined{oldAddGoToABNTEXchapterupperifneeded}{}{\let\ABNTEXchapterupperifneeded\oldAddGoToABNTEXchapterupperifneeded}
+            \else
+                \@ifundefined{oldAddGoToprintchaptertitle}{}{\let\printchaptertitle\oldAddGoToprintchaptertitle}
+            \fi
+        \else
+            \@ifundefined{oldAddGoToChapterformat}{}{\let\Chapterformat\oldAddGoToChapterformat}
+        \fi
+    }
+\makeatother
+\let\oldAddGoTotableofcontents\tableofcontents
+% Insert internal document link
+\renewcommand{\tableofcontents}{%
+    \hypertarget{summary}%
+    \oldAddGoTotableofcontents%
+}
+
+
+
+%
+% New commands
+%
+
+% Allow to push long words on new lines when they do not fit entirely on the current line.
+% https://tex.stackexchange.com/questions/62333/push-long-words-in-a-new-line
+\newcommand\lword[1]{\leavevmode\nobreak\hskip0pt plus\linewidth\penalty50\hskip0pt plus-\linewidth\nobreak{#1}}
+\newcommand\lurl[1]{\leavevmode\nobreak\hskip0pt plus\linewidth\penalty50\hskip0pt plus-\linewidth\nobreak{\url{#1}}}
+
+
+% For the new command \latex
+% https://tex.stackexchange.com/questions/31091/space-after-latex-commands
+\usepackage{xspace}
+
+% Write the word LaTeX nicely.
+\newcommand{\latex}{\LaTeX\xspace}
+
+% Create a bold title all in upper case.
+\newcommand{\Title}[1]{\textbf{\MakeUppercase{#1}}}
+
+% \nameref — How to display section name AND its number
+% https://tex.stackexchange.com/questions/121865/nameref-how-to-display-section-name-and-its-number
+%
+% Usage \fullref{fig:envinronmentHead} or \fullref{sec:some_sec}
+\newcommand*{\fullref}[1]{\hyperref[{#1}]{\autoref*{#1} \nameref*{#1}}} % One single link
+
+
+
+% Setting Entries of List of Listings in LaTeX. Package Listings
+% http://tex.stackexchange.com/questions/228936/setting-entries-of-list-of-listings-in-latex-package-listings
+\makeatletter
+\@ifclassloaded{memoir}{%
+    \newlength\mylen
+
+    % https://tex.stackexchange.com/questions/485830/why-latex-does-not-tell-me-which-command-is-undefined
+    \@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{\renewcommand{\lstlistingname}{Código}}}{}}{}
+    \@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{\renewcommand{\lstlistlistingname}{Lista de códigos}}}{}}{}
+
+    \@ifpackageloaded{babel}{\@ifpackagewith{babel}{english}{\addto\captionsenglish{\renewcommand{\lstlistingname}{Code}}}{}}{}
+    \@ifpackageloaded{babel}{\@ifpackagewith{babel}{english}{\addto\captionsenglish{\renewcommand{\lstlistlistingname}{List of Codes}}}{}}{}
+
+    \begingroup
+    \makeatletter
+        \let\newcounter\@gobble\let\setcounter\@gobbletwo
+        \globaldefs\@ne \let\c@loldepth\@ne
+        \newlistof{listings}{lol}{\lstlistlistingname}
+        \newlistof{lstlistoflistings}{lol}{\lstlistlistingname}
+        \newlistentry{lstlisting}{lol}{0}
+    \makeatother
+    \endgroup
+
+    % Why the empty space size is increasing each call to my calculate listing header command?
+    % https://tex.stackexchange.com/questions/388411/why-the-empty-space-size-is-increasing-each-call
+    \newlength\cftlstlistingoldnumwidth
+    \setlength\cftlstlistingoldnumwidth{\cftlstlistingnumwidth}
+
+    % Calculate the size of the header
+    %
+    % What is the use of percent signs (%) at the end of lines?
+    % https://tex.stackexchange.com/questions/7453/what-is-the-use-of-percent-signs-at-the-end-of-lines
+    \newcommand{\calculatelisteningsheader}
+    {%
+        \renewcommand\cftlstlistingpresnum{\lstlistingname~}%
+        \settowidth\mylen{\cftlstlistingpresnum\cftlstlistingaftersnum}%
+        \setlength\cftlstlistingnumwidth{\dimexpr\cftlstlistingoldnumwidth+\mylen}%
+        \renewcommand\cftlstlistingaftersnum{\hfill\textendash\hfill}%
+    }
+
+    % Ensure it is called at least one time
+    \calculatelisteningsheader
+
+    % https://tex.stackexchange.com/questions/14135/how-to-automatically-add-text-immediately-after-begindocument
+    \AtBeginDocument{\calculatelisteningsheader}
+}{}
+\makeatother
+
+
+
+% How to create my own list of things
+% https://tex.stackexchange.com/questions/61086/how-to-create-my-own-list-of-things
+\newcommand{\mytextpreliminarylistname}{Short Table of Contents}
+\newlistof{textpreliminarycontents}{tpc}{\mytextpreliminarylistname}
+
+% Resetting counter
+% https://tex.stackexchange.com/questions/66604/resetting-counter
+%
+% Custom list throw LaTeX Error: Command \mycustomfiction already defined?
+% https://tex.stackexchange.com/questions/388489/custom-list-throw-latex-error-command-mycustomfiction-already-defined
+\newlistentry{textpreliminarycounter}{tpc}{0}
+
+% Continuing Page Numbering (Roman to Arabic)
+% https://tex.stackexchange.com/questions/56131/continuing-page-numbering-roman-to-arabic
+\renewcommand{\thetextpreliminarycounter}{\arabic{textpreliminarycounter}}
+
+% Reset section numbering between unnumbered chapters
+% https://tex.stackexchange.com/questions/71162/reset-section-numbering-between-unnumbered-chapters
+\newcommand{\addtotextpreliminarycontent}[1]
+{%
+    \refstepcounter{textpreliminarycounter}%
+    \addcontentsline{tpc}{textpreliminarycounter}{\protect\numberline{\thetextpreliminarycounter}#1}\par%
+}
+
+
+
+% Unable to link to inserted pages with pdfpages
+% Solution from http://tex.stackexchange.com/questions/25105/unable-to-link-to-inserted-pages-with-pdfpages
+\newcounter{includepdfpage}
+\newcounter{currentpagecounter}
+
+\newcommand{\addlabelstoallincludedpages}[1]
+{%
+    \refstepcounter{includepdfpage}%
+    \stepcounter{currentpagecounter}%
+    \label{#1.\thecurrentpagecounter}%
+}
+\newcommand{\modifiedincludepdf}[4]
+{%
+    \setcounter{currentpagecounter}{0}%
+    \includepdf[pages=#1,pagecommand=\addlabelstoallincludedpages{#2},scale=#4]{#3}%
+}
+
+
+
+% \MakeUppercase in \section and \chapter with hyperref cause trouble
+% https://tex.stackexchange.com/questions/199374/makeuppercase-in-section-and-chapter-with-hyperref-cause-trouble
+\newcommand{\HyperrefUppercase}[1]{\texorpdfstring{\MakeTextUppercase{#1}}{#1}}
+
+
+
+% Example about hyphenation with ttfamily font
+% https://tex.stackexchange.com/questions/386665/example-about-hyphenation-with-ttfamily-font
+%
+% Why the environment ttfamily is hyphenated, but macro ttfamily is not hyphenating?
+% https://tex.stackexchange.com/questions/387678/why-the-environment-ttfamily-is-hyphenated-but-macro-ttfamily-is-not-hyphenatin
+\LetLtxMacro\origttfamily\ttfamily
+\DeclareRobustCommand*{\ttfamily}
+{%
+    \origttfamily
+    \hyphenchar\font=`\-\relax
+    \fontdimen3\font=.25em\relax
+    \fontdimen4\font=.13em\relax
+    \fontdimen7\font=.167em\relax
+}
+
+\makeatletter
+\DeclareRobustCommand\vttfamily
+{%
+    \not@math@alphabet\vttfamily\relax
+    \fontfamily{cmvtt}% cmvtt (Computer Modern) or lmvtt (Latin Modern)
+    \selectfont
+}
+\DeclareTextFontCommand{\textvtt}{\vttfamily}
+\makeatother
+
+
+
+% Logical String Length
+% https://tex.stackexchange.com/questions/87638/logical-string-length
+\newcommand{\includeonlyfilelist}[0]{}
+\makeatletter
+\newcommand{\addtoincludeonly}[1]
+{%
+    \StrLen{\includeonlyfilelist}[\includeonlyfilelistlen]
+
+    % How to concatenate strings into a single command?
+    % https://tex.stackexchange.com/questions/74707/how-to-concatenate-strings-into-a
+    \ifnum\includeonlyfilelistlen>0
+        \g@addto@macro\includeonlyfilelist{,#1}
+    \else
+        \g@addto@macro\includeonlyfilelist{#1}
+    \fi
+}
+\newcommand{\doincludeonly}[0]
+{%
+    \StrLen{\includeonlyfilelist}[\includeonlyfilelistlen]
+    \ifnum\includeonlyfilelistlen>0
+        \includeonly{\includeonlyfilelist}
+    \else
+    \fi
+}
+\makeatother
+
+
+
+
+
+
+%% README.md
+%% Copyright 2017 Evandro Coan
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.3
+% of this license or (at your option) any later version.
+% The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.3 or later is part of all distributions of LaTeX
+% version 2005/12/01 or later.
+%
+% This work has the LPPL maintenance status `maintained'.
+%
+% The Current Maintainer of this work is M. Y. Name.
+%
+% This work consists of the files:
+% 1. `README.md`,
+% 2. `basic.tex`,
+% 3. `commands.tex`,
+% 4. `commands_list.tex`
+% 5. `programming.tex`
+% 6. `badboxes.tex`
+\makeatletter
+
+
+
+\@ifundefined{hline}{       \def\hline{hline} }{}
+\@ifundefined{caption}{     \def\caption{caption} }{}
+\@ifundefined{RaggedRight}{ \def\RaggedRight{RaggedRight} }{}
+
+\@ifundefined{currenttime}{         \def\currenttime{Current Time} }{}
+\@ifundefined{lstlistingname}{      \def\lstlistingname{LST Listing Name} }{}
+\@ifundefined{lstlistoflistings}{   \def\lstlistoflistings{LST List of Listing} }{}
+\@ifundefined{mathfrak}{            \def\mathfrak{mathfrak} }{}
+\@ifundefined{resizebox}{           \def\resizebox{resizebox} }{}
+\@ifundefined{legend}{              \def\legend{legend} }{}
+\@ifundefined{url}{                 \def\url{url} }{}
+\@ifundefined{gamma_x}{             \def\gamma_x{gamma_x} }{}
+\@ifundefined{boldsymbol}{          \def\boldsymbol{boldsymbol} }{}
+\@ifundefined{texorpdfstring}{      \def\texorpdfstring{texorpdfstring} }{}
+\@ifundefined{ABNTEXfontereduzida}{ \def\ABNTEXfontereduzida{ABNTEXfontereduzida} }{}
+\@ifundefined{citeonline}{          \def\citeonline{citeonline} }{}
+
+% How to rename an existing command?
+% https://tex.stackexchange.com/questions/193379/how-to-rename-an-existing-command
+\newcommand{\supertiny}{\fontsize{2pt}{2.5pt}\selectfont}
+\usepackage{lmodern}
+
+% How to replace a command with a dummy one?
+% https://tex.stackexchange.com/questions/387394/how-to-replace-a-command-with-a-dummy-one
+\@ifundefined{includegraphics}
+{
+    \newcommand{\includegraphics}[3][]{ \detokenize{ \includegraphics[#1]{#2 #3} } }
+}{}
+
+\@ifundefined{resizebox}
+{
+    \newcommand{\resizebox}[3][]{ resizebox }
+}{}
+
+\@ifundefined{SI}
+{
+    \newcommand{\SI}[3][]{ SI }
+}{}
+
+\@ifundefined{includepdf}
+{
+    \newcommand{\includepdf}[3][]{ SI }
+}{}
+
+\@ifundefined{modifiedincludepdf}
+{
+    \newcommand{\modifiedincludepdf}[4][]
+    {
+        modifiedincludepdf
+    }
+}{}
+
+% How to create a dummy generic environment replacement?
+% https://tex.stackexchange.com/questions/387389/how-to-create-a-dummy-generic-environment-replacement
+\@ifundefined{longtable}
+{
+    \newenvironment{longtable}[0]
+    {longtable environment\par\verbatim\supertiny}
+    {\normalfont\endverbatim\endgraf replacement for debug mode}
+}{}
+
+\@ifundefined{sideways}
+{
+    \newenvironment{sideways}[0]
+    {sideways environment\par\verbatim\supertiny}
+    {\normalfont\endverbatim\endgraf replacement for debug mode}
+}{}
+
+\@ifundefined{landscape}
+{
+    \newenvironment{landscape}[0]
+    {landscape environment\par\verbatim\supertiny}
+    {\normalfont\endverbatim\endgraf replacement for debug mode}
+}{}
+
+\@ifundefined{lstlisting}
+{
+    \newenvironment{lstlisting}[0]
+    {lstlisting environment\par\verbatim\supertiny}
+    {\normalfont\endverbatim\endgraf replacement for debug mode}
+}{}
+
+
+
+\makeatother
+
+
+
+
+
+
+%% README.md
+%% Copyright 2017 Evandro Coan
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.3
+% of this license or (at your option) any later version.
+% The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.3 or later is part of all distributions of LaTeX
+% version 2005/12/01 or later.
+%
+% This work has the LPPL maintenance status `maintained'.
+%
+% The Current Maintainer of this work is M. Y. Name.
+%
+% This work consists of the files:
+% 1. `README.md`,
+% 2. `basic.tex`,
+% 3. `commands.tex`,
+% 4. `commands_list.tex`
+% 5. `programming.tex`
+% 6. `badboxes.tex`
+
+
+
+% Writing code in latex document. Usage: \begin & \end {lstlisting}
+% http://stackoverflow.com/questions/3175105/writing-code-in-latex-document
+\usepackage{listings}
+
+% How to insert code with accents with listings?
+% https://tex.stackexchange.com/questions/30512/how-to-insert-code-with-accents-with-listings
+\usepackage{listingsutf8}
+
+% set the font family for lstlisting
+% https://tex.stackexchange.com/questions/33685/set-the-font-family-for-lstlisting
+\usepackage{courier}
+
+% Latex: Listings with monospace fonts
+% https://stackoverflow.com/questions/2913141/latex-listings-with-monospace-fonts
+\lstset{frame=,
+  language=Java,% default language
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  basicstyle={\small\ttfamily},
+  numbers=left,
+  numberstyle=\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{darkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=4,
+  morestring=[b]',
+  morestring=[b]",
+  literate = {---}{{\ProcessThreeDashes}}3
+             {>}{{\textcolor{red}\textgreater}}1
+             {|}{{\textcolor{red}\textbar}}1
+             {\ -\ }{{\mdseries\ -\ }}3,
+  inputencoding=utf8, % http://stackoverflow.com/questions/1116266/listings-in-latex-with-utf-8-or-at-least-german-umlauts
+  extendedchars=true, % https://tex.stackexchange.com/questions/24528/having-problems-with-listings-and-utf-8-can-it-be-fixed
+  literate=%
+  {£}{{\pounds}}1
+  {ß}{{\ss}}1
+  {à}{{\`a}}1
+  {À}{{\`A}}1
+  {à}{{\`{a}}}1
+  {á}{{\'a}}1
+  {Á}{{\'A}}1
+  {á}{{\'{a}}}1
+  {Á}{{\'{A}}}1
+  {â}{{\^a}}1
+  {Â}{{\^A}}1
+  {â}{{\^{a}}}1
+  {Â}{{\^{A}}}1
+  {ã}{{\~a}}1
+  {Ã}{{\~A}}1
+  {ã}{{\~{a}}}1
+  {Ã}{{\~{A}}}1
+  {ä}{{\"a}}1
+  {Ä}{{\"A}}1
+  {å}{{\r a}}1
+  {Å}{{\r A}}1
+  {æ}{{\ae}}1
+  {Æ}{{\AE}}1
+  {ç}{{\c c}}1
+  {Ç}{{\c C}}1
+  {ç}{{\c{c}}}1
+  {Ç}{{\c{C}}}1
+  {È}{{\'E}}1
+  {è}{{\`e}}1
+  {è}{{\`{e}}}1
+  {é}{{\'e}}1
+  {É}{{\'E}}1
+  {é}{{\'{e}}}1
+  {É}{{\'{E}}}1
+  {ê}{{\^e}}1
+  {Ê}{{\^E}}1
+  {ê}{{\^{e}}}1
+  {Ê}{{\^{E}}}1
+  {ë}{{\"e}}1
+  {Ë}{{\"E}}1
+  {ë}{{\¨{e}}}1
+  {ì}{{\`i}}1
+  {Ì}{{\`I}}1
+  {í}{{\'i}}1
+  {Í}{{\'I}}1
+  {í}{{\'{i}}}1
+  {Í}{{\~{Í}}}1
+  {î}{{\^i}}1
+  {Î}{{\^I}}1
+  {î}{{\^{i}}}1
+  {Î}{{\^{I}}}1
+  {ï}{{\"i}}1
+  {Ï}{{\"I}}1
+  {ò}{{\`o}}1
+  {Ò}{{\`O}}1
+  {ó}{{\'o}}1
+  {Ó}{{\'O}}1
+  {ó}{{\'{o}}}1
+  {Ó}{{\'{O}}}1
+  {ô}{{\^o}}1
+  {Ô}{{\^O}}1
+  {ô}{{\^{o}}}1
+  {Ô}{{\^{O}}}1
+  {õ}{{\~o}}1
+  {Õ}{{\~O}}1
+  {õ}{{\~{o}}}1
+  {Õ}{{\~{O}}}1
+  {ö}{{\"o}}1
+  {Ö}{{\"O}}1
+  {ø}{{\o}}1
+  {ù}{{\`u}}1
+  {Ù}{{\`U}}1
+  {ù}{{\`{u}}}1
+  {ú}{{\'u}}1
+  {Ú}{{\'U}}1
+  {ú}{{\'{u}}}1
+  {û}{{\^u}}1
+  {Û}{{\^U}}1
+  {û}{{\^{u}}}1
+  {ü}{{\"u}}1
+  {Ü}{{\"U}}1
+  {ő}{{\H{o}}}1
+  {Ő}{{\H{O}}}1
+  {œ}{{\oe}}1
+  {Œ}{{\OE}}1
+  {ű}{{\H{u}}}1
+  {Ű}{{\H{U}}}1
+  {€}{{\EUR}}1
+}
+
+% Defining `lstset` parameters for multiple languages & How can I highlight YAML code in a pretty way with listings?
+%
+% Usage \begin{lstlisting}[style=yaml_style] ... \end{lstlisting}
+%
+% https://tex.stackexchange.com/questions/45711/defining-lstset-parameters-for-multiple-languages
+% https://tex.stackexchange.com/questions/152829/how-can-i-highlight-yaml-code-in-a-pretty-way-with-listings
+\newcommand\YAMLcolonstyle{\color{red}}
+\newcommand\YAMLkeystyle{\color{black}}
+\newcommand\YAMLvaluestyle{\color{blue}}
+\newcommand\ProcessThreeDashes{\llap{\color{cyan}\mdseries-{-}-}}
+
+\lstdefinestyle{yaml_style}{
+  frame=,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  numbers=left,
+  numberstyle=\color{gray},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=2,
+  keywords={true,false,null,y,n},
+  keywordstyle=\color{darkgray},
+  basicstyle=\YAMLkeystyle,                                 % assuming a key comes first
+  sensitive=false,
+  comment=[l]{\#},
+  morecomment=[s]{/*}{*/},
+  commentstyle=\color{purple}\ttfamily,
+  stringstyle=\YAMLvaluestyle\ttfamily,
+  moredelim=[l][\color{orange}]{\&},
+  moredelim=[l][\color{magenta}]{*},
+  moredelim=**[il][\YAMLcolonstyle{:}\YAMLvaluestyle]{:}   % switch to value style at :
+}
+
+\lstdefinestyle{ufscthesisx_style}{
+    aboveskip=3mm,
+    belowskip=3mm,
+    backgroundcolor=\color{white},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}
+    basicstyle={\small\ttfamily},    % the size of the fonts that are used for the code
+    breakatwhitespace=true,          % sets if automatic breaks should only happen at whitespace
+    breaklines=true,                 % sets automatic line breaking
+    captionpos=t,                    % sets the caption-position to bottom
+    commentstyle=\color{mygreen},    % comment style
+    columns=flexible,
+    deletekeywords={...},            % if you want to delete keywords from the given language
+    escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+    extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+    frame=tb,                        % adds a frame around the code
+    keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+    keywordstyle=\color{blue},       % keyword style
+    language=Matlab,                 % the language of the code
+    morekeywords={*,...},            % if you want to add more keywords to the set
+    numbers=none,                    % where to put the line-numbers; possible values are (none, left, right)
+    numbersep=5pt,                   % how far the line-numbers are from the code
+    numberstyle=\tiny\color{mygray}, % the style that is used for the line-numbers
+    rulecolor=\color{black},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
+    showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+    showstringspaces=false,          % underline spaces within strings only
+    showtabs=false,                  % show tabs within strings adding particular underscores
+    stepnumber=2,                    % the step between two line-numbers. If it's 1, each line will be numbered
+    stringstyle=\color{mymauve},     % string literal style
+    tabsize=3,                       % sets default tabsize to 3 spaces
+    texcl=true,                      % Permite o uso de acentuação no código
+    title=\lstname                   % show the filename of files included with \lstinputlisting; also try caption instead of title
+}
+
