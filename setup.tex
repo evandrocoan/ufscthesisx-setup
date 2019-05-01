@@ -1,0 +1,84 @@
+%----------------------------------------------------------------------------------------
+%   PACKAGES AND OTHER DOCUMENT CONFIGURATIONS BEFORE LOADING abntex2
+%----------------------------------------------------------------------------------------
+
+% For web links and paths with \path{..} and \url{https://www.python.org/downloads/}
+% ftp://tug.ctan.org/pub/tex-archive/macros/latex/contrib/hyperref/doc/options.pdf
+% https://tex.stackexchange.com/questions/3033/forcing-linebreaks-in-url
+% https://tex.stackexchange.com/questions/124049/applying-options-to-already-loaded-package
+\PassOptionsToPackage{hyphens}{url}
+
+% Use its macro adjustwidth* to extend tables out of outer text border.
+% https://tex.stackexchange.com/questions/366155/how-to-write-a-table-a-little-larger-than-the-paragraphs-with-centered-columns
+\PassOptionsToPackage{strict}{changepage}
+
+% Linked footnotes are not supported inside environment `tabularx', because they
+% uses the optional argument of \footnotetext
+% http://ctan.sharelatex.com/tex-archive/macros/latex/contrib/hyperref/README.pdf
+\PassOptionsToPackage{hyperfootnotes=false}{hyperref}
+
+% The class `abntex2` loads the `enumitem` package with options.
+% With the package option shortlabels you can use an enumerate-like syntax, where A, a, I, i and 1
+% stand for \Alph*, \alph*, \Roman*, \roman* and \arabic*. This is intended mainly as a sort of
+% compatibility mode with the enumerate package, and therefore the following special rule applies:
+% if the very first option (at any level) is not recognized as a valid key, then it will be
+% considered a label with the enumerate-like syntax.
+% https://tex.stackexchange.com/questions/119919/no-spacing-between-enumerated-items-with-usepackageenumerate
+\PassOptionsToPackage{shortlabels}{enumitem}
+
+% Fixes `pdfTeX warning (ext4): destination with the same identifier (name{figure.1.1}) has been
+% already used, duplicate ignored`.
+%
+% The `abntex2` package loads the `hyperref` package, however there are several packages which are
+% required to be loaded after and before `hyperref`.
+%
+% https://tex.stackexchange.com/questions/1863/which-packages-should-be-loaded-after-hyperref-instead-of-before
+% https://tex.stackexchange.com/questions/50846/hyperref-is-loaded-by-the-class-and-i-need-to-load-packages-that-are-supposed-t
+% https://tex.stackexchange.com/questions/51094/using-beforepackage-to-load-a-package-before-hyperref-does-not-work
+\RequirePackage{scrlfile}
+\AfterClass{memoir}
+{
+    \RequirePackage{float}
+}
+
+% The class `abntex2` loads the package `enumitem`, but `paralist` must be loaded before it
+% https://tex.stackexchange.com/questions/162799/compilation-error-when-including-enumitem-and-paralist-packages
+\AfterClass{memoir}
+{
+    % How to make horizontal lists?
+    % https://tex.stackexchange.com/questions/146306/how-to-make-horizontal-lists
+    \RequirePackage{paralist}
+}
+
+% https://tex.stackexchange.com/questions/6529/newline-linebreak-in-message
+% https://tex.stackexchange.com/questions/383054/biblatex-error-incompatible-backref-package
+% https://tex.stackexchange.com/questions/115828/backreferencing-in-classicthesis-package-does-not-work
+% https://tex.stackexchange.com/questions/390349/why-my-biblatex-document-is-not-accepting-utf-8-on-the-bibliography
+% https://tex.stackexchange.com/questions/55478/how-to-print-out-to-log-without-affecting-anything-else-lua-print-equiv
+% https://tex.stackexchange.com/questions/483570/how-to-detect-whether-passoptionstopackage-was-already-called
+\ifcsname opt@biblatex.sty\endcsname
+    \message{Have options been passed for biblatex? YES!^^J}
+\else
+    \message{Have options been passed for biblatex? NO!^^J}
+    \PassOptionsToPackage{style=abnt,repeatfields=true,backend=biber,backref=true}{biblatex}
+\fi
+
+\AfterClass{memoir}
+{
+    \RequirePackage{biblatex}
+}
+
+% Package longtable must be put before hyperref and arydshln, hyperref after arydshln generates an error
+% http://ctan.sharelatex.com/tex-archive/macros/latex/contrib/hyperref/README.pdf
+\AfterClass{memoir}
+{
+    \RequirePackage{longtable}
+}
+
+% https://tex.stackexchange.com/questions/391993/how-to-silence-memoir-class-warning-against-the-use-of-caption-package
+\RequirePackage{silence}
+\WarningFilter*{memoir}{You are using the caption package with the memoir class}
+
+% https://tex.stackexchange.com/questions/402676/can-i-silence-a-warning-which-is-coming-from-a-file-like-bigfoot-sty
+\WarningFilter*{hyperref}{Option `hyperfootnotes' has already been used}
+
