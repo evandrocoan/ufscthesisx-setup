@@ -124,6 +124,8 @@
 \providecommand{\imprimirano}{}
 \newcommand{\ano}[1]{\renewcommand{\imprimirano}{#1}}
 
+\newcommand{\covername}{Capa}
+
 % Comandos de dados - Coordenador
 \newcommand{\coordenadorname}{Coordenador}
 \providecommand{\imprimircoordenadorRotulo}{}
@@ -731,6 +733,7 @@ therefore the \topsep patch must need to be updated accordingly}}
 
 \makeatletter
 \@ifpackageloaded{babel}{\@ifpackagewith{babel}{english}{\addto\captionsenglish{%
+    \renewcommand{\covername}{Cover}
     \renewcommand{\orientadorname}{Supervisor}
     \renewcommand{\coorientadorname}{Co\hyp{}supervisor}
     \renewcommand{\listfigurename}{List of Figures}
