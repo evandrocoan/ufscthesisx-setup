@@ -82,6 +82,7 @@
 
 % https://tex.stackexchange.com/questions/482886/how-to-add-babel-captions-to-newfloat-package-environments
 \RequirePackage{newfloat}
+\RequirePackage{caption}
 
 % How to auto adjust my last table column width, and why is there Underfull \vbox badness on this table?
 % https://tex.stackexchange.com/questions/387238/how-to-auto-adjust-my-last-table-column-width-and-why-is-there-underfull-vbox/387251
@@ -668,7 +669,10 @@
 
 % https://tex.stackexchange.com/questions/329631/creating-new-captions-and-caption-counters
 \def\listofquadrosname{List of Frames}
-\DeclareFloatingEnvironment[fileext=loq,placement={!hbtp},name=Frame,within=chapter,listname=\listofquadrosname]{quadro}
+\DeclareFloatingEnvironment[fileext=loq,placement={!hbtp},name=Quadro,within=chapter,listname=\listofquadrosname]{quadro}
+
+% https://tex.stackexchange.com/questions/479086/styling-and-spacing-around-float-caption-for-listing
+\captionsetup[quadro]{skip=1pt}
 
 % https://tex.stackexchange.com/questions/176418/remove-list-of-newfloat-from-toc
 \makeatletter
