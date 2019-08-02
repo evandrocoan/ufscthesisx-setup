@@ -667,22 +667,6 @@
 \makeatother
 
 
-% https://tex.stackexchange.com/questions/329631/creating-new-captions-and-caption-counters
-\def\listofquadrosname{List of Frames}
-\def\quadrosname{Frame}
-
-\DeclareFloatingEnvironment[fileext=loq,placement={!hbtp},name=\quadrosname,within=chapter,listname=\listofquadrosname]{quadro}
-
-\makeatletter
-\@ifpackageloaded{babel}{\@ifpackagewith{babel}{english}{\addto\captionsbrazil{\renewcommand{\quadrosname}{Quadro}}}{}}{}
-\@ifpackageloaded{babel}{\@ifpackagewith{babel}{english}{\addto\captionsbrazil{\renewcommand{\listofquadrosname}{Lista de Quadros}}}{}}{}
-\makeatother
-
-% https://tex.stackexchange.com/questions/479086/styling-and-spacing-around-float-caption-for-listing
-% https://tex.stackexchange.com/questions/97673/merge-items-in-list-of-floats
-% https://tex.stackexchange.com/questions/23313/how-can-i-reduce-padding-after-figure
-\captionsetup[quadro]{skip=1mm}
-
 % https://tex.stackexchange.com/questions/176418/remove-list-of-newfloat-from-toc
 \makeatletter
 \newcommand{\AdjustForMemoir}[1]{%
@@ -698,6 +682,7 @@
 \makeatother
 \AdjustForMemoir{quadro}
 \newlistentry{quadro}{loq}{0}
+
 
 % Patch the `abntex2` citacao environment removing the extra space from its top
 % https://tex.stackexchange.com/questions/300340/topsep-itemsep-partopsep-and-parsep-what-does-each-of-them-mean-and-wha
