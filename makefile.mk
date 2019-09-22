@@ -115,7 +115,7 @@ GITIGNORE_SOURCE_PATH := .gitignore
 GITIGNORE_DESTINE_PATH := ./setup/.gitignore
 
 .PHONY: all help latex thesis verbose clean biber index start_timer biber_hook1 \
-biber_hook2 pdflatex_hook1 pdflatex_hook2 pdflatex_hook3 pdflatex_hook4 pdflatex_hook5
+biber_hook2 pdflatex_hook1 pdflatex_hook2 pdflatex_hook3 pdflatex_hook4 pdflatex_hook5 pdflatex_hook6
 
 # http://stackoverflow.com/questions/1789594/how-do-i-write-the-cd-command-in-a-makefile
 .ONESHELL:
@@ -348,7 +348,7 @@ biber_hook1 biber_hook2: $(if $(wildcard ${CACHE_DIRECTORY}/${THESIS_MAIN_FILE}.
 
 
 # https://stackoverflow.com/questions/46135614/how-to-call-makefile-recipe-rule-multiple-times
-pdflatex_hook1 pdflatex_hook2 pdflatex_hook3 pdflatex_hook4 pdflatex_hook5:
+pdflatex_hook1 pdflatex_hook2 pdflatex_hook3 pdflatex_hook4 pdflatex_hook5 pdflatex_hook6:
 	printf 'LATEX_SOURCE_FILES: %s\n' "${LATEX_SOURCE_FILES}"
 	@${LATEX} ${LATEX_SOURCE_FILES} || $(if ${HALT_ON_ERROR_MODE},eval "${print_results}; exit $$?",)
 	printf '\n'
@@ -356,6 +356,31 @@ pdflatex_hook1 pdflatex_hook2 pdflatex_hook3 pdflatex_hook4 pdflatex_hook5:
 
 # This rule will be called for every latex file and pdf associated
 latex pdflatex: start_timer pdflatex_hook1
+	printf 'LATEX_PDF_FILES: %s\n' "${LATEX_PDF_FILES}"
+	${copy_resulting_pdf}
+
+
+latex1 pdflatex1: start_timer pdflatex_hook2
+	printf 'LATEX_PDF_FILES: %s\n' "${LATEX_PDF_FILES}"
+	${copy_resulting_pdf}
+
+
+latex2 pdflatex2: start_timer pdflatex_hook3
+	printf 'LATEX_PDF_FILES: %s\n' "${LATEX_PDF_FILES}"
+	${copy_resulting_pdf}
+
+
+latex3 pdflatex3: start_timer pdflatex_hook4
+	printf 'LATEX_PDF_FILES: %s\n' "${LATEX_PDF_FILES}"
+	${copy_resulting_pdf}
+
+
+latex4 pdflatex4: start_timer pdflatex_hook5
+	printf 'LATEX_PDF_FILES: %s\n' "${LATEX_PDF_FILES}"
+	${copy_resulting_pdf}
+
+
+latex5 pdflatex5: start_timer pdflatex_hook6
 	printf 'LATEX_PDF_FILES: %s\n' "${LATEX_PDF_FILES}"
 	${copy_resulting_pdf}
 
