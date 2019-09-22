@@ -1,0 +1,2228 @@
+%% setup/ufscthesisx.sty
+%%
+%% Copyright 2017 Evandro Coan
+%% Copyright 2012-2016 by abnTeX2 group at https://www.abntex.net.br/
+%%
+%% This work may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%%   http://www.latex-project.org/lppl.txt
+%% and version 1.3 or later is part of all distributions of LaTeX
+%% version 2005/12/01 or later.
+%%
+%% This work has the LPPL maintenance status `maintained'.
+%% The Current Maintainer of this work is the Evandro Coan.
+%%
+%% The last Maintainer of this work was the abnTeX2 team, led
+%% by Lauro César Araujo. Further information are available on
+%% https://www.abntex.net.br/
+%%
+%% This work consists of the file `abntex2-ufsc.sty` renamed as follows:
+%% Renamed the `abntex2.cls, v-1.9.6 laurocesar` to `setup/ufscthesisx.sty`
+%%
+
+% Define versão necessária do LaTeX
+\NeedsTeXFormat{LaTeX2e}
+
+
+
+
+%----------------------------------------------------------------------------------------
+%   PACKAGES AND OTHER DOCUMENT CONFIGURATIONS BEFORE LOADING abntex2
+%----------------------------------------------------------------------------------------
+
+% For web links and paths with \path{..} and \url{https://www.python.org/downloads/}
+% ftp://tug.ctan.org/pub/tex-archive/macros/latex/contrib/hyperref/doc/options.pdf
+% https://tex.stackexchange.com/questions/3033/forcing-linebreaks-in-url
+% https://tex.stackexchange.com/questions/124049/applying-options-to-already-loaded-package
+\PassOptionsToPackage{hyphens}{url}
+
+% Use its macro adjustwidth* to extend tables out of outer text border.
+% https://tex.stackexchange.com/questions/366155/how-to-write-a-table-a-little-larger-than-the-paragraphs-with-centered-columns
+\PassOptionsToPackage{strict}{changepage}
+
+% Linked footnotes are not supported inside environment `tabularx', because they
+% uses the optional argument of \footnotetext
+% http://ctan.sharelatex.com/tex-archive/macros/latex/contrib/hyperref/README.pdf
+\PassOptionsToPackage{hyperfootnotes=false}{hyperref}
+
+% The class `abntex2` loads the `enumitem` package with options.
+% With the package option shortlabels you can use an enumerate-like syntax, where A, a, I, i and 1
+% stand for \Alph*, \alph*, \Roman*, \roman* and \arabic*. This is intended mainly as a sort of
+% compatibility mode with the enumerate package, and therefore the following special rule applies:
+% if the very first option (at any level) is not recognized as a valid key, then it will be
+% considered a label with the enumerate-like syntax.
+% https://tex.stackexchange.com/questions/119919/no-spacing-between-enumerated-items-with-usepackageenumerate
+\PassOptionsToPackage{shortlabels}{enumitem}
+
+% Fixes `pdfTeX warning (ext4): destination with the same identifier (name{figure.1.1}) has been
+% already used, duplicate ignored`.
+%
+% The `abntex2` package loads the `hyperref` package, however there are several packages which are
+% required to be loaded after and before `hyperref`.
+%
+% https://tex.stackexchange.com/questions/1863/which-packages-should-be-loaded-after-hyperref-instead-of-before
+% https://tex.stackexchange.com/questions/50846/hyperref-is-loaded-by-the-class-and-i-need-to-load-packages-that-are-supposed-t
+% https://tex.stackexchange.com/questions/51094/using-beforepackage-to-load-a-package-before-hyperref-does-not-work
+\RequirePackage{scrlfile}
+\AfterClass{memoir}
+{
+    \RequirePackage{float}
+}
+
+% The class `abntex2` loads the package `enumitem`, but `paralist` must be loaded before it
+% https://tex.stackexchange.com/questions/162799/compilation-error-when-including-enumitem-and-paralist-packages
+\AfterClass{memoir}
+{
+    % How to make horizontal lists?
+    % https://tex.stackexchange.com/questions/146306/how-to-make-horizontal-lists
+    \RequirePackage{paralist}
+}
+
+% https://tex.stackexchange.com/questions/6529/newline-linebreak-in-message
+% https://tex.stackexchange.com/questions/383054/biblatex-error-incompatible-backref-package
+% https://tex.stackexchange.com/questions/115828/backreferencing-in-classicthesis-package-does-not-work
+% https://tex.stackexchange.com/questions/390349/why-my-biblatex-document-is-not-accepting-utf-8-on-the-bibliography
+% https://tex.stackexchange.com/questions/55478/how-to-print-out-to-log-without-affecting-anything-else-lua-print-equiv
+% https://tex.stackexchange.com/questions/483570/how-to-detect-whether-passoptionstopackage-was-already-called
+\ifcsname opt@biblatex.sty\endcsname
+    \message{Have options been passed for biblatex? YES!^^J}
+\else
+    \message{Have options been passed for biblatex? NO!^^J}
+    \PassOptionsToPackage{style=abnt,repeatfields=true,backend=biber,backref=true}{biblatex}
+\fi
+
+\AfterClass{memoir}
+{
+    \RequirePackage{biblatex}
+}
+
+% Package longtable must be put before hyperref and arydshln, hyperref after arydshln generates an error
+% http://ctan.sharelatex.com/tex-archive/macros/latex/contrib/hyperref/README.pdf
+\AfterClass{memoir}
+{
+    \RequirePackage{longtable}
+}
+
+% https://tex.stackexchange.com/questions/391993/how-to-silence-memoir-class-warning-against-the-use-of-caption-package
+\RequirePackage{silence}
+\WarningFilter*{memoir}{You are using the caption package with the memoir class}
+
+% https://tex.stackexchange.com/questions/402676/can-i-silence-a-warning-which-is-coming-from-a-file-like-bigfoot-sty
+\WarningFilter*{hyperref}{Option `hyperfootnotes' has already been used}
+
+
+
+
+
+
+
+
+
+
+
+% Prove acesso a classe 'ufscthesisx'
+\ProvidesClass{setup/ufscthesisx}[2016/11/15 setup/ufscthesisx]
+
+% How can I properly resolve relative paths in `\usepackage`?
+% https://tex.stackexchange.com/questions/123999/how-can-i-properly-resolve-relative-paths-in-usepackage
+%
+% Commenting this allow to use this as a relative package, with no warnings.
+% \ProvidesPackage{ufscthesisx}[2017/08/28 v0.0.1 Evandro]
+
+%
+% Repassa todos os parâmetros a classe abntex2,
+\DeclareOption*{%
+    \PassOptionsToClass{\CurrentOption}{abntex2}%
+}
+
+% Now we'll execute any options passed in
+\ProcessOptions\relax
+\LoadClass{abntex2}
+
+
+
+
+
+
+
+
+
+% Custom list throw LaTeX Error: Command \mycustomfiction already defined?
+% https://tex.stackexchange.com/questions/388489/custom-list-throw-latex-error-command-mycustomfiction-already-defined
+\RequirePackage{morewrites}
+
+% Package csquotes Warning: Load 'inputenc' before 'csquotes'
+\RequirePackage[utf8]{inputenc}
+\RequirePackage[T1]{fontenc}
+
+% Package biblatex Warning: 'babel/polyglossia' detected but 'csquotes' missing
+% https://tex.stackexchange.com/questions/229638/package-biblatex-warning-babel-polyglossia-detected-but-csquotes-missing
+\RequirePackage{csquotes}
+
+% Indent the first section paragraphs
+% https://tex.stackexchange.com/questions/39227/no-indent-in-the-first-paragraph-in-a-section
+\RequirePackage{indentfirst}
+
+% Is it possible to keep my translation together with original text?
+% https://tex.stackexchange.com/questions/5076/is-it-possible-to-keep-my-translation-together-with-original-text
+\RequirePackage{comment}
+
+% Please tutor the usage of patchcmd and xpatch
+% https://tex.stackexchange.com/questions/152773/please-tutor-the-usage-of-patchcmd-and-xpatch
+\RequirePackage{xpatch}
+
+% Why the environment ttfamily is hyphenated, but macro ttfamily is not hyphenating?
+% https://tex.stackexchange.com/questions/387678/why-the-environment-ttfamily-is-hyphenated-but-macro-ttfamily-is-not-hyphenatin
+\RequirePackage{letltxmacro}
+
+% Theorem packages: which to use, which conflict?
+% https://tex.stackexchange.com/questions/5599/theorem-packages-which-to-use-which-conflict
+\RequirePackage{amsthm}
+
+% Why is the ifthen package obsolete? (It is used by the abntex2 class)
+% https://tex.stackexchange.com/questions/13866/why-is-the-ifthen-package-obsolete
+\RequirePackage{ifthen}
+
+% How to make section name uppercase in ToC?
+% https://tex.stackexchange.com/questions/156916/how-to-make-section-name-uppercase-in-toc
+\RequirePackage{textcase}
+
+% Always use it as should improve full justification
+% https://tex.stackexchange.com/questions/10377/texttt-overfull-hbox-problem
+% https://tex.stackexchange.com/questions/66052/should-i-load-microtype-with-pdflatex
+\RequirePackage{microtype}
+
+% https://tex.stackexchange.com/questions/482886/how-to-add-babel-captions-to-newfloat-package-environments
+\RequirePackage{newfloat}
+\RequirePackage{caption}
+
+% How to auto adjust my last table column width, and why is there Underfull \vbox badness on this table?
+% https://tex.stackexchange.com/questions/387238/how-to-auto-adjust-my-last-table-column-width-and-why-is-there-underfull-vbox/387251
+%
+% Why ltablex package breaks the changepage package?
+% https://tex.stackexchange.com/questions/404339/why-ltablex-package-breaks-the-changepage-package
+\RequirePackage{ltablex}\keepXColumns
+
+
+
+% CONFIGURAÇÕES DE PACOTES
+\newcommand{\ifnotempty}[2]{\ifthenelse{\not\equal{#1}{}}{#2}{}}
+\newcommand{\ifnotdefined}[3]{\ifdefined #1 #3 \else #2 \fi}
+
+% Comandos de dados - programa
+\providecommand{\imprimirprograma}{}
+\newcommand{\programa}[1]{\renewcommand{\imprimirprograma}{#1}}
+
+\providecommand{\imprimirformacao}{}
+\newcommand{\formacao}[1]{\renewcommand{\imprimirformacao}{#1}}
+
+\providecommand{\imprimirarea}{}
+\newcommand{\area}[1]{\renewcommand{\imprimirarea}{#1}}
+
+\providecommand{\imprimirbiblioteca}{}
+\newcommand{\biblioteca}[1]{\renewcommand{\imprimirbiblioteca}{#1}}
+
+\providecommand{\imprimirinstituicaosigla}{}
+\newcommand{\instituicaosigla}[1]{\renewcommand{\imprimirinstituicaosigla}{#1}}
+
+\providecommand{\imprimirano}{}
+\newcommand{\ano}[1]{\renewcommand{\imprimirano}{#1}}
+
+\newcommand{\covername}{Capa}
+
+% Comandos de dados - Coordenador
+\newcommand{\coordenadorname}{Coordenador}
+\providecommand{\imprimircoordenadorRotulo}{}
+\providecommand{\imprimircoordenador}{}
+\newcommand{\coordenador}[2][\coordenadorname]%
+  {\renewcommand{\imprimircoordenadorRotulo}{#1}%
+   \renewcommand{\imprimircoordenador}{#2}}
+
+% inclui subtitulo na capa, folha de rosto e ficha catalografica
+% https://github.com/lrsantos11/abntex2-ufsc/commit/fd30245353dcc49e193d281c78104afe54df9fe7
+%
+% Cria o comando \subtitulo. A norma define que o TITULO deve ser em caixa alta
+% negrito, mas o subtitulo deve ser em caixa baixa.
+\providecommand{\imprimirsubtitulo}{}
+\newcommand{\subtitulo}[1]{\renewcommand{\imprimirsubtitulo}{#1}}
+
+\newcounter{ufscthesisx@assuntos}
+\providecommand{\listaassuntos}{}
+\providecommand{\imprimirassuntos}
+{%
+    \setcounter{ufscthesisx@assuntos}{1}
+    \@for\assunto:={\listaassuntos}\do
+    {%
+        \arabic{ufscthesisx@assuntos}.\assunto. %
+        \addtocounter{ufscthesisx@assuntos}{1}
+    }
+}
+\newcommand{\assuntos}[1]{\renewcommand{\listaassuntos}{#1}}
+
+\providecommand{\imprimircentro}{}
+\newcommand{\centro}[1]{\renewcommand{\imprimircentro}{#1}}
+
+
+\newtheorem{axioma}{Axioma}[chapter]
+\newtheorem{postulado}{Postulado}[chapter]
+\newtheorem{teorema}{Teorema}[chapter]
+\newtheorem{conjectura}{Conjectura}[chapter]
+\newtheorem{corolario}[teorema]{Corol\'ario}
+\newtheorem{lema}[teorema]{Lema}
+\newtheorem{proposicao}[teorema]{Proposi\c{c}\~ao}
+
+
+% Commonly used in definitions, conditions, problems and examples.
+\theoremstyle{definition}
+\newtheorem{definicao}{Defini\c{c}\~ao}[chapter]
+\newtheorem{exemplo}{Exemplo}[section]
+\newtheorem{exercicio}{Exerc\'icio}[section]
+\newtheorem{condicao}{Condi\c{c}\~ao}[chapter]
+
+
+\theoremstyle{remark}
+\newtheorem{observacao}{Observa\c{c}\~ao}
+
+\renewcommand{\qedsymbol}{$\blacksquare$}
+
+
+
+% Margens
+\setlrmarginsandblock{2.5cm}{1.5cm}{*}
+\setulmarginsandblock{2cm}{1.5cm}{*}
+\checkandfixthelayout
+
+% Fontes dos títulos e seções
+% Tamanho da fonte padrão do 'ABNTEX'
+\renewcommand{\normalsize}{\fontsize{10.5pt}{11pt}}
+
+% Caption package and Memoir
+% https://groups.google.com/forum/#!topic/comp.text.tex/RzpI2ATMev0
+% https://tex.stackexchange.com/questions/18931/memoir-class-with-subcaption-and-hyperref-packages
+% \DeclareCaptionFont{small}{\fontsize{9.5pt}{10.5pt}}
+
+% Set caption font size in memoir
+% https://tex.stackexchange.com/questions/58943/set-caption-font-size-in-memoir
+\newcommand{\ufsccaptionsize}{\fontsize{9.5pt}{10.5pt}\selectfont}
+\captionnamefont{\ufsccaptionsize}
+\captiontitlefont{\ufsccaptionsize}
+
+% Set the UFSC epigrafe font size
+%
+% Changing font size in an example environment
+% https://tex.stackexchange.com/questions/123528/changing-font-size-in-an-example-environment
+\expandafter\def\expandafter\epigrafe\expandafter{\epigrafe\ufsccaptionsize}
+
+% Fonte padrão utilizada no texto
+% http://tug.org/fonts/
+%
+% The three default family font variables and the \familydefault variable should not be confused with their respective switch:
+% http://www.forkosh.com/pstex/latexcommands.htm
+%
+% variable value activated by
+\renewcommand{\familydefault}{cmr}
+
+%\encodingdefault   OT1 \normalfont, \textnormal{}
+%\familydefault \rmdefault  \normalfont, \textnormal{}
+%\rmdefault cmr \rmfamily, \textrm{}
+%\ttdefault cmtt    \ttfamily, \texttt{}
+%\sfdefault cmss    \sffamily, \textsf{}
+%\seriesdefault m   \normalfont, \textnormal{}
+%\mddefault m   \mdseries, \textmd{}
+%\bfdefault bx  \bfseries, \textbf{}
+%\shapedefault  n   \normalfont, \textnormal{}
+%\updefault n   \upshape, \textup{}
+%\itdefault it  \itshape, \textit{}
+%\scdefault sc  \scshape, \textsc{}
+%\sldefault sl  \slshape, \textsl{}
+
+
+% Selects a roman (i.e., serifed) font family
+\renewcommand{\rmdefault}{cmr}
+
+% Fontes padroes de part, chapter, section, subsection e subsubsection
+\renewcommand{\ABNTEXchapterfont}{\usefont{T1}{cmr}{bx}{n}}
+\renewcommand{\ABNTEXchapterfontsize}{\fontsize{10.5pt}{12pt}}
+
+\renewcommand{\ABNTEXpartfont}{\usefont{T1}{cmr}{bx}{n}}
+\renewcommand{\ABNTEXpartfontsize}{\fontsize{15pt}{18pt}}
+
+\renewcommand{\ABNTEXsectionfont}{\usefont{T1}{cmr}{m}{n}}
+\renewcommand{\ABNTEXsectionfontsize}{\fontsize{10.5pt}{12pt}}
+
+\renewcommand{\ABNTEXsubsectionfont}{\usefont{T1}{cmr}{b}{n}}
+\renewcommand{\ABNTEXsubsectionfontsize}{\fontsize{10.5pt}{12pt}}
+
+\renewcommand{\ABNTEXsubsubsectionfont}{\usefont{T1}{cmr}{m}{n}}
+\renewcommand{\ABNTEXsubsubsectionfontsize}{\fontsize{10.5pt}{12pt}}
+
+\renewcommand{\ABNTEXsubsubsubsectionfont}{\usefont{T1}{cmr}{m}{it}}
+\renewcommand{\ABNTEXsubsubsubsectionfontsize}{\fontsize{10.5pt}{12pt}}
+
+
+% Comando que simula a finalizacao de uma parte no bookmark e
+% adiciona espaco de \part no sumario
+\renewcommand{\phantompart}
+{%
+    \bookmarksetup{startatroot}%
+    \phantomsection%
+    \addtocontents{toc}{\vspace{0em}}
+}
+
+% TOC Spacing in Memoir
+% https://tex.stackexchange.com/questions/60317/toc-spacing-in-memoir
+\setlength{\cftbeforechapterskip}{12pt}
+
+
+% Fontes das entradas do sumario
+%
+% How to make the table of contents section title upper case without messing with the space between the chapter and section?
+% https://tex.stackexchange.com/questions/399828/how-to-make-the-table-of-contents-section-title-upper-case-without-messing-with
+%
+% How to make section name uppercase in ToC?
+% https://tex.stackexchange.com/questions/156916/how-to-make-section-name-uppercase-in-toc
+\let\oldcontentsline\contentsline
+\def\contentsline#1#2{%
+  \expandafter\ifx\csname l@#1\endcsname\l@section
+    \expandafter\@firstoftwo
+  \else
+    \expandafter\@secondoftwo
+  \fi
+  {%
+    \oldcontentsline{#1}{\MakeTextUppercase{#2}}%
+  }{%
+    \oldcontentsline{#1}{#2}%
+  }%
+}
+
+
+% No caso de Sumario (TOC) UFSC
+%
+% Memoir has another mechanism for the job: \cftsetindents{‹kind›}{indent}{numwidth}. Here kind is
+% chapter, section, or whatever; the indent specifies the ‘margin’ before the entry starts; and the
+% width is of the box into which the number is typeset (so needs to be wide enough for the largest
+% number, with the necessary spacing to separate it from what comes after it in the line.
+% http://www.tex.ac.uk/FAQ-tocloftwrong.html
+%
+% memoir: indentation of unnumbered sections in table of contents
+% https://tex.stackexchange.com/questions/264668/memoir-indentation-of-unnumbered-sections-in-table-of-contents
+%
+% Memoir ToC: indent the second line by number+space width in the previous line OR set standard
+% https://tex.stackexchange.com/questions/394227/memoir-toc-indent-the-second-line-by-numberspace
+
+% `\cftlastnumwidth` and these `\cftsetindents` are defined by the abntex2 class,
+% obeying the `ABNTEXsumario-abnt-6027-2012`. \newlength{\cftlastnumwidth}
+\setlength{\cftlastnumwidth}{\cftsubsubsectionnumwidth}
+\addtolength{\cftlastnumwidth}{1em}
+
+% http://www.tex.ac.uk/FAQ-tocloftwrong.html
+% Use \setlength\cftsectionnumwidth{4em} to override all these values
+\cftsetindents{part}         {0em}{\cftlastnumwidth}
+\cftsetindents{chapter}      {0em}{\cftlastnumwidth}
+\cftsetindents{section}      {0em}{\cftlastnumwidth}
+\cftsetindents{subsection}   {0em}{\cftlastnumwidth}
+\cftsetindents{subsubsection}{0em}{\cftlastnumwidth}
+\cftsetindents{paragraph}    {0em}{\cftlastnumwidth}
+\cftsetindents{subparagraph} {0em}{\cftlastnumwidth}
+
+\newlength{\cftnumberboxnumberwidth}
+\setlength{\cftnumberboxnumberwidth}{2em}
+\renewcommand{\tocprintchapter}
+{%
+    \addtocontents{toc}{\cftsetindents{chapter}{0em}{\cftlastnumwidth}}
+}
+%
+\renewcommand{\tocinnonumchapter}
+{%
+    \addtocontents{toc}{\cftsetindents{chapter}{\cftlastnumwidth}{\cftnumberboxnumberwidth}}%
+    \cftinserthook{toc}{A}
+}
+\renewcommand{\tocprintchapternonum}
+{%
+    \addtocontents{toc}{\cftsetindents{chapter}{\cftlastnumwidth}{\cftnumberboxnumberwidth}}
+}
+%
+\renewcommand{\tocpartapendices}
+{%
+    \addtocontents{toc}{\cftsetindents{chapter}{\cftlastnumwidth}{\cftnumberboxnumberwidth}}
+    \cftinserthook{toc}{A}
+}
+%
+\renewcommand{\tocpartanexos}
+{%
+    \addtocontents{toc}{\cftsetindents{chapter}{\cftlastnumwidth}{\cftnumberboxnumberwidth}}
+    \cftinserthook{toc}{A}
+}
+
+\renewcommand{\cftpartfont}{\ABNTEXpartfont}
+\renewcommand{\cftpartpagefont}{\cftpartfont}
+
+\renewcommand{\cftchapterfont}{\ABNTEXchapterfont}
+\renewcommand{\cftchapterpagefont}{\cftchapterfont}
+
+\renewcommand{\cftsectionfont}{\ABNTEXsectionfont}
+\renewcommand{\cftsectionpagefont}{\cftsectionfont}
+
+\renewcommand{\cftsubsectionfont}{\ABNTEXsubsectionfont}
+\renewcommand{\cftsubsectionpagefont}{\cftsubsectionfont}
+
+\renewcommand{\cftsubsubsectionfont}{\ABNTEXsubsubsectionfont}
+\renewcommand{\cftsubsubsectionpagefont}{\cftsubsubsectionfont}
+
+\renewcommand{\cftparagraphfont}{\ABNTEXsubsubsubsectionfont}
+\renewcommand{\cftparagraphpagefont}{\cftparagraphfont}
+
+% Ajusta entrada Referencias
+\renewcommand{\bibsection}
+{%
+    \chapter*{\bibname}
+    \bibmark
+    \ifnobibintoc\else
+    \phantomsection
+    \addcontentsline{toc}{chapter}{\uppercase{\bibname}}
+    \fi
+    \prebibhook
+}
+
+
+% Caption package and Memoir
+% https://groups.google.com/forum/#!topic/comp.text.tex/RzpI2ATMev0
+% https://tex.stackexchange.com/questions/18931/memoir-class-with-subcaption-and-hyperref-packages
+%
+% \captionsetup[table]{
+%   %  name=Tabela,
+%   %  listformat=empty,
+%   %  justification=justified,
+%   %  labelsep=colon,
+%   %   position=above,
+%   %   skip=\onelineskip,
+%   %  width=\linewidth,
+%   labelfont={normalsize},
+%   textfont={small},
+%   font={normalsize}
+% }
+
+% Caption package and Memoir
+% https://groups.google.com/forum/#!topic/comp.text.tex/RzpI2ATMev0
+% https://tex.stackexchange.com/questions/18931/memoir-class-with-subcaption-and-hyperref-packages
+%
+% \captionsetup[figure]{
+%   %  name=Tabela,
+%   %  listformat=empty,
+%   %  justification=justified,
+%   %  labelsep=colon,
+%   %   position=above,
+%   %   skip=\onelineskip,
+%   %  width=\linewidth,
+%   labelfont={normalsize},
+%   textfont={small},
+%   font={normalsize}
+% }
+
+
+% Espaçamento depois do título
+\setlength{\afterchapskip}{0.38cm}
+
+% Controle do espaçamento entre um parágrafo e outro. Tente também \onelineskip
+\setlength{\parskip}{0.0cm}
+
+% O tamanho do parágrafo é dado por
+\setlength{\parindent}{1.0cm}
+
+% Comando para inverter sobrenome e nome
+\newcommand{\ufscthesisx@inverter}[1]
+{%
+    \StrBehind{#1}{{}},
+    \StrBefore{#1}{{}}
+}
+
+% Comandos auxiliares
+\newcommand{\showfont}
+{%
+    (\foreignlanguage{english}
+    {%
+        encoding: \f@encoding{},
+        family: \f@family{},
+        series: \f@series{},
+        shape: \f@shape{},
+        size: \f@size{},
+        baseline: \f@baselineskip{}
+    })
+}
+
+% Comandos auxiliares
+\newcommand{\justshowfont}
+{%
+    (\foreignlanguage{english}
+    {%
+        \f@encoding{},
+        \f@family{},
+        \f@series{},
+        \f@shape{},
+        \f@size{},
+        \f@baselineskip{}
+    })
+}
+
+%Numeração dos floats por capítulo
+\counterwithin{figure}{chapter}
+\counterwithin{table}{chapter}
+
+
+% Macros for Cross-reference
+\newcommand{\figref}[1]{Figura~\ref{#1}}   % Cross-reference of figures
+\newcommand{\tabref}[1]{Tabela~\ref{#1}}    % Cross-reference of tables
+\newcommand{\eqnref}[1]{\eqref{#1}}      % Cross-reference of equations
+\newcommand{\secref}[1]{Seção~\ref{#1}}  % Cross-reference of equations
+\newcommand{\defref}[1]{Definição~\ref{#1}} %
+
+
+\renewenvironment{resumo}[1][\resumoname]
+{%
+    % Fixed double bookmark entries as `\pretextualchapter` bellow is already calling `\PRIVATEbookmarkthis`
+    % \PRIVATEbookmarkthis{#1}
+    % \renewcommand{\abstractnamefont}{\chaptitlefont}
+    % \renewcommand{\abstractname}{\ABNTEXchapterupperifneeded{#1}}
+    \pretextualchapter{#1}
+}
+{%
+    \PRIVATEclearpageifneeded
+}
+
+% Fix the resumo environment, which does not accept paragraphs on ufscthesisx
+%
+% Changing font size in an example environment
+% https://tex.stackexchange.com/questions/123528/changing-font-size-in-an-example-environment
+%
+% How to disable automatic indentation on new paragraphs?
+% https://tex.stackexchange.com/questions/14375/how-to-disable-automatic-indentation-on-new-paragraphs
+%
+% How to disable paragraphs inside my environment with \let\par\relax?
+% https://tex.stackexchange.com/questions/388369/how-to-disable-paragraphs-inside-my-environment-with-let-par-relax
+\xapptocmd{\resumo}{\setlength{\parindent}{0pt}\let\parOriginal\par\let\par\relax}{}{}
+\xpretocmd{\endresumo}{\endgraf}{}{}
+
+% \imprimirpalavraschave{Palavras-chaves}{latex. abntex. editoração de texto.}
+\makeatletter
+\newcommand{\imprimirpalavraschave}[2]{%
+    \@ifundefined{parOriginal}{}{\parOriginal}\vspace{\onelineskip}\textbf{#1}: #2
+}
+\makeatother
+
+% Create a list of things like (\usepackage{paralist})
+%   \palavraschaveufsc{englishkeywordslist}{keyword 1}
+%   \palavraschaveufsc{englishkeywordslist}{keyword 2}
+%   \begin{inparaitem}[]\englishkeywordslist\end{inparaitem}
+%   \begin{inparaenum}\englishkeywordslist\end{inparaenum}
+%
+% https://tex.stackexchange.com/questions/61811/how-to-define-inparaenum-in-the-preamble
+% https://tex.stackexchange.com/questions/468862/lonely-item-perhaps-a-missing-list-environment-missing-package
+% https://tex.stackexchange.com/questions/188476/how-do-you-define-one-macro-with-arguments-inside-another
+% https://tex.stackexchange.com/questions/191266/defining-macros-with-arguments
+% https://tex.stackexchange.com/questions/65780/macro-defining-macro
+% https://tex.stackexchange.com/questions/20456/removing-a-backslash-when-passing-arguments-to-newcommand
+\makeatletter
+\newcommand{\palavraschaveufsc}[2]{%
+    \@ifundefined{#1}{%
+        \message{palavraschaveufsc #1 is undefined}
+        \expandafter\newcommand\csname#1\endcsname{}
+    }{%
+        \message{palavraschaveufsc #1 is defined}
+    }
+    {\expandafter\g@addto@macro\csname#1\endcsname{\item #2. }}
+}
+\makeatother
+
+% ------------------------------------------------------------------------
+% ------------------------------------------------------------------------
+% Configura layout
+% ------------------------------------------------------------------------
+% ------------------------------------------------------------------------
+
+% ------------------------------------------------------------------------
+%% criar um novo estilo incluindo logos da UFSC
+% ------------------------------------------------------------------------
+
+% Configura layout para elementos textuais, redefining the ABNT command `\textual`.
+% Delete his to restore the ABNT default behavior.
+\renewcommand{\textual}
+{%
+    % Estilo original do Abntex2
+    \pagestyle{abntheadings}
+
+    % Remove a numeração das páginas no início dos capítulos.
+    % ABNT default value `{chapter}{abntchapfirst}`
+    \aliaspagestyle{chapter}{empty}
+
+    \nouppercaseheads
+    \bookmarksetup{startatroot}
+}
+
+
+% ------------------------------------------------------------------------
+% ------------------------------------------------------------------------
+% Comandos e ambientes de editoracao APENDICES e ANEXOS
+% ------------------------------------------------------------------------
+% ------------------------------------------------------------------------
+% ---
+% Imprime uma pagina de divisao no estilo parte
+\renewcommand{\partpage}
+{%
+    % \phantomsection
+    % \addcontentsline{toc}{part}{\appendixtocname}
+    \appendixpage*
+}
+
+
+% ---
+% Impressão da Capa
+\renewcommand{\imprimircapa}
+{%
+    \begin{capa}%
+
+        \center
+        {%
+            \ABNTEXchapterfont\ufsccaptionsize\MakeTextUppercase{\imprimirinstituicao}
+            \par\MakeTextUppercase{\imprimirautor}
+        }
+
+
+        \vfill
+        {%
+        \center
+            {\ABNTEXchapterfont\MakeUppercase{\imprimirtitulo}}
+            \ifnotempty{\imprimirsubtitulo}{{\ABNTEXchapterfont\!:} \par \imprimirsubtitulo}
+        }
+        \vfill
+
+        {%
+            \ufsccaptionsize
+            \imprimirlocal
+
+            \imprimirano
+        }
+        \vspace*{1cm}
+
+    \end{capa}
+}
+% ---
+
+
+% Conteúdo padrao da Folha de Rosto
+%
+% Underfull \hbox (badness 10000) message
+% https://tex.stackexchange.com/questions/199635/underfull-hbox-badness-10000-message
+%
+% Underfull \hbox (badness …) in paragraph at lines x-y
+% https://tex.stackexchange.com/questions/356110/underfull-hbox-badness-in-paragraph-at-lines-x-y
+%
+% How to add an empty line between paragraphs?
+% https://tex.stackexchange.com/questions/135134/how-to-add-an-empty-line-between-paragraphs
+\makeatletter
+\renewcommand{\folhaderostocontent}
+{%
+    \begin{center}
+        {\ABNTEXchapterfont\ufsccaptionsize\imprimirautor}
+
+        \vspace*{\fill}\vspace*{\fill}
+        \begin{center}
+
+            {\ABNTEXchapterfont\MakeUppercase{\imprimirtitulo}}
+            \abntex@ifnotempty{\imprimirsubtitulo}{{\ABNTEXchapterfont\!:} \\ \imprimirsubtitulo}
+
+        \end{center}
+        \vspace*{\fill}
+
+        \abntex@ifnotempty{\imprimirpreambulo}
+        {%
+            \hspace{.45\textwidth}
+            \begin{minipage}{5,5cm}
+
+                \SingleSpacing
+                {\ufsccaptionsize\imprimirpreambulo}
+                \bigskip
+
+                {
+                    \ufsccaptionsize\textbf{\imprimirorientadorRotulo:}~\imprimirorientador\par
+                    \abntex@ifnotempty{\imprimircoorientador}
+                    {
+                        {\textbf{\imprimircoorientadorRotulo:}~\imprimircoorientador}%
+                    }
+                }
+
+            \end{minipage}
+            \vspace*{\fill}
+        }
+
+        \vspace*{\fill}
+
+        {%
+            \ufsccaptionsize
+            \imprimirlocal
+
+            \imprimirano
+        }
+
+    \end{center}
+}
+\makeatother
+
+% If document class is equal to something then do not use package
+% https://tex.stackexchange.com/questions/46223/if-document-class-is-equal-to-something-then-do-not-use-package
+\makeatletter
+\@ifclassloaded{abntex2}
+{
+    % Package hyperref Warning: Token not allowed in a PDF string?
+    % https://tex.stackexchange.com/questions/384885/package-hyperref-warning-token-not-allowed-in-a-pdf-string
+    \pdfstringdefDisableCommands{\let\uppercase\relax}
+}{}
+\makeatother
+
+
+% https://tex.stackexchange.com/questions/176418/remove-list-of-newfloat-from-toc
+\makeatletter
+\newcommand{\AdjustForMemoir}[1]{%
+  \csletcs{kept@listof#1}{listof#1}%
+  \csdef{listof#1}{%
+    \@ifstar
+     {\csappto{newfloat@listof#1@hook}{\append@star}%
+      \csuse{kept@listof#1}}%
+     {\csuse{kept@listof#1}}%
+  }
+}
+\def\append@star#1{#1*}
+\makeatother
+\AdjustForMemoir{quadro}
+\newlistentry{quadro}{loq}{0}
+
+
+% Patch the `abntex2` citacao environment removing the extra space from its top
+% https://tex.stackexchange.com/questions/300340/topsep-itemsep-partopsep-and-parsep-what-does-each-of-them-mean-and-wha
+\xpatchcmd{\citacao}
+{\list{}}
+{\list{}{\topsep=0pt}}
+{}
+{\PackageWarning{ufscthesisx}{Citation \topsep is not patched. The 'citacao' environment must be
+patched with 'topsep=0pt' but it failed. This is probably due an update on the main class 'abnTeX2',
+therefore the \topsep patch must need to be updated accordingly}}
+
+% Backward compatibility with `abntex2cite` package `\citeonline` command with the new `biblatex` package
+% https://tex.stackexchange.com/questions/655/what-is-the-difference-between-def-and-newcommand
+\let\citeonline\textcite
+
+% Ao contrario da norma abnt-6027-2012, que as figuras estejam listadas na Lista de
+% Ilustrações,  a UFSC pede que as figuras estejam na Lista de Figuras.
+%
+% Remove the colon appended to variables by 'abntex2' because they show up on places they shouldn't
+%
+% https://tex.stackexchange.com/questions/485830/why-latex-does-not-tell-me-which-command-is-undefined
+% https://tex.stackexchange.com/questions/482886/how-to-add-babel-captions-to-newfloat-package-environments
+% https://tex.stackexchange.com/questions/482523/how-to-override-command-on-my-preamble-after-its-redefinition-by-my-class-with
+\makeatletter
+\@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{%
+    \renewcommand{\orientadorname}{Orientador}
+    \renewcommand{\coorientadorname}{Coorientador}
+    \renewcommand{\quadroname}{Quadro}
+    \renewcommand{\listofquadrosname}{Lista de Quadros}
+    \renewcommand{\listfigurename}{Lista de Figuras}
+    \renewcommand{\tableautorefname}{Tabela}
+    \renewcommand{\figureautorefname}{Figura}
+    \renewcommand{\chapterautorefname}{Capítulo}
+    \renewcommand{\equationautorefname}{Equação}
+}}{}}{}
+\makeatother
+
+\makeatletter
+\@ifpackageloaded{babel}{\@ifpackagewith{babel}{english}{\addto\captionsenglish{%
+    \renewcommand{\covername}{Cover}
+    \renewcommand{\orientadorname}{Supervisor}
+    \renewcommand{\coorientadorname}{Co\hyp{}supervisor}
+    \renewcommand{\listfigurename}{List of Figures}
+    \renewcommand{\tableautorefname}{Table}
+    \renewcommand{\figureautorefname}{Figure}
+    \renewcommand{\chapterautorefname}{Chapter}
+    \renewcommand{\equationautorefname}{Equation}
+}}{}}{}
+\makeatother
+
+% https://tex.stackexchange.com/questions/443603/how-to-appear-subsubsection-in-chapter-in-my-list-of-contents
+\setcounter{secnumdepth}{6}
+\setcounter{tocdepth}{6}
+
+
+
+
+
+
+
+
+
+
+%% README.md
+%% Copyright 2017 Evandro Coan
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.3
+% of this license or (at your option) any later version.
+% The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.3 or later is part of all distributions of LaTeX
+% version 2005/12/01 or later.
+%
+% This work has the LPPL maintenance status `maintained'.
+%
+% The Current Maintainer of this work is M. Y. Name.
+%
+% This work consists of the files:
+% 1. `README.md`,
+% 2. `basic.tex`,
+% 3. `commands.tex`,
+% 4. `commands_list.tex`
+% 5. `programming.tex`
+% 6. `badboxes.tex`
+\makeatletter
+
+
+
+% Please tutor the usage of patchcmd and xpatch
+% https://tex.stackexchange.com/questions/152773/please-tutor-the-usage-of-patchcmd-and-xpatch
+\usepackage{xpatch}
+
+% Incompatible color definition when using tikz with color package
+% https://tex.stackexchange.com/questions/150369/incompatible-color-definition-when-using-tikz-with-color-package
+\usepackage{xcolor}
+
+% Package setspace must be put before hyperref
+% http://ctan.sharelatex.com/tex-archive/macros/latex/contrib/hyperref/README.pdf
+\@ifclassloaded{memoir}{}{\usepackage{setspace}}
+
+% Allows putting an [H] in \begin{figure} to specify the exact location of the figure
+% https://tex.stackexchange.com/questions/8625/force-figure-placement-in-text
+%
+% Package float must be put before hyperref
+% http://ctan.sharelatex.com/tex-archive/macros/latex/contrib/hyperref/README.pdf
+\usepackage{float}
+
+% bigfoot.sty:61: Package hyperref Warning: Option `hyperfootnotes' has already been used
+% https://tex.stackexchange.com/questions/402652/bigfoot-sty61-package-hyperref-warning-option-hyperfootnotes-has-already-be
+\@ifpackageloaded{hyperref}{\hypersetup{hyperfootnotes=false}}{\PassOptionsToPackage{hyperfootnotes=false}{hyperref}}
+\usepackage{hyperref}
+
+
+% \lettrine{O}{nce} upon a time...
+% \lettrine[findent=2pt]{\fbox{\textbf{T}}}{ }his thesis deals with...
+%
+% https://tex.stackexchange.com/questions/164298/starting-a-paragraph-with-a-big-letter
+\usepackage{lettrine}
+
+% Required for including pictures, resizebox
+\usepackage{graphicx}
+
+% Allows in-line images such as the example fish picture
+\usepackage{wrapfig}
+
+% How to automatically force latex to not justify the text when it is not wise?
+% https://tex.stackexchange.com/questions/365801/how-to-automatically-force-latex-to-not-justify-the-text-when-it-is-not-wise
+\usepackage{array,ragged2e}
+
+% Use its macro adjustwidth* to extend tables out of outer text border.
+% https://tex.stackexchange.com/questions/366155/how-to-write-a-table-a-little-larger-than-the-paragraphs-with-centered-columns
+%
+% The `memoir` class emulates this package, so not try to load it when using `memoir`, ifpackageloaded question
+% https://tex.stackexchange.com/questions/70212/ifpackageloaded-question
+\@ifpackageloaded{changepage}{}{\usepackage[strict]{changepage}}
+
+% How to make horizontal lists?
+% https://tex.stackexchange.com/questions/146306/how-to-make-horizontal-lists
+%
+% Compilation error when including enumitem and paralist packages
+% https://tex.stackexchange.com/questions/162799/compilation-error-when-including-enumitem-and-paralist-packages
+\usepackage{paralist}
+
+% Replace the `paralist` package implementation of enumerate lists
+\usepackage{enumerate}
+
+% With the package option shortlabels you can use an enumerate-like syntax, where A, a, I, i and 1
+% stand for \Alph*, \alph*, \Roman*, \roman* and \arabic*. This is intended mainly as a sort of
+% compatibility mode with the enumerate package, and therefore the following special rule applies:
+% if the very first option (at any level) is not recognized as a valid key, then it will be
+% considered a label with the enumerate-like syntax.
+%
+% No spacing between enumerated items with \usepackage{enumerate}
+% https://tex.stackexchange.com/questions/119919/no-spacing-between-enumerated-items-with-usepackageenumerate
+\usepackage[shortlabels]{enumitem}
+
+\usepackage{tabularx}
+\usepackage{multirow}
+
+
+
+% The package supports the Text Companion fonts, which provide many text symbols (such as
+% baht, bullet, copyright, musicalnote, onequarter, section, and yen), in the TS1 encoding.
+%
+% `LaTeX Error: Option clash for package textcomp` with the package `mathcomp`, it need to be loaded before it.
+% https://tex.stackexchange.com/questions/343546/how-do-you-resolve-the-error-in-latex-option-clash-for-package-inputenc-usepa
+\usepackage[full]{textcomp}
+\usepackage{mathcomp}
+
+% Manipulação de Strings
+\usepackage{xstring}
+
+% Número da última página
+\usepackage{lastpage}
+
+% Tamanho das fontes
+\usepackage{anyfontsize}
+
+% Usa a fonte Latin Modern
+\usepackage{lmodern}
+
+% https://tex.stackexchange.com/questions/227711/blank-page-after-titlingpage
+\usepackage{atbegshi}
+
+% Selecao de codigos de fonte
+% https://tex.stackexchange.com/questions/664/why-should-i-use-usepackaget1fontenc
+%
+% Will allow all displayable utf8 characters to be available as input
+% https://tex.stackexchange.com/questions/13067/utf8x-vs-utf8-inputenc
+\usepackage[T1]{fontenc}
+
+% Codificacao do documento (conversão automática dos acentos)
+\usepackage[utf8]{inputenc}
+
+\usepackage{graphicx}
+\usepackage{pdfpages}
+\usepackage{rotating}
+
+% Needs to be loaded after hyperref
+% http://ctan.sharelatex.com/tex-archive/macros/latex/contrib/hyperref/README.pdf
+%
+% Package incompatibilty between alphalph, and hyperref with amsmath subequations
+% https://tex.stackexchange.com/questions/134665/package-incompatibilty-between-alphalph-and-hyperref-with-amsmath-subequations
+\usepackage{amsmath}
+\let\equation\gather
+\let\endequation\endgather
+
+\usepackage{amssymb}
+\usepackage{mathrsfs}
+\usepackage{pdflscape}
+\usepackage{epstopdf}
+\usepackage{multirow}
+\usepackage{listings}
+
+% Para incluir links
+\usepackage{url}
+
+% Pacote necessário para a lista de siglas.
+\usepackage{nomencl}
+\usepackage{booktabs}
+
+% A comprehensive (SI) units package
+\usepackage{siunitx}
+\sisetup{detect-all}
+\sisetup{scientific-notation = fixed, fixed-exponent = 0, round-mode = places,round-precision = 2,output-decimal-marker = {,} }
+\DeclareSIUnit \VA {VA} % apparent power
+
+% We need to load it after `siunitx` package, otherwise it will cause to the package `bigfoot` to throw
+% the error `input stack size=5000`
+% https://tex.stackexchange.com/questions/403651/while-loading-fancyvrb-siunitx-and-bigfoot-i-got-input-stack-size-5000-tex-st
+\usepackage{fancyvrb}
+
+% Memoir class conflict with datetime
+% https://tex.stackexchange.com/questions/162353/memoir-class-conflict-with-datetime
+% https://tex.stackexchange.com/questions/49071/difference-between-let-foo-relax-and-def-foo-for-disabling
+\let\ordinal\relax
+\usepackage{datetime}
+
+% gives you the possibility to rotate any object of an arbitrary angle.
+\usepackage{rotating}
+
+% Rotação de páginas no documento pdf.
+\usepackage{pdflscape}
+
+% Customize the look of the frame
+\usepackage{mdframed}
+
+% Pacotes adicionais, usados apenas no âmbito do Modelo Canônico do abnteX2
+\usepackage{tablefootnote}
+\usepackage{longtable}
+\usepackage{tocloft}
+
+% https://tex.stackexchange.com/questions/2441/how-to-add-a-forced-line-break-inside-a-table-cell
+\usepackage{makecell}
+\usepackage{pbox}
+
+% LaTeX not hyphenating properly, text running off page
+% https://tex.stackexchange.com/questions/28136/latex-not-hyphenating-properly-text-running-off-page
+\usepackage{hyphenat}
+
+% How to use \scalebox around my environment?
+% https://tex.stackexchange.com/questions/387515/how-to-use-scalebox-around-my-environment
+\usepackage{verbatimbox}
+
+% LaTeX/Indexing
+% https://www.sharelatex.com/learn/Indices
+% https://en.wikibooks.org/wiki/LaTeX/Indexing
+\usepackage{makeidx}
+\makeindex
+
+% Is it possible to keep my translation together with original text?
+% https://tex.stackexchange.com/questions/5076/is-it-possible-to-keep-my-translation-together-with-original-text
+\usepackage{comment}
+
+% Scoping \raggedbottom to a single page
+% https://tex.stackexchange.com/questions/226716/scoping-raggedbottom-to-a-single-page
+\usepackage{afterpage}
+
+% Logical String Length
+% https://tex.stackexchange.com/questions/87638/logical-string-length
+\usepackage{xstring}
+\usepackage{xifthen}
+
+% abntex2
+\usepackage{bookmark}
+\usepackage{calc}
+
+% cannot use \caption under minipage
+% https://tex.stackexchange.com/questions/57433/cannot-use-caption-under-minipage
+\usepackage{capt-of}
+
+% Custom list throw LaTeX Error: Command \mycustomfiction already defined?
+% https://tex.stackexchange.com/questions/388489/custom-list-throw-latex-error-command-mycustomfiction-already-defined
+\usepackage{morewrites}
+
+% Package csquotes Warning: Load 'inputenc' before 'csquotes'
+% Package biblatex Warning: 'babel/polyglossia' detected but 'csquotes' missing
+% https://tex.stackexchange.com/questions/229638/package-biblatex-warning-babel-polyglossia-detected-but-csquotes-missing
+\usepackage{csquotes}
+
+% Indent the first section paragraphs
+% https://tex.stackexchange.com/questions/39227/no-indent-in-the-first-paragraph-in-a-section
+\usepackage{indentfirst}
+
+% Why the environment ttfamily is hyphenated, but macro ttfamily is not hyphenating?
+% https://tex.stackexchange.com/questions/387678/why-the-environment-ttfamily-is-hyphenated-but-macro-ttfamily-is-not-hyphenatin
+\usepackage{letltxmacro}
+
+% Theorem packages: which to use, which conflict?
+% https://tex.stackexchange.com/questions/5599/theorem-packages-which-to-use-which-conflict
+\usepackage{amsthm}
+
+% Why is the ifthen package obsolete? (It is used by the abntex2 class)
+% https://tex.stackexchange.com/questions/13866/why-is-the-ifthen-package-obsolete
+\usepackage{ifthen}
+
+% How to make section name uppercase in ToC?
+% https://tex.stackexchange.com/questions/156916/how-to-make-section-name-uppercase-in-toc
+\usepackage{textcase}
+
+% The class memoir already provides these functionalities: Caption package and Memoir
+% https://groups.google.com/forum/#!topic/comp.text.tex/RzpI2ATMev0
+% https://tex.stackexchange.com/questions/18931/memoir-class-with-subcaption-and-hyperref-packages
+% \usepackage{subfig}
+% \usepackage{etoolbox}
+%
+% How to create my own caption type with \DeclareCaptionType on memoir class?
+% https://tex.stackexchange.com/questions/391901/how-to-create-my-own-caption-type-with-declarecaptiontype-on-memoir-class
+\usepackage{caption}
+
+% The package `layouts` causes the: Warning: layout scale set to 0.5 on input line
+% https://tex.stackexchange.com/questions/299372/warning-layout-scale-set-to-0-5-on-input-line
+% \usepackage{layouts}
+
+% Always use it as should improve full justification
+% https://tex.stackexchange.com/questions/10377/texttt-overfull-hbox-problem
+% https://tex.stackexchange.com/questions/66052/should-i-load-microtype-with-pdflatex
+\usepackage{microtype}
+
+% https://tex.stackexchange.com/questions/482886/how-to-add-babel-captions-to-newfloat-package-environments
+\usepackage{newfloat}
+
+% How to auto adjust my last table column width, and why is there Underfull \vbox badness on this table?
+% https://tex.stackexchange.com/questions/387238/how-to-auto-adjust-my-last-table-column-width-and-why-is-there-underfull-vbox/387251
+%
+% Why ltablex package breaks the changepage package?
+% https://tex.stackexchange.com/questions/404339/why-ltablex-package-breaks-the-changepage-package
+\usepackage{ltablex}\keepXColumns
+
+% Para incluir links com characteres especiais como # em URLs em `\footnote`
+% https://tex.stackexchange.com/questions/12855/getting-those-signs-in-the-footnote
+% https://tex.stackexchange.com/questions/299348/animate-gives-errors-when-i-also-use-bigfoot-or-cprotect
+%
+% Adding this will cause the warning``bigfoot.sty:61: Package hyperref Warning:
+% Option `hyperfootnotes' has 1`hyperfootnotes' has already been used
+% https://tex.stackexchange.com/questions/402652/bigfoot-sty61-package-hyperref-warning-option-hyperfootnotes-has-already-be
+\let\truehypersetup\hypersetup
+\renewcommand\hypersetup[1]{}
+\usepackage{bigfoot}
+\let\hypersetup\truehypersetup
+
+% While loading fancyvrb, siunitx and bigfoot, I got input stack size=5000, TeX STOPPED: fatal errors occurred
+% https://tex.stackexchange.com/questions/403651/while-loading-fancyvrb-siunitx-and-bigfoot-i-got-input-stack-size-5000-tex-st
+\xpatchcmd{\FN@allmarks}{266}{256}{}{}
+
+% https://tex.stackexchange.com/questions/62611/how-to-make-ref-references-include-the-word-figure
+% https://tex.stackexchange.com/questions/121865/nameref-how-to-display-section-name-and-its-number
+\usepackage[nameinlink]{cleveref}
+\newcommand*{\typeref}[1]{\hyperref[{#1}]{\Cref{#1}}} % One single link
+\newcommand*{\fullref}[1]{\hyperref[{#1}]{\Cref{#1}: \nameref{#1}}} % One single link
+
+
+\makeatother
+
+
+
+
+
+
+
+
+
+
+
+
+%% README.md
+%% Copyright 2017 Evandro Coan
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.3
+% of this license or (at your option) any later version.
+% The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.3 or later is part of all distributions of LaTeX
+% version 2005/12/01 or later.
+%
+% This work has the LPPL maintenance status `maintained'.
+%
+% The Current Maintainer of this work is M. Y. Name.
+%
+% This work consists of the files:
+% 1. `README.md`,
+% 2. `basic.tex`,
+% 3. `commands.tex`,
+% 4. `commands_list.tex`
+% 5. `programming.tex`
+% 6. `badboxes.tex`
+
+
+
+%
+% Settings
+%
+
+% RGB colors in absolute values from 0 to 255 by using `RGB` tag
+\definecolor{darkblue}{RGB}{26,13,178}
+
+% RGB colors in percentage notation by using `rgb` tag
+\definecolor{darkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+% Basic settings for hyperref package
+\hypersetup{colorlinks,linkcolor=darkblue,citecolor=darkgreen}
+
+
+
+% How could the `\everypar` justification statement be used?
+% https://tex.stackexchange.com/questions/365818/how-could-the-everypar-justification-statement-be-used
+\newbox\linebox \newbox\snapbox
+\def\eatlines
+{%
+    \setbox\linebox\lastbox % check the last line
+    \ifvoid\linebox
+    \else % if it’s not empty
+        \unskip\unpenalty % take whatever is
+        {\eatlines} % above it;
+        \setbox\snapbox\hbox{\unhcopy\linebox}
+        \ifdim\wd\snapbox<.98\wd\linebox
+            \box\snapbox % take the one or the other,
+        \else \box\linebox \fi
+    \fi
+}
+
+
+
+% How could the `\everypar` justification statement be used?
+% https://tex.stackexchange.com/questions/365818/how-could-the-everypar-justification-statement-be-used
+\everypar=
+{%
+    \setbox0=\lastbox \par%
+    \vbox\bgroup \everypar={}\def\par{\endgraf\eatlines\egroup}%
+}
+
+% Creates a new environment which can be used as:
+%
+% \begin{foo}
+%   Text...
+%
+%   Text ...
+% \end{foo}
+%
+% https://tex.stackexchange.com/questions/62333/push-long-words-in-a-new-line
+\newenvironment{foo}
+{%
+    \par%
+    \hyphenpenalty=10000%
+    \exhyphenpenalty=10000%
+}
+{\par}
+
+
+
+% Some text \brkurl{http://www.example.com/this/directory/here}
+%
+% How to break long URLs using common hyphenation but adding a line feed indicator?
+% https://tex.stackexchange.com/questions/69824/how-to-break-long-urls-using-common-hyphenation-but
+\def\addurlspace#1
+{%
+    \ifx\relax#1%
+    \else%
+    \ifx/#1\space\fi%
+    \ifx.#1\space\fi%
+    #1%
+    \ifx/#1\space\fi%
+    \ifx.#1\space\fi%
+    \expandafter\addurlspace%
+    \fi%
+}
+
+\makeatletter
+\@namedef{OT1-zwidthchar}{255}
+\@namedef{T1-zwidthchar}{"17}
+
+\def\brkurl#1
+{%
+    \edef\savedhchar{\the\hyphenchar\font}%
+    \global\setbox1\hbox{}%
+    \setbox0=\vbox
+    {%
+        \hsize=2pt\rightskip=0pt plus 1fill%
+        \hfuzz\maxdimen%
+        \tracinglostchars0%
+        \overfullrule0pt%
+        \hyphenchar\font=\csname \f@encoding-zwidthchar\endcsname%
+        \noindent \hskip0pt \addurlspace #1\relax%
+        \par%
+        \loop%
+        \setbox4 \lastbox%
+        \ifvoid4 \else%
+        \global\setbox1\hbox%
+        {%
+            \unhbox4\unskip\unskip\discretionary{\hbox{\rlap{$\leftarrow$}}}{}{}\unhbox1%
+        }%
+        \unskip%
+        \unskip%
+        \unpenalty%
+        \unskip%
+        \repeat%
+    }%
+    \unhbox1%
+    \hyphenchar\font\savedhchar%
+    \relax%
+}
+\makeatother
+
+
+
+% Change background color for text block
+% https://tex.stackexchange.com/questions/238294/change-background-color-for-text-block
+\usepackage{framed}
+\usepackage[most]{tcolorbox}
+\definecolor{shadecolor}{RGB}{219, 229, 241}
+\newtcolorbox{bluebox}
+{%
+    colback=shadecolor,
+    grow to right by=8mm,
+    grow to left by=8mm,
+    boxrule=0pt,
+    boxsep=0pt,
+    unbreakable,
+}
+
+
+
+% Make first row of table all bold
+%
+% Usage:
+% 1. Add `B` on the borders and `^` before each column definition.
+% 2. `\rowstyle{\bfseries}` before the row you want to bold.
+%
+% Example:
+% \begin{tabularx}{\linewidth}
+% {|
+%     *1{                 >{\RaggedRight\arraybackslash\hsize=1.1\hsize }BX       |} % Riscos
+%     *3{@{\hspace{3.0pt}}>{\Centering\arraybackslash                   }^p{0.9cm}|} % Probabilidade, Impacto, Prioridade
+%     *2{                 >{\RaggedRight\arraybackslash\hsize=0.95\hsize}^X       |} % Resposta, Prevenção
+% }
+%
+% \hline
+%
+% \rowstyle{\bfseries}
+% Riscos  & 1 & 2 & 3 & Estratégia de resposta & Ações de prevenção \\ \hline
+%
+%
+% https://tex.stackexchange.com/questions/4811/make-first-row-of-table-all-bold
+\usepackage{array}
+\newcolumntype{B}{>{\global\let\currentrowstyle\relax}}
+\newcolumntype{^}{>{\currentrowstyle}}
+\newcommand{\rowstyle}[1]
+{%
+    \gdef\currentrowstyle{#1}#1\ignorespaces
+}
+
+
+% https://tex.stackexchange.com/questions/485834/why-abntex2-class-is-inserting-a-new-line-after-the-chapter-title
+% https://tex.stackexchange.com/questions/367859/how-to-automatically-put-a-go-to-summary-go-back-on-each-section
+% https://tex.stackexchange.com/questions/388045/how-can-the-go-to-summary-be-fixed-so-the-sectionsomesome-more
+% https://tex.stackexchange.com/questions/399635/what-is-the-equivalent-to-sectionformat-on-memoir-class-for-chapterformat
+% https://tex.stackexchange.com/questions/485857/why-xapptocmd-is-reducing-the-vertical-space-between-partname-and-parttile
+\definecolor{ultramarine}{RGB}{0,32,96}
+\RequirePackage{xpatch}
+\RequirePackage{amssymb}
+\RequirePackage{hyperref}
+\newcommand{\goToSummaryText}{{%
+    \small\mdseries
+    \hyperlink{summary}{\textcolor{ultramarine}{$\leftleftarrows$}}
+    {$|$}
+    \Acrobatmenu{GoBack}{\textcolor{ultramarine}{$\leftarrow$}}
+}}
+\makeatletter
+    \newif\ifismemoirloaded\ismemoirloadedfalse
+    \newif\ifisabntexloaded\isabntexloadedfalse
+    \@ifclassloaded{memoir}{%
+        \ismemoirloadedtrue%
+    }{}
+    \@ifclassloaded{abntex2}{%
+        \isabntexloadedtrue%
+    }{}
+
+    \newcommand{\addGoToSummary}
+    {%
+        \@ifundefined{printparttitle}{\message{printparttitle patch for addGoToSummary could NOT
+                    be applied because there is no printparttitle command available!^^J}}{%
+            \let\oldAddGoToprintparttitle\printparttitle
+            \xapptocmd{\printparttitle}{~\protect\goToSummaryText}{}{}
+        }
+        \@ifundefined{Sectionformat}{\message{Sectionformat patch for addGoToSummary could NOT
+                    be applied because there is no Sectionformat command available!^^J}}{%
+            \let\oldAddGoToSectionformat\Sectionformat
+            \xapptocmd{\Sectionformat}{~\protect\goToSummaryText}{}{}
+        }
+
+        \ifismemoirloaded
+            \ifisabntexloaded
+                \let\oldAddGoToABNTEXchapterupperifneeded\ABNTEXchapterupperifneeded
+                \xapptocmd{\ABNTEXchapterupperifneeded}{~\protect\goToSummaryText}{}{}
+            \else
+                \let\oldAddGoToprintchaptertitle\printchaptertitle
+                \xapptocmd{\printchaptertitle}{~\protect\goToSummaryText}{}{}
+            \fi
+        \else
+            \@ifundefined{Chapterformat}{\message{Chapterformat patch for addGoToSummary could NOT
+                        be applied because there is no Chapterformat command available!^^J}}{%
+                \let\oldAddGoToChapterformat\Chapterformat
+                \xapptocmd{\Chapterformat}{~\protect\goToSummaryText}{}{}
+            }
+        \fi
+    }
+
+    \newcommand{\removeGoToSummary}
+    {%
+        \@ifundefined{oldAddGoToprintparttitle}{}{\let\printparttitle\oldAddGoToprintparttitle}
+        \@ifundefined{oldAddGoToSectionformat}{}{\let\Sectionformat\oldAddGoToSectionformat}
+
+        \ifismemoirloaded
+            \ifisabntexloaded
+                \@ifundefined{oldAddGoToABNTEXchapterupperifneeded}{}{\let\ABNTEXchapterupperifneeded\oldAddGoToABNTEXchapterupperifneeded}
+            \else
+                \@ifundefined{oldAddGoToprintchaptertitle}{}{\let\printchaptertitle\oldAddGoToprintchaptertitle}
+            \fi
+        \else
+            \@ifundefined{oldAddGoToChapterformat}{}{\let\Chapterformat\oldAddGoToChapterformat}
+        \fi
+    }
+
+\makeatother
+\let\oldAddGoTotableofcontents\tableofcontents
+% Insert internal document link
+\renewcommand{\tableofcontents}{%
+    \hypertarget{summary}%
+    \oldAddGoTotableofcontents%
+}
+
+
+
+%
+% New commands
+%
+
+% Allow to push long words on new lines when they do not fit entirely on the current line.
+% https://tex.stackexchange.com/questions/62333/push-long-words-in-a-new-line
+\newcommand\lword[1]{\leavevmode\nobreak\hskip0pt plus\linewidth\penalty50\hskip0pt plus-\linewidth\nobreak{#1}}
+\newcommand\lurl[1]{\leavevmode\nobreak\hskip0pt plus\linewidth\penalty50\hskip0pt plus-\linewidth\nobreak{\url{#1}}}
+
+
+% For the new command \latex
+% https://tex.stackexchange.com/questions/31091/space-after-latex-commands
+\usepackage{xspace}
+
+% Write the word LaTeX nicely.
+\newcommand{\latex}{\LaTeX\xspace}
+
+% Create a bold title all in upper case.
+\newcommand{\Title}[1]{\textbf{\MakeUppercase{#1}}}
+
+
+
+% Setting Entries of List of Listings in LaTeX. Package Listings
+% http://tex.stackexchange.com/questions/228936/setting-entries-of-list-of-listings-in-latex-package-listings
+\makeatletter
+\@ifclassloaded{memoir}{%
+    \newlength\mylen
+
+    % https://tex.stackexchange.com/questions/485830/why-latex-does-not-tell-me-which-command-is-undefined
+    \@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{\renewcommand{\lstlistingname}{Código}}}{}}{}
+    \@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{\renewcommand{\lstlistlistingname}{Lista de Códigos}}}{}}{}
+
+    \@ifpackageloaded{babel}{\@ifpackagewith{babel}{english}{\addto\captionsenglish{\renewcommand{\lstlistingname}{Code}}}{}}{}
+    \@ifpackageloaded{babel}{\@ifpackagewith{babel}{english}{\addto\captionsenglish{\renewcommand{\lstlistlistingname}{List of Codes}}}{}}{}
+
+    \@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{\crefname{listing}{código}{códigos}}}{}}{}
+    \@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{\Crefname{listing}{Código}{Códigos}}}{}}{}
+
+    \begingroup
+    \makeatletter
+        \let\newcounter\@gobble\let\setcounter\@gobbletwo
+        \globaldefs\@ne \let\c@loldepth\@ne
+        \newlistof{listings}{lol}{\lstlistlistingname}
+        \newlistof{lstlistoflistings}{lol}{\lstlistlistingname}
+        \newlistentry{lstlisting}{lol}{0}
+    \makeatother
+    \endgroup
+
+    % Why the empty space size is increasing each call to my calculate listing header command?
+    % https://tex.stackexchange.com/questions/388411/why-the-empty-space-size-is-increasing-each-call
+    \newlength\cftlstlistingoldnumwidth
+    \setlength\cftlstlistingoldnumwidth{\cftlstlistingnumwidth}
+
+    % Calculate the size of the header
+    %
+    % What is the use of percent signs (%) at the end of lines?
+    % https://tex.stackexchange.com/questions/7453/what-is-the-use-of-percent-signs-at-the-end-of-lines
+    \newcommand{\calculatelisteningsheader}
+    {%
+        \renewcommand\cftlstlistingpresnum{\lstlistingname~}%
+        \settowidth\mylen{\cftlstlistingpresnum\cftlstlistingaftersnum}%
+        \setlength\cftlstlistingnumwidth{\dimexpr\cftlstlistingoldnumwidth+\mylen}%
+        \renewcommand\cftlstlistingaftersnum{\hfill\textendash\hfill}%
+    }
+
+    % Ensure it is called at least one time
+    \calculatelisteningsheader
+
+    % https://tex.stackexchange.com/questions/14135/how-to-automatically-add-text-immediately-after-begindocument
+    \AtBeginDocument{\calculatelisteningsheader}
+}{}
+\makeatother
+
+
+
+% How to create my own list of things
+% https://tex.stackexchange.com/questions/61086/how-to-create-my-own-list-of-things
+\newcommand{\mytextpreliminarylistname}{Short Table of Contents}
+\newlistof{textpreliminarycontents}{tpc}{\mytextpreliminarylistname}
+
+% Resetting counter
+% https://tex.stackexchange.com/questions/66604/resetting-counter
+%
+% Custom list throw LaTeX Error: Command \mycustomfiction already defined?
+% https://tex.stackexchange.com/questions/388489/custom-list-throw-latex-error-command-mycustomfiction-already-defined
+\newlistentry{textpreliminarycounter}{tpc}{0}
+
+% Continuing Page Numbering (Roman to Arabic)
+% https://tex.stackexchange.com/questions/56131/continuing-page-numbering-roman-to-arabic
+\renewcommand{\thetextpreliminarycounter}{\arabic{textpreliminarycounter}}
+
+% Reset section numbering between unnumbered chapters
+% https://tex.stackexchange.com/questions/71162/reset-section-numbering-between-unnumbered-chapters
+\newcommand{\addtotextpreliminarycontent}[1]
+{%
+    \refstepcounter{textpreliminarycounter}%
+    \addcontentsline{tpc}{textpreliminarycounter}{\protect\numberline{\thetextpreliminarycounter}#1}\par%
+}
+
+
+
+% Unable to link to inserted pages with pdfpages
+% Solution from http://tex.stackexchange.com/questions/25105/unable-to-link-to-inserted-pages-with-pdfpages
+\newcounter{includepdfpage}
+\newcounter{currentpagecounter}
+
+\newcommand{\addlabelstoallincludedpages}[1]
+{%
+    \refstepcounter{includepdfpage}%
+    \stepcounter{currentpagecounter}%
+    \label{#1.\thecurrentpagecounter}%
+}
+\newcommand{\modifiedincludepdf}[4]
+{%
+    \setcounter{currentpagecounter}{0}%
+    \includepdf[pages=#1,pagecommand=\addlabelstoallincludedpages{#2},scale=#4]{#3}%
+}
+
+
+
+% \MakeUppercase in \section and \chapter with hyperref cause trouble
+% https://tex.stackexchange.com/questions/199374/makeuppercase-in-section-and-chapter-with-hyperref-cause-trouble
+\newcommand{\HyperrefUppercase}[1]{\texorpdfstring{\MakeTextUppercase{#1}}{#1}}
+
+
+
+% Example about hyphenation with ttfamily font
+% https://tex.stackexchange.com/questions/386665/example-about-hyphenation-with-ttfamily-font
+%
+% Why the environment ttfamily is hyphenated, but macro ttfamily is not hyphenating?
+% https://tex.stackexchange.com/questions/387678/why-the-environment-ttfamily-is-hyphenated-but-macro-ttfamily-is-not-hyphenatin
+\LetLtxMacro\origttfamily\ttfamily
+\DeclareRobustCommand*{\ttfamily}
+{%
+    \origttfamily
+    \hyphenchar\font=`\-\relax
+    \fontdimen3\font=.25em\relax
+    \fontdimen4\font=.13em\relax
+    \fontdimen7\font=.167em\relax
+}
+
+\makeatletter
+\DeclareRobustCommand\vttfamily
+{%
+    \not@math@alphabet\vttfamily\relax
+    \fontfamily{cmvtt}% cmvtt (Computer Modern) or lmvtt (Latin Modern)
+    \selectfont
+}
+\DeclareTextFontCommand{\textvtt}{\vttfamily}
+\makeatother
+
+
+
+% Logical String Length
+% https://tex.stackexchange.com/questions/87638/logical-string-length
+\newcommand{\includeonlyfilelist}[0]{}
+\makeatletter
+\newcommand{\addtoincludeonly}[1]
+{%
+    \StrLen{\includeonlyfilelist}[\includeonlyfilelistlen]
+
+    % How to concatenate strings into a single command?
+    % https://tex.stackexchange.com/questions/74707/how-to-concatenate-strings-into-a
+    \ifnum\includeonlyfilelistlen>0
+        \g@addto@macro\includeonlyfilelist{,#1}
+    \else
+        \g@addto@macro\includeonlyfilelist{#1}
+    \fi
+}
+\newcommand{\doincludeonly}[0]
+{%
+    \StrLen{\includeonlyfilelist}[\includeonlyfilelistlen]
+    \ifnum\includeonlyfilelistlen>0
+        \includeonly{\includeonlyfilelist}
+    \else
+    \fi
+}
+\makeatother
+
+
+% https://tex.stackexchange.com/questions/329631/creating-new-captions-and-caption-counters
+\def\listofquadrosname{List of Frames}
+\def\quadrosname{Frame}
+
+% https://tex.stackexchange.com/questions/502367/how-to-add-babel-translations-to-cleveref-based-cross-references-to-my-custom-fl
+\crefname{quadro}{frame}{frames}
+\Crefname{quadro}{Frame}{Frames}
+
+\DeclareFloatingEnvironment[fileext=loq,placement={!hbtp},name=\quadrosname,within=chapter,listname=\listofquadrosname]{quadro}
+
+\makeatletter
+    \@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{\renewcommand{\quadrosname}{Quadro}}}{}}{}
+    \@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{\renewcommand{\listofquadrosname}{Lista de Quadros}}}{}}{}
+
+    \@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{\crefname{quadro}{quadro}{quadros}}}{}}{}
+    \@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{\Crefname{quadro}{Quadro}{Quadros}}}{}}{}
+
+    % fix fig. being used instead of figure
+    \@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{\crefname{figure}{figura}{figuras}}}{}}{}
+    \@ifpackageloaded{babel}{\@ifpackagewith{babel}{english}{\addto\captionsenglish{\crefname{figure}{figure}{figures}}}{}}{}
+\makeatother
+
+% https://tex.stackexchange.com/questions/479086/styling-and-spacing-around-float-caption-for-listing
+% https://tex.stackexchange.com/questions/97673/merge-items-in-list-of-floats
+% https://tex.stackexchange.com/questions/23313/how-can-i-reduce-padding-after-figure
+\captionsetup[quadro]{skip=1mm}
+
+
+
+
+
+
+
+
+
+
+
+
+
+%% README.md
+%% Copyright 2017 Evandro Coan
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.3
+% of this license or (at your option) any later version.
+% The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.3 or later is part of all distributions of LaTeX
+% version 2005/12/01 or later.
+%
+% This work has the LPPL maintenance status `maintained'.
+%
+% The Current Maintainer of this work is M. Y. Name.
+%
+% This work consists of the files:
+% 1. `README.md`,
+% 2. `basic.tex`,
+% 3. `commands.tex`,
+% 4. `commands_list.tex`
+% 5. `programming.tex`
+% 6. `badboxes.tex`
+
+
+
+% Bad Boxes settings
+
+% Underfull \hbox in bibliography
+% https://tex.stackexchange.com/questions/10924/underfull-hbox-in-bibliography
+\apptocmd{\thebibliography}{\raggedright}{}{}
+
+% Underfull \hbox (badness 10000) has occurred while \output is active
+% https://tex.stackexchange.com/questions/367369/underfull-hbox-badness-10000-has-occurred-while-output-is-active
+%
+% how to suppress “Underfull \vbox (badness 10000) … while \output is active”?
+% https://tex.stackexchange.com/questions/62296/how-to-suppress-underfull-vbox-badness-10000-while-output-is-active
+\makeatletter
+    \def\@textbottom{\vskip \z@ \@plus 7pt}
+    \let\@texttop\relax
+\makeatother
+
+% Why Latex is hyphenating some words automatically, but others dont? hyphenmins{22} %left=2, right=2
+% https://tex.stackexchange.com/questions/387076/why-latex-is-hyphenating-some-words-automatically-but-others-dont
+\makeatletter
+    \@ifpackagewith{babel}{brazil}{  \def\brazilhyphenmins{11} }{}
+    \@ifpackagewith{babel}{english}{ \def\englishhyphenmins{11} }{}
+    \@ifpackagewith{babel}{french}{  \def\frenchhyphenmins{11} }{}
+\makeatother
+
+\makeatletter
+\@ifpackageloaded{url}
+{
+    % Bad formatting using URLs in bibtex
+    % https://tex.stackexchange.com/questions/22888/bad-formatting-using-urls-in-bibtex
+    \usepackage{etoolbox}
+
+    % How to avoid overfull error with url package?
+    % See also the `\usepackage{url}` declarationon the file `basic.tex`.
+    % Set this to 2mu or 3mu if URL start troubling again.
+    % https://tex.stackexchange.com/questions/261776/how-to-avoid-overfull-error-with-url-package
+    \Urlmuskip=0mu plus 1mu
+
+    % How to fix URL overfull & underfull on emumeration?
+    % https://tex.stackexchange.com/questions/366803/how-to-fix-url-overfull-underfull-on-emumeration
+    %
+    % Forcing linebreaks in \url
+    % https://tex.stackexchange.com/questions/3033/forcing-linebreaks-in-url/10401
+    \makeatletter
+        \g@addto@macro{\UrlBreaks}{\UrlOrds}
+    \makeatother
+
+    % How to fix this url bad box for stackoverflow link?
+    % https://tex.stackexchange.com/questions/384427/how-to-fix-this-url-bad-box-for-stackoverflow-link
+    \makeatletter
+    \g@addto@macro{\UrlBreaks}
+    {%
+        \do\a\do\b\do\c\do\d\do\e\do\f\do\g%
+        \do\h\do\i\do\j\do\k\do\l\do\m\do\n%
+        \do\o\do\p\do\q\do\r\do\s\do\t\do\u%
+        \do\v\do\w\do\x\do\y\do\z%
+        \do\A\do\B\do\C\do\D\do\E\do\F\do\G%
+        \do\H\do\I\do\J\do\K\do\L\do\M\do\N%
+        \do\O\do\P\do\Q\do\R\do\S\do\T\do\U%
+        \do\V\do\W\do\X\do\Y\do\Z%
+        \do\/\do\_\do\-%
+    }
+    \makeatother
+}{}
+\makeatother
+
+
+
+
+
+
+
+
+
+
+
+
+
+%% README.md
+%% Copyright 2017 Evandro Coan
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.3
+% of this license or (at your option) any later version.
+% The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.3 or later is part of all distributions of LaTeX
+% version 2005/12/01 or later.
+%
+% This work has the LPPL maintenance status `maintained'.
+%
+% The Current Maintainer of this work is M. Y. Name.
+%
+% This work consists of the files:
+% 1. `README.md`,
+% 2. `basic.tex`,
+% 3. `commands.tex`,
+% 4. `commands_list.tex`
+% 5. `programming.tex`
+% 6. `badboxes.tex`
+
+
+
+% Writing code in latex document. Usage: \begin & \end {lstlisting}
+% http://stackoverflow.com/questions/3175105/writing-code-in-latex-document
+\usepackage{listings}
+
+% How to insert code with accents with listings?
+% https://tex.stackexchange.com/questions/30512/how-to-insert-code-with-accents-with-listings
+\usepackage{listingsutf8}
+
+% set the font family for lstlisting
+% https://tex.stackexchange.com/questions/33685/set-the-font-family-for-lstlisting
+\usepackage{courier}
+
+% Latex: Listings with monospace fonts
+% https://stackoverflow.com/questions/2913141/latex-listings-with-monospace-fonts
+% https://tex.stackexchange.com/questions/145416/how-to-have-straight-single-quotes-in-lstlistings
+% https://tex.stackexchange.com/questions/252443/double-quote-charater-with-listings-create-problem
+\lstset{frame=,
+  language=Python,% default language
+  upquote=true,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  basicstyle={\small\ttfamily},
+  numbers=left,
+  numberstyle=\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{darkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=4,
+  morestring=[b]',
+  morestring=[b]",
+  literate = {---}{{\ProcessThreeDashes}}3
+             {>}{{\textcolor{red}\textgreater}}1
+             {|}{{\textcolor{red}\textbar}}1
+             {\ -\ }{{\mdseries\ -\ }}3,
+  inputencoding=utf8, % http://stackoverflow.com/questions/1116266/listings-in-latex-with-utf-8-or-at-least-german-umlauts
+  extendedchars=true, % https://tex.stackexchange.com/questions/24528/having-problems-with-listings-and-utf-8-can-it-be-fixed
+  literate=%
+  {£}{{\pounds}}1
+  {ß}{{\ss}}1
+  {à}{{\`a}}1
+  {À}{{\`A}}1
+  {à}{{\`{a}}}1
+  {á}{{\'a}}1
+  {Á}{{\'A}}1
+  {á}{{\'{a}}}1
+  {Á}{{\'{A}}}1
+  {â}{{\^a}}1
+  {Â}{{\^A}}1
+  {â}{{\^{a}}}1
+  {Â}{{\^{A}}}1
+  {ã}{{\~a}}1
+  {Ã}{{\~A}}1
+  {ã}{{\~{a}}}1
+  {Ã}{{\~{A}}}1
+  {ä}{{\"a}}1
+  {Ä}{{\"A}}1
+  {å}{{\r a}}1
+  {Å}{{\r A}}1
+  {æ}{{\ae}}1
+  {Æ}{{\AE}}1
+  {ç}{{\c c}}1
+  {Ç}{{\c C}}1
+  {ç}{{\c{c}}}1
+  {Ç}{{\c{C}}}1
+  {È}{{\'E}}1
+  {è}{{\`e}}1
+  {è}{{\`{e}}}1
+  {é}{{\'e}}1
+  {É}{{\'E}}1
+  {é}{{\'{e}}}1
+  {É}{{\'{E}}}1
+  {ê}{{\^e}}1
+  {Ê}{{\^E}}1
+  {ê}{{\^{e}}}1
+  {Ê}{{\^{E}}}1
+  {ë}{{\"e}}1
+  {Ë}{{\"E}}1
+  {ë}{{\¨{e}}}1
+  {ì}{{\`i}}1
+  {Ì}{{\`I}}1
+  {í}{{\'i}}1
+  {Í}{{\'I}}1
+  {í}{{\'{i}}}1
+  {Í}{{\~{Í}}}1
+  {î}{{\^i}}1
+  {Î}{{\^I}}1
+  {î}{{\^{i}}}1
+  {Î}{{\^{I}}}1
+  {ï}{{\"i}}1
+  {Ï}{{\"I}}1
+  {ò}{{\`o}}1
+  {Ò}{{\`O}}1
+  {ó}{{\'o}}1
+  {Ó}{{\'O}}1
+  {ó}{{\'{o}}}1
+  {Ó}{{\'{O}}}1
+  {ô}{{\^o}}1
+  {Ô}{{\^O}}1
+  {ô}{{\^{o}}}1
+  {Ô}{{\^{O}}}1
+  {õ}{{\~o}}1
+  {Õ}{{\~O}}1
+  {õ}{{\~{o}}}1
+  {Õ}{{\~{O}}}1
+  {ö}{{\"o}}1
+  {Ö}{{\"O}}1
+  {ø}{{\o}}1
+  {ù}{{\`u}}1
+  {Ù}{{\`U}}1
+  {ù}{{\`{u}}}1
+  {ú}{{\'u}}1
+  {Ú}{{\'U}}1
+  {ú}{{\'{u}}}1
+  {û}{{\^u}}1
+  {Û}{{\^U}}1
+  {û}{{\^{u}}}1
+  {ü}{{\"u}}1
+  {Ü}{{\"U}}1
+  {ő}{{\H{o}}}1
+  {Ő}{{\H{O}}}1
+  {œ}{{\oe}}1
+  {Œ}{{\OE}}1
+  {ű}{{\H{u}}}1
+  {Ű}{{\H{U}}}1
+  {€}{{\EUR}}1
+}
+
+% Defining `lstset` parameters for multiple languages & How can I highlight YAML code in a pretty way with listings?
+%
+% Usage \begin{lstlisting}[style=yaml_style] ... \end{lstlisting}
+%
+% https://tex.stackexchange.com/questions/45711/defining-lstset-parameters-for-multiple-languages
+% https://tex.stackexchange.com/questions/152829/how-can-i-highlight-yaml-code-in-a-pretty-way-with-listings
+\newcommand\YAMLcolonstyle{\color{red}}
+\newcommand\YAMLkeystyle{\color{black}}
+\newcommand\YAMLvaluestyle{\color{blue}}
+\newcommand\ProcessThreeDashes{\llap{\color{cyan}\mdseries-{-}-}}
+
+\lstdefinestyle{yaml_style}{
+  frame=,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  numbers=left,
+  numberstyle=\color{gray},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=2,
+  keywords={true,false,null,y,n},
+  keywordstyle=\color{darkgray},
+  basicstyle=\YAMLkeystyle,                                 % assuming a key comes first
+  sensitive=false,
+  comment=[l]{\#},
+  morecomment=[s]{/*}{*/},
+  commentstyle=\color{purple}\ttfamily,
+  stringstyle=\YAMLvaluestyle\ttfamily,
+  moredelim=[l][\color{orange}]{\&},
+  moredelim=[l][\color{magenta}]{*},
+  moredelim=**[il][\YAMLcolonstyle{:}\YAMLvaluestyle]{:}   % switch to value style at :
+}
+
+\lstdefinestyle{ufscthesisx_style}{
+    aboveskip=3mm,
+    belowskip=3mm,
+    backgroundcolor=\color{white},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}
+    basicstyle={\small\ttfamily},    % the size of the fonts that are used for the code
+    breakatwhitespace=true,          % sets if automatic breaks should only happen at whitespace
+    breaklines=true,                 % sets automatic line breaking
+    captionpos=t,                    % sets the caption-position to bottom
+    commentstyle=\color{mygreen},    % comment style
+    columns=flexible,
+    deletekeywords={...},            % if you want to delete keywords from the given language
+    escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+    extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+    frame=tb,                        % adds a frame around the code
+    keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+    keywordstyle=\color{blue},       % keyword style
+    language=Matlab,                 % the language of the code
+    morekeywords={*,...},            % if you want to add more keywords to the set
+    numbers=none,                    % where to put the line-numbers; possible values are (none, left, right)
+    numbersep=5pt,                   % how far the line-numbers are from the code
+    numberstyle=\tiny\color{mygray}, % the style that is used for the line-numbers
+    rulecolor=\color{black},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
+    showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+    showstringspaces=false,          % underline spaces within strings only
+    showtabs=false,                  % show tabs within strings adding particular underscores
+    stepnumber=2,                    % the step between two line-numbers. If it's 1, each line will be numbered
+    stringstyle=\color{mymauve},     % string literal style
+    tabsize=3,                       % sets default tabsize to 3 spaces
+    texcl=true,                      % Permite o uso de acentuação no código
+    title=\lstname                   % show the filename of files included with \lstinputlisting; also try caption instead of title
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+%% README.md
+%% Copyright 2017 Evandro Coan
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.3
+% of this license or (at your option) any later version.
+% The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.3 or later is part of all distributions of LaTeX
+% version 2005/12/01 or later.
+%
+% This work has the LPPL maintenance status `maintained'.
+%
+% The Current Maintainer of this work is M. Y. Name.
+%
+% This work consists of the files:
+% 1. `README.md`,
+% 2. `basic.tex`,
+% 3. `commands.tex`,
+% 4. `commands_list.tex`
+% 5. `programming.tex`
+% 6. `badboxes.tex`
+\makeatletter
+
+
+
+\@ifundefined{hline}{       \def\hline{hline} }{}
+\@ifundefined{caption}{     \def\caption{caption} }{}
+\@ifundefined{RaggedRight}{ \def\RaggedRight{RaggedRight} }{}
+\@ifundefined{imprimirprograma}{  \def\imprimirprograma{imprimirprograma} }{}
+\@ifundefined{imprimirformacao}{  \def\imprimirformacao{imprimirformacao} }{}
+\@ifundefined{imprimirtitulo}{  \def\imprimirtitulo{imprimirtitulo} }{}
+\@ifundefined{imprimirsubtitulo}{  \def\imprimirsubtitulo{imprimirsubtitulo} }{}
+\@ifundefined{imprimircoorientador}{  \def\imprimircoorientador{imprimircoorientador} }{}
+\@ifundefined{palavraschaveingles}{  \def\palavraschaveingles{} }{}
+\@ifundefined{imprimirautor}{  \def\imprimirautor{imprimirautor} }{}
+\@ifundefined{imprimirorientadorRotulo}{  \def\imprimirorientadorRotulo{imprimirorientadorRotulo} }{}
+\@ifundefined{imprimirdata}{  \def\imprimirdata{imprimirdata} }{}
+\@ifundefined{imprimirtipotrabalho}{  \def\imprimirtipotrabalho{imprimirtipotrabalho} }{}
+\@ifundefined{imprimirinstituicao}{  \def\imprimirinstituicao{imprimirinstituicao} }{}
+\@ifundefined{imprimircentro}{  \def\imprimircentro{imprimircentro} }{}
+\@ifundefined{palavraschaveportugues}{  \def\palavraschaveportugues{} }{}
+\@ifundefined{currenttime}{         \def\currenttime{Current Time} }{}
+\@ifundefined{lstlistingname}{      \def\lstlistingname{LST Listing Name} }{}
+\@ifundefined{lstlistoflistings}{   \def\lstlistoflistings{LST List of Listing} }{}
+\@ifundefined{mathfrak}{            \def\mathfrak{mathfrak} }{}
+\@ifundefined{resizebox}{           \def\resizebox{resizebox} }{}
+\@ifundefined{legend}{              \def\legend{legend} }{}
+\@ifundefined{url}{                 \def\url{url} }{}
+\@ifundefined{gamma_x}{             \def\gamma_x{gamma_x} }{}
+\@ifundefined{boldsymbol}{          \def\boldsymbol{boldsymbol} }{}
+\@ifundefined{texorpdfstring}{      \def\texorpdfstring{texorpdfstring} }{}
+\@ifundefined{ABNTEXfontereduzida}{ \def\ABNTEXfontereduzida{ABNTEXfontereduzida} }{}
+\@ifundefined{citeonline}{          \def\citeonline{citeonline} }{}
+\@ifundefined{imprimircoordenador}{          \def\imprimircoordenador{imprimircoordenador} }{}
+\@ifundefined{imprimircoordenadorRotulo}{          \def\imprimircoordenadorRotulo{imprimircoordenadorRotulo} }{}
+\@ifundefined{imprimirinstituicaosigla}{          \def\imprimirinstituicaosigla{imprimirinstituicaosigla} }{}
+\@ifundefined{imprimirpalavraschave}{          \def\imprimirpalavraschave{imprimirpalavraschave} }{}
+\@ifundefined{autor}{          \def\autor{autor} }{}
+\@ifundefined{titulo}{          \def\titulo{titulo} }{}
+\@ifundefined{orientador}{          \def\orientador{orientador} }{}
+\@ifundefined{local}{          \def\local{local} }{}
+\@ifundefined{instituicao}{          \def\instituicao{instituicao} }{}
+\@ifundefined{tipotrabalho}{          \def\tipotrabalho{tipotrabalho} }{}
+\@ifundefined{data}{          \def\data{data} }{}
+\@ifundefined{preambulo}{          \def\preambulo{preambulo} }{}
+\@ifundefined{PRIVATEbookmarkthis}{          \def\PRIVATEbookmarkthis{PRIVATEbookmarkthis} }{}
+\@ifundefined{pretextual}{          \def\pretextual{pretextual} }{}
+\@ifundefined{imprimircapa}{          \def\imprimircapa{imprimircapa} }{}
+\@ifundefined{imprimirfolhaderosto}{          \def\imprimirfolhaderosto{imprimirfolhaderosto} }{}
+\@ifundefined{textual}{          \def\textual{textual} }{}
+\@ifundefined{phantompart}{          \def\phantompart{phantompart} }{}
+\@ifundefined{postextual}{          \def\postextual{postextual} }{}
+\@ifundefined{bfseries}{          \def\bfseries{bfseries} }{}
+\@ifundefined{larger}{          \def\larger{larger} }{}
+\@ifundefined{cftlastnumwidth}{          \def\cftlastnumwidth{cftlastnumwidth} }{}
+\@ifundefined{imprimirano}{          \def\imprimirano{imprimirano} }{}
+\@ifundefined{imprimirbiblioteca}{          \def\imprimirbiblioteca{imprimirbiblioteca} }{}
+\@ifundefined{imprimirarea}{          \def\imprimirarea{imprimirarea} }{}
+\@ifundefined{mytextpreliminarylistname}{          \def\mytextpreliminarylistname{mytextpreliminarylistname} }{}
+\@ifundefined{addGoToSummary}{          \def\addGoToSummary{addGoToSummary} }{}
+\@ifundefined{latex}{          \def\latex{latex} }{}
+
+\@ifundefined{ifnotempty}{  \newcommand{\ifnotempty}[3][]{ ifnotempty } }{}
+\@ifundefined{palavraschaveufsc}{  \newcommand{\palavraschaveufsc}[2]{} }{}
+\@ifundefined{programa}{ \newcommand{\programa}[1]{\renewcommand{\imprimirprograma}{#1}} }{}
+\@ifundefined{formacao}{ \newcommand{\formacao}[1]{\renewcommand{\imprimirformacao}{#1}} }{}
+\@ifundefined{addtoincludeonly}{ \newcommand{\addtoincludeonly}[1]{\renewcommand{\imprimirformacao}{#1}} }{}
+\@ifundefined{addtotextpreliminarycontent}{ \newcommand{\addtotextpreliminarycontent}[1]{\renewcommand{\imprimirformacao}{#1}} }{}
+\@ifundefined{area}{ \newcommand{\area}[1]{\renewcommand{\imprimirarea}{#1}} }{}
+\@ifundefined{biblioteca}{ \newcommand{\biblioteca}[1]{\renewcommand{\imprimirbiblioteca}{#1}} }{}
+\@ifundefined{instituicaosigla}{ \newcommand{\instituicaosigla}[1]{\renewcommand{\imprimirinstituicaosigla}{#1}} }{}
+\@ifundefined{ano}{ \newcommand{\ano}[1]{\renewcommand{\imprimirano}{#1}} }{}
+\@ifundefined{covername}{ \newcommand{\covername}{Capa} }{}
+\@ifundefined{coordenadorname}{ \newcommand{\coordenadorname}{Coordenador} }{}
+\@ifundefined{coordenador}{ \newcommand{\coordenador}[2][\coordenadorname]{\renewcommand{\imprimircoordenadorRotulo}{#1}\renewcommand{\imprimircoordenador}{#2}} }{}
+\@ifundefined{centro}{ \newcommand{\centro}[1]{\renewcommand{\imprimircentro}{#1}} }{}
+\@ifundefined{fullref}{ \newcommand{\fullref}[1]{\renewcommand{\imprimircentro}{#1}} }{}
+\@ifundefined{lword}{ \newcommand{\lword}[1]{\renewcommand{\imprimircentro}{#1}} }{}
+\@ifundefined{textual}{ \newcommand{\textual}[1]{\renewcommand{\imprimircentro}{#1}} }{}
+
+\definecolor{darkblue}{RGB}{26,13,178}
+\definecolor{darkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+% How to rename an existing command?
+% https://tex.stackexchange.com/questions/193379/how-to-rename-an-existing-command
+\newcommand{\supertiny}{\fontsize{2pt}{2.5pt}\selectfont}
+\usepackage{lmodern}
+
+% How to replace a command with a dummy one?
+% https://tex.stackexchange.com/questions/387394/how-to-replace-a-command-with-a-dummy-one
+\@ifundefined{includegraphics}{
+    \newcommand{\includegraphics}[3][]{ \detokenize{ \includegraphics[#1]{#2 #3} } }
+}{}
+
+\@ifundefined{resizebox}{
+    \newcommand{\resizebox}[3][]{ resizebox }
+}{}
+
+\@ifundefined{SI}{
+    \newcommand{\SI}[3][]{ SI }
+}{}
+
+\@ifundefined{includepdf}{
+    \newcommand{\includepdf}[3][]{ SI }
+}{}
+
+\@ifundefined{modifiedincludepdf}{
+    \newcommand{\modifiedincludepdf}[4][]{
+        modifiedincludepdf
+    }
+}{}
+
+% How to create a dummy generic environment replacement?
+% https://tex.stackexchange.com/questions/387389/how-to-create-a-dummy-generic-environment-replacement
+\@ifundefined{longtable}{
+    \newenvironment{longtable}[0]
+    {longtable environment\par\verbatim\supertiny}
+    {\normalfont\endverbatim\endgraf replacement for debug mode}
+}{}
+
+\@ifundefined{fichacatalografica}
+{
+    \newenvironment{fichacatalografica}[0]
+    {fichacatalografica environment\par\verbatim\supertiny}
+    {\normalfont\endverbatim\endgraf replacement for debug mode}
+}{}
+
+\@ifundefined{folhadeaprovacao}{
+    \newenvironment{folhadeaprovacao}[0]
+    {folhadeaprovacao environment\par\verbatim\supertiny}
+    {\normalfont\endverbatim\endgraf replacement for debug mode}
+}{}
+
+\@ifundefined{apendicesenv}{
+    \newenvironment{apendicesenv}[0]
+    {apendicesenv environment\par\verbatim\supertiny}
+    {\normalfont\endverbatim\endgraf replacement for debug mode}
+}{}
+
+\@ifundefined{anexosenv}{
+    \newenvironment{anexosenv}[0]
+    {anexosenv environment\par\verbatim\supertiny}
+    {\normalfont\endverbatim\endgraf replacement for debug mode}
+}{}
+
+\@ifundefined{bluebox}{
+    \newenvironment{bluebox}[0]
+    {bluebox environment\par\verbatim\supertiny}
+    {\normalfont\endverbatim\endgraf replacement for debug mode}
+}{}
+
+\@ifundefined{citacao}{
+    \newenvironment{citacao}[0]
+    {citacao environment\par\verbatim\supertiny}
+    {\normalfont\endverbatim\endgraf replacement for debug mode}
+}{}
+
+\@ifundefined{resumo}{
+    \newenvironment{resumo}[0]
+    {resumo environment}
+    {replacement for debug mode}
+}{}
+
+\@ifundefined{sideways}{
+    \newenvironment{sideways}[0]
+    {sideways environment\par\verbatim\supertiny}
+    {\normalfont\endverbatim\endgraf replacement for debug mode}
+}{}
+
+\@ifundefined{landscape}{
+    \newenvironment{landscape}[0]
+    {landscape environment\par\verbatim\supertiny}
+    {\normalfont\endverbatim\endgraf replacement for debug mode}
+}{}
+
+\@ifundefined{lstlisting}{
+    \newenvironment{lstlisting}[0]
+    {lstlisting environment\par\verbatim\supertiny}
+    {\normalfont\endverbatim\endgraf replacement for debug mode}
+}{}
+
+
+
+\makeatother
+
+
+
+
+
+
+
+
+
+
+
