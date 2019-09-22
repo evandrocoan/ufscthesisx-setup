@@ -1,7 +1,6 @@
 # ufscthesisx
 
-Esta não é uma classe LaTeX,
-mas um pacote.
+Esta é uma classe LaTeX.
 
 O modelo disponibilizado pela Biblioteca Universitária da UFSC em 2015,
 utiliza a `abntex` versão `0.8.2`, considerada muito antiga,
@@ -17,44 +16,28 @@ git clone --recursive https://github.com/evandrocoan/ufscthesisx-setup setup
 ```
 
 Para usá-lo,
-você deve utilizar a classe `abnTeX2` como classe do seu documento,
-e então incluir `ufscthesisx` como um pacote LaTeX na seguinte ordem:
+você deve utilizar a classe `setup/ufscthesisx` como classe do seu documento,
+e então incluir onde está são os arquivos de sua bibliografia:
 ```latex
-% Fixes several `abntex2` class problems
-\input{setup/setup.tex}
-
 % The UFSC font size is 10.5, but memoir embedded by `abntex2` only accepts 10 and 11pt.
 % However, problem will be fixed the `ufscthesisx` package.
 \documentclass[
 10pt,          % Padrão UFSC para versão final
-a5paper,       % Padrão UFSC para versão final
 % 12pt,        % Pode usar tamanho 12pt para defesa
-% a4paper,     % Pode usar a4 para defesa
+a5paper,       % Padrão UFSC para versão final
 twoside,       % Impressão nos dois lados da folha
 chapter=TITLE, % Título de capítulos em caixa alta
 section=TITLE, % Título de seções em caixa alta
-]{abntex2}
-
-% Load the UFSC thesis package
-\usepackage{setup/ufscthesisx}
-
-% Load extra commands for tables, lists, summaries, etc.
-\input{setup/utilities.tex}
+]{setup/ufscthesisx}
 
 % Use the 'aftertext/references.bib' file to include your bibliography
 \addbibresource{aftertext/references.bib}
 ```
-Se você inverter a ordem de inclusão do biblatex,
-as citações bibliográficas não irão funcionar.
-
-Apesar das instruções iniciais do projeto serem para utilizar diretamente a classe `abntex2`,
-existem algumas incompatibilidades com outros pacotes do LaTeX que precisam ser corrigidos.
-Para isso você pode utilizar você pode incluir o arquivo `setup.tex` que faz as correções do `abntex2`.
 
 Uma maneira  de utilizar esse **template**,
 caso você seja usuário de `git`,
 é fazer o clone desse repositório como um submodulo de sua tese,
-e em seu arquivo principal incluir o seguinte cabeçalho para carregar os pacotes básicos mentionados acima.
+e em seu arquivo principal incluir o seguinte cabeçalho para carregar os pacotes básicos mencionados acima.
 
 
 ### Mudanças
@@ -74,40 +57,75 @@ git log
 Se você quiser saber quais são todos os comandos de compilação disponíveis,
 basta chamar utilizar o comando `make help`. Exemplo:
 ```
+$ make help
+
  Usage:
    make <target> [debug=1]
 
  Use debug=1 to run make in debug mode. Use this if something does not work!
  Examples:
+   make help
    make debug=1
    make latex debug=1
    make thesis debug=1
 
  If you are using Windows Command Prompt `cmd.exe`, you must use this
  command like this:
+  make help
   set "debug=1" && make
   set "debug=1" && make latex
   set "debug=1" && make thesis
 
+ Use halt=1 to continue running on errors instead of stopping the compilation!
+ Also use debug=1 to halt on errors and fix the errors dynamically.
+
+ Examples:
+   make halt=1
+   make latex halt=1
+   make thesis halt=1
+
  Targets:
-   all        call the `thesis` make rule
-   biber      build the main file with bibliography pass
-   latex      build the main file with no bibliography pass
-   pdflatex   the same as latex rule, i.e., an alias for it
-   latexmk    build the main file with pdflatex biber pdflatex pdflatex
+   all        Call the `thesis` make rule
+   index      Build the main file with index pass
+   biber      Build the main file with bibliography pass
+   latex      Build the main file with no bibliography pass
+   pdflatex   The same as latex rule, i.e., an alias for it
+   latexmk    Build the main file with pdflatex biber pdflatex pdflatex
               pdflatex makeindex biber pdflatex
 
-   thesis     completely build the main file with minimum output logs
-   verbose    completely build the main file with maximum output logs
-   clean      remove all cache directories and generated pdf files
-   veryclean  same as `clean`, but searches for all generated files outside
+   thesis     Completely build the main file with minimum output logs
+   verbose    Completely build the main file with maximum output logs
+   clean      Remove all cache directories and generated pdf files
+   veryclean  Same as `clean`, but searches for all generated files outside
               the cache directories.
 
-   release version=1.1   creates the zip file `1.1.zip` on the root of this
-        project, within all latex required files. This is useful to share or
-        public your thesis source files with others.
-        If you are using Windows Command Prompt `cmd.exe`, you must use this
-        command like this: set "version=1.1" && make release
+   release version=1.1
+       creates the zip file `1.1.zip` on the root of this project,
+       within all latex required files. This is useful to share or
+       public your thesis source files with others. If you are using
+       Windows Command Prompt `cmd.exe`, you must use this command like this:
+       set "version=1.1" && make release
+
+   remote     Runs the make command remotely on another machine by ssh.
+              This requires `passh` program installed. You can download it from:
+              https://github.com/clarkwang/passh
+
+       You can define the following parameters:
+       1. LATEXPASSWORD  - the remote machine SHH password
+       2. LATEXADDRESS   - the remote machine 'user@ipaddress'
+       3. rules          - the rules/arguments to pass to the remote invocation of make
+       4. args           - arguments to pass to the rsync program
+       5. dir            - the directory to put the files, defaults to '~/LatexBuild'
+
+     Example usage for Linux:
+       make remote LATEXPASSWORD=123 LATEXADDRESS=linux@192.168.0.222 rules=latex
+                delete=1 dir=~/Downloads/Thesis
+
+     Example usage for Windows:
+       set "LATEXPASSWORD=123" && set "LATEXADDRESS=linux@192.168.0.222" &&
+                set "rules=latex" && set "delete=1" &&
+                set "dir=~/Downloads/Thesis" &&
+                make remote
 ```
 
 Caso você tenha problemas,
@@ -120,9 +138,8 @@ Por exemplo,
 `make latex debug=true`.
 
 Por conveniência,
-você também pode chamar `make latex debug=a` qualquer outra coisa desde que não seja vazio.
-Por exemplo,
-`make latex debug=` Você também pode diretamente editar o arquivo `setup/makefile.mk` e
+você também pode chamar `make latex debug=1` qualquer outra coisa desde que não seja vazio.
+Você também pode diretamente editar o arquivo `setup/makefile.mk` e
 descomentar a linha `# ENABLE_DEBUG_MODE := true` para ativar o modo debug permanentemente.
 
 
