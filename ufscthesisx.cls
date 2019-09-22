@@ -264,6 +264,9 @@
 \providecommand{\imprimircentro}{}
 \newcommand{\centro}[1]{\renewcommand{\imprimircentro}{#1}}
 
+\providecommand{\imprimircampus}{}
+\newcommand{\campus}[1]{\renewcommand{\imprimircampus}{#1}}
+
 
 \newtheorem{axioma}{Axioma}[chapter]
 \newtheorem{postulado}{Postulado}[chapter]
@@ -684,10 +687,16 @@
 
         \center
         {%
+            \includegraphics[height=2.54cm,width=1.84cm]{setup/UFSC_sigla_fundo_claro.png}
+
             \ABNTEXchapterfont\ufsccaptionsize\MakeTextUppercase{\imprimirinstituicao}
-            \par\MakeTextUppercase{\imprimirautor}
+            \par\MakeTextUppercase{\imprimircampus}
+            \par\MakeTextUppercase{\imprimirprograma}
         }
 
+        \vfill
+
+        {\ufsccaptionsize\imprimirautor}
 
         \vfill
         {%
@@ -2105,6 +2114,7 @@ therefore the \topsep patch must need to be updated accordingly}}
 \@ifundefined{coordenadorname}{ \newcommand{\coordenadorname}{Coordenador} }{}
 \@ifundefined{coordenador}{ \newcommand{\coordenador}[2][\coordenadorname]{\renewcommand{\imprimircoordenadorRotulo}{#1}\renewcommand{\imprimircoordenador}{#2}} }{}
 \@ifundefined{centro}{ \newcommand{\centro}[1]{\renewcommand{\imprimircentro}{#1}} }{}
+\@ifundefined{campus}{ \newcommand{\campus}[1]{\renewcommand{\imprimircentro}{#1}} }{}
 \@ifundefined{fullref}{ \newcommand{\fullref}[1]{\renewcommand{\imprimircentro}{#1}} }{}
 \@ifundefined{lword}{ \newcommand{\lword}[1]{\renewcommand{\imprimircentro}{#1}} }{}
 \@ifundefined{textual}{ \newcommand{\textual}[1]{\renewcommand{\imprimircentro}{#1}} }{}
