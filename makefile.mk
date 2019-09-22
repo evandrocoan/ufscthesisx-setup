@@ -72,14 +72,16 @@ ifdef debug
 	endif
 endif
 
-## Use halt=1 to continue running on errors instead of stopping the compilation!
-## Also use debug=1 to halt on errors and fix the errors dynamically.
+## Use halt=1 to stop running on errors instead of continuing the compilation!
+## Also, use debug=1 to halt on errors and fix the errors dynamically.
 ##
 ## Examples:
 ##   make halt=1
 ##   make latex halt=1
 ##   make thesis halt=1
 ##
+# Uncomment this if you have problems or call `make latex debug=1`
+# HALT_ON_ERROR_MODE := true
 ifdef halt
 	ifneq (0,${halt})
 		HALT_ON_ERROR_MODE := true
@@ -120,7 +122,7 @@ biber_hook2 pdflatex_hook1 pdflatex_hook2 pdflatex_hook3 pdflatex_hook4 pdflatex
 
 # https://tex.stackexchange.com/questions/91592/where-to-find-official-and-extended-documentation-for-tex-latexs-commandlin
 # https://tex.stackexchange.com/questions/52988/avoid-linebreaks-in-latex-console-log-output-or-increase-columns-in-terminal
-PDF_LATEX_COMMAND = pdflatex --synctex=1 $(if ${HALT_ON_ERROR_MODE},,-halt-on-error) -file-line-error
+PDF_LATEX_COMMAND = pdflatex --synctex=1 $(if ${HALT_ON_ERROR_MODE},-halt-on-error,) -file-line-error
 PDF_LATEX_COMMAND += $(if $(shell pdflatex --help | grep time-statistics),--time-statistics,)
 PDF_LATEX_COMMAND += $(if $(shell pdflatex --help | grep max-print-line),--max-print-line=10000,)
 
@@ -348,7 +350,7 @@ biber_hook1 biber_hook2: $(if $(wildcard ${CACHE_DIRECTORY}/${THESIS_MAIN_FILE}.
 # https://stackoverflow.com/questions/46135614/how-to-call-makefile-recipe-rule-multiple-times
 pdflatex_hook1 pdflatex_hook2 pdflatex_hook3 pdflatex_hook4 pdflatex_hook5:
 	printf 'LATEX_SOURCE_FILES: %s\n' "${LATEX_SOURCE_FILES}"
-	@${LATEX} ${LATEX_SOURCE_FILES} || $(if ${HALT_ON_ERROR_MODE},,eval "${print_results}; exit $$?")
+	@${LATEX} ${LATEX_SOURCE_FILES} || $(if ${HALT_ON_ERROR_MODE},eval "${print_results}; exit $$?",)
 	printf '\n'
 
 
@@ -360,13 +362,13 @@ latex pdflatex: start_timer pdflatex_hook1
 
 # MAIN LATEXMK RULE
 ${LATEXMK_THESIS}: start_timer
-	${LATEXMK_COMMAND} ${THESIS_MAIN_FILE}.tex || $(if ${HALT_ON_ERROR_MODE},,eval "${print_results}; exit $$?")
+	${LATEXMK_COMMAND} ${THESIS_MAIN_FILE}.tex || $(if ${HALT_ON_ERROR_MODE},eval "${print_results}; exit $$?",)
 	${copy_resulting_pdf}
 
 
 # Dynamically generated recipes for all PDF and latex files
 %.pdf: %.tex
-	@${LATEX} $< || $(if ${HALT_ON_ERROR_MODE},,eval "${print_results}; exit $$?")
+	@${LATEX} $< || $(if ${HALT_ON_ERROR_MODE},eval "${print_results}; exit $$?",)
 	printf '\n'
 
 
@@ -537,7 +539,7 @@ remote:
 	printf 'Running the command which will actually run make...\n'
 	passh -p $(if ${LATEXPASSWORD},${LATEXPASSWORD},admin123) \
 		ssh -o StrictHostKeyChecking=no $(if ${LATEXADDRESS},${LATEXADDRESS},linux@192.168.0.222) \
-		"${REMOTE_COMMAND_TO_RUN}" || $(if ${HALT_ON_ERROR_MODE},,exit "$$?")
+		"${REMOTE_COMMAND_TO_RUN}" || $(if ${HALT_ON_ERROR_MODE},exit "$$?",)
 
 	printf 'Running the command which will copy back the generated PDF...\n'
 	-passh -p $(if ${LATEXPASSWORD},${LATEXPASSWORD},admin123) \
