@@ -323,7 +323,7 @@ ${GITIGNORE_DESTINE_PATH}: ${GITIGNORE_SOURCE_PATH}
 
 
 # Run pdflatex, biber, pdflatex
-biber: start_timer biber_hook1 index pdflatex_hook2
+biber: start_timer biber_hook1 index $(if ${ENABLE_DEBUG_MODE},,pdflatex_hook2)
 	${copy_resulting_pdf}
 
 
@@ -343,7 +343,7 @@ index: $(if $(wildcard ${CACHE_DIRECTORY}/${THESIS_MAIN_FILE}.idx),,pdflatex_hoo
 # https://stackoverflow.com/questions/35552028/gnu-make-add-a-file-as-a-dependency-only-if-it-doesnt-exist-yet
 biber_hook1 biber_hook2: $(if $(wildcard ${CACHE_DIRECTORY}/${THESIS_MAIN_FILE}.bcf),,pdflatex_hook1)
 	printf 'Running biber...\n'
-	biber ${BIBER_FLAGS} "${THESIS_MAIN_FILE}.bcf"
+	biber ${BIBER_FLAGS} "${THESIS_MAIN_FILE}.bcf" $(if ${ENABLE_DEBUG_MODE},--validate_datamodel,)
 	printf '\n'
 
 
