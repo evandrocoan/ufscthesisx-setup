@@ -1945,9 +1945,9 @@ therefore the \topsep patch must need to be updated accordingly}}
 %
 % https://tex.stackexchange.com/questions/45711/defining-lstset-parameters-for-multiple-languages
 % https://tex.stackexchange.com/questions/152829/how-can-i-highlight-yaml-code-in-a-pretty-way-with-listings
-\newcommand\YAMLcolonstyle{\color{red}}
-\newcommand\YAMLkeystyle{\color{black}}
-\newcommand\YAMLvaluestyle{\color{blue}}
+\newcommand\YAMLcolonstyle{\color{red}\mdseries}
+\newcommand\YAMLkeystyle{\color{black}\bfseries}
+\newcommand\YAMLvaluestyle{\color{blue}\mdseries}
 \newcommand\ProcessThreeDashes{\llap{\color{cyan}\mdseries-{-}-}}
 
 \lstdefinestyle{yaml_style}{
@@ -1962,7 +1962,7 @@ therefore the \topsep patch must need to be updated accordingly}}
   tabsize=2,
   keywords={true,false,null,y,n},
   keywordstyle=\color{darkgray},
-  basicstyle=\YAMLkeystyle,                                 % assuming a key comes first
+  basicstyle={\small\ttfamily\YAMLkeystyle}, % assuming a key comes first
   sensitive=false,
   comment=[l]{\#},
   morecomment=[s]{/*}{*/},
@@ -1970,7 +1970,7 @@ therefore the \topsep patch must need to be updated accordingly}}
   stringstyle=\YAMLvaluestyle\ttfamily,
   moredelim=[l][\color{orange}]{\&},
   moredelim=[l][\color{magenta}]{*},
-  moredelim=**[il][\YAMLcolonstyle{:}\YAMLvaluestyle]{:}   % switch to value style at :
+  moredelim=**[il][\YAMLcolonstyle{:}\YAMLvaluestyle]{:} % switch to value style at :
 }
 
 \lstdefinestyle{ufscthesisx_style}{
