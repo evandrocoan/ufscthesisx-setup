@@ -790,23 +790,6 @@
 \makeatother
 
 
-% https://tex.stackexchange.com/questions/176418/remove-list-of-newfloat-from-toc
-\makeatletter
-\newcommand{\AdjustForMemoir}[1]{%
-  \csletcs{kept@listof#1}{listof#1}%
-  \csdef{listof#1}{%
-    \@ifstar
-     {\csappto{newfloat@listof#1@hook}{\append@star}%
-      \csuse{kept@listof#1}}%
-     {\csuse{kept@listof#1}}%
-  }
-}
-\def\append@star#1{#1*}
-\makeatother
-\AdjustForMemoir{quadro}
-\newlistentry{quadro}{loq}{0}
-
-
 % Patch the `abntex2` citacao environment removing the extra space from its top
 % https://tex.stackexchange.com/questions/300340/topsep-itemsep-partopsep-and-parsep-what-does-each-of-them-mean-and-wha
 \xpatchcmd{\citacao}
@@ -1670,6 +1653,21 @@ therefore the \topsep patch must need to be updated accordingly}}
 % https://tex.stackexchange.com/questions/23313/how-can-i-reduce-padding-after-figure
 \captionsetup[quadro]{skip=1mm}
 
+% https://tex.stackexchange.com/questions/176418/remove-list-of-newfloat-from-toc
+\makeatletter
+\newcommand{\AdjustForMemoir}[1]{%
+  \csletcs{kept@listof#1}{listof#1}%
+  \csdef{listof#1}{%
+    \@ifstar
+     {\csappto{newfloat@listof#1@hook}{\append@star}%
+      \csuse{kept@listof#1}}%
+     {\csuse{kept@listof#1}}%
+  }
+}
+\def\append@star#1{#1*}
+\makeatother
+\AdjustForMemoir{quadro}
+\newlistentry{quadro}{loq}{0}
 
 
 
@@ -2022,7 +2020,7 @@ therefore the \topsep patch must need to be updated accordingly}}
 
 \newcommand*{\pythonprompt}{\textcolor{promptcolour}{{>}{>}{>}}}
 
-\lstdefinestyle{mypython}{
+\lstdefinestyle{python_style}{
   %keepspaces=true,
   language=python,
   showtabs=true,
