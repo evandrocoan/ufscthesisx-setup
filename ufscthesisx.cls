@@ -1170,7 +1170,7 @@ therefore the \topsep patch must need to be updated accordingly}}
 \usepackage[newfloat,chapter,outputdir=setup/cache]{minted}
 
 % https://tex.stackexchange.com/questions/320185/adjust-vertical-spacing-between-caption-and-listing-in-koma-scrartcl
-\captionsetup[listing]{position=top,skip=-4pt}
+\captionsetup[listing]{position=top,skip=0pt}
 \newenvironment{code}{\captionsetup{type=listing}}{}
 
 % https://tex.stackexchange.com/questions/269491/mixing-minted-with-lstlisting
@@ -1193,6 +1193,8 @@ therefore the \topsep patch must need to be updated accordingly}}
 \def\newfloat@listoflisting@hook{\let\figurename\listingname}
 \makeatother
 
+% https://tex.stackexchange.com/questions/14166/red-box-drawn-around-question-mark-operator-in-minted-erlang-code
+\AtBeginEnvironment{code}{\renewcommand{\fcolorbox}[4][]{#4}}
 
 
 
