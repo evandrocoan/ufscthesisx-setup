@@ -122,7 +122,7 @@ biber_hook2 pdflatex_hook1 pdflatex_hook2 pdflatex_hook3 pdflatex_hook4 pdflatex
 
 # https://tex.stackexchange.com/questions/91592/where-to-find-official-and-extended-documentation-for-tex-latexs-commandlin
 # https://tex.stackexchange.com/questions/52988/avoid-linebreaks-in-latex-console-log-output-or-increase-columns-in-terminal
-PDF_LATEX_COMMAND = pdflatex --synctex=1 $(if ${HALT_ON_ERROR_MODE},-halt-on-error,) -file-line-error
+PDF_LATEX_COMMAND = pdflatex -shell-escape --synctex=1 $(if ${HALT_ON_ERROR_MODE},-halt-on-error,) -file-line-error
 PDF_LATEX_COMMAND += $(if $(shell pdflatex --help | grep time-statistics),--time-statistics,)
 PDF_LATEX_COMMAND += $(if $(shell pdflatex --help | grep max-print-line),--max-print-line=10000,)
 

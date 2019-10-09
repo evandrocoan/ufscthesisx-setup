@@ -1165,6 +1165,35 @@ therefore the \topsep patch must need to be updated accordingly}}
 \makeatother
 
 
+% https://tex.stackexchange.com/questions/57353/how-to-get-caption-above-listing-with-minted
+% https://tex.stackexchange.com/questions/339931/latex-minted-package-using-custom-output-directory-build
+\usepackage[newfloat,chapter,outputdir=setup/cache]{minted}
+
+% https://tex.stackexchange.com/questions/320185/adjust-vertical-spacing-between-caption-and-listing-in-koma-scrartcl
+\captionsetup[listing]{position=top,skip=-4pt}
+\newenvironment{code}{\captionsetup{type=listing}}{}
+
+% https://tex.stackexchange.com/questions/269491/mixing-minted-with-lstlisting
+\AtBeginEnvironment{code}{\setcounter{listing}{\value{lstlisting}}
+\setlength{\abovecaptionskip}{0pt}
+\setlength{\belowcaptionskip}{0pt}
+\setlength{\parskip}{0pt}
+\captionsetup{skip=0pt}
+% \vspace*{-1mm}
+}
+\AtEndEnvironment{code}{\stepcounter{lstlisting}}
+
+% https://tex.stackexchange.com/questions/269491/mixing-minted-with-lstlisting
+\AtBeginEnvironment{listing}{\setcounter{listing}{\value{lstlisting}}}
+\AtEndEnvironment{listing}{\stepcounter{lstlisting}}
+
+% https://tex.stackexchange.com/questions/287947/figure-as-name-of-listings-in-listoflistings-with-minted-and-newfloat/287953#287953
+\makeatletter
+\let\l@listing\l@figure
+\def\newfloat@listoflisting@hook{\let\figurename\listingname}
+\makeatother
+
+
 
 
 
@@ -1480,6 +1509,12 @@ therefore the \topsep patch must need to be updated accordingly}}
 
     \@ifpackageloaded{babel}{\@ifpackagewith{babel}{english}{\addto\captionsenglish{\renewcommand{\lstlistingname}{Code}}}{}}{}
     \@ifpackageloaded{babel}{\@ifpackagewith{babel}{english}{\addto\captionsenglish{\renewcommand{\lstlistlistingname}{List of Codes}}}{}}{}
+
+    \@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{\renewcommand{\listlistingname}{Lista de Códigos}}}{}}{}
+    \@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{\renewcommand{\listingname}{Código}}}{}}{}
+
+    \@ifpackageloaded{babel}{\@ifpackagewith{babel}{english}{\addto\captionsenglish{\renewcommand{\listingname}{Code}}}{}}{}
+    \@ifpackageloaded{babel}{\@ifpackagewith{babel}{english}{\addto\captionsenglish{\renewcommand{\listlistingname}{List of Codes}}}{}}{}
 
     \@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{\crefname{listing}{código}{códigos}}}{}}{}
     \@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{\Crefname{listing}{Código}{Códigos}}}{}}{}
