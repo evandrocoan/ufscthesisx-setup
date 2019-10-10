@@ -804,6 +804,26 @@ therefore the \topsep patch must need to be updated accordingly}}
 % https://tex.stackexchange.com/questions/655/what-is-the-difference-between-def-and-newcommand
 \let\citeonline\textcite
 
+% https://tex.stackexchange.com/questions/123104/inline-citations-with-only-author-title-and-year
+\DeclareCiteCommand{\citeauthortitleyear}
+  {\boolfalse{citetracker}%
+   \boolfalse{pagetracker}%
+   \usebibmacro{prenote}}
+  {\ifciteindex
+     {\indexnames{labelname}%
+      \indexfield{indextitle}}
+     {}%
+     \printfield{labeltitle}%
+     \setunit{\addcomma\space}%
+     \printtext[bibhyperref]{%
+       \printnames{labelname}%
+       \space%
+       (\printfield{year})%
+       }%
+  }
+  {\multicitedelim}
+  {\usebibmacro{postnote}}
+
 % Ao contrario da norma abnt-6027-2012, que as figuras estejam listadas na Lista de
 % Ilustrações,  a UFSC pede que as figuras estejam na Lista de Figuras.
 %
