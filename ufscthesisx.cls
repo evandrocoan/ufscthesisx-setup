@@ -1174,9 +1174,10 @@ therefore the \topsep patch must need to be updated accordingly}}
 \newenvironment{code}{\captionsetup{type=listing}}{}
 
 % https://tex.stackexchange.com/questions/269491/mixing-minted-with-lstlisting
+% https://tex.stackexchange.com/questions/26220/control-spacing-around-table-caption
 \AtBeginEnvironment{code}{\setcounter{listing}{\value{lstlisting}}
 \setlength{\abovecaptionskip}{0pt}
-\setlength{\belowcaptionskip}{0pt}
+\setlength{\belowcaptionskip}{10pt}
 \setlength{\parskip}{0pt}
 \captionsetup{skip=0pt}
 % \vspace*{-1mm}
