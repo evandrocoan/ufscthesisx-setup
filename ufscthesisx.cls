@@ -1877,6 +1877,10 @@ therefore the \topsep patch must need to be updated accordingly}}
 % https://tex.stackexchange.com/questions/33685/set-the-font-family-for-lstlisting
 \usepackage{courier}
 
+% https://tex.stackexchange.com/questions/34357/setting-up-specific-font-for-use-in-listings
+% https://tex.stackexchange.com/questions/32275/setting-font-for-a-minted-environment-in-a-beamer-frame
+\usepackage[varqu]{zi4}
+
 % Latex: Listings with monospace fonts
 % https://stackoverflow.com/questions/2913141/latex-listings-with-monospace-fonts
 % https://tex.stackexchange.com/questions/145416/how-to-have-straight-single-quotes-in-lstlistings
@@ -1887,7 +1891,7 @@ therefore the \topsep patch must need to be updated accordingly}}
   aboveskip=3mm,
   belowskip=3mm,
   showstringspaces=false,
-  basicstyle={\small\ttfamily},
+  basicstyle={\small\fontfamily{zi4}\selectfont},
   numbers=left,
   numberstyle=\color{gray},
   keywordstyle=\color{blue},
@@ -2018,12 +2022,13 @@ therefore the \topsep patch must need to be updated accordingly}}
   tabsize=2,
   keywords={true,false,null,y,n},
   keywordstyle=\color{darkgray},
-  basicstyle={\small\ttfamily\YAMLkeystyle}, % assuming a key comes first
+  basicstyle={\small\fontfamily{zi4}\selectfont\YAMLkeystyle}, % assuming a key comes first
   sensitive=false,
   comment=[l]{\#},
+  comment=[l]{\/\/},
   morecomment=[s]{/*}{*/},
-  commentstyle=\color{purple}\ttfamily,
-  stringstyle=\YAMLvaluestyle\ttfamily,
+  commentstyle=\color{purple}\fontfamily{zi4}\selectfont,
+  stringstyle=\YAMLvaluestyle\fontfamily{zi4}\selectfont,
   moredelim=[l][\color{orange}]{\&},
   moredelim=[l][\color{magenta}]{*},
   moredelim=**[il][\YAMLcolonstyle{:}\YAMLvaluestyle]{:} % switch to value style at :
@@ -2033,7 +2038,7 @@ therefore the \topsep patch must need to be updated accordingly}}
     aboveskip=3mm,
     belowskip=3mm,
     backgroundcolor=\color{white},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}
-    basicstyle={\small\ttfamily},    % the size of the fonts that are used for the code
+    basicstyle={\small\fontfamily{zi4}\selectfont},    % the size of the fonts that are used for the code
     breakatwhitespace=true,          % sets if automatic breaks should only happen at whitespace
     breaklines=true,                 % sets automatic line breaking
     captionpos=t,                    % sets the caption-position to bottom
@@ -2084,7 +2089,7 @@ therefore the \topsep patch must need to be updated accordingly}}
   showtabs=true,
   tab=,
   tabsize=4,
-  basicstyle=\small\ttfamily,
+  basicstyle=\small\fontfamily{zi4}\selectfont,
   stringstyle=\color{stringcolour},
   showstringspaces=false,
   alsoletter={1234567890},
