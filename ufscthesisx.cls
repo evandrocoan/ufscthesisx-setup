@@ -987,9 +987,6 @@ therefore the \topsep patch must need to be updated accordingly}}
 \usepackage[full]{textcomp}
 \usepackage{mathcomp}
 
-% Manipulação de Strings
-\usepackage{xstring}
-
 % Número da última página
 \usepackage{lastpage}
 
@@ -1100,6 +1097,8 @@ therefore the \topsep patch must need to be updated accordingly}}
 % https://tex.stackexchange.com/questions/87638/logical-string-length
 \usepackage{xstring}
 \usepackage{xifthen}
+\usepackage{ifplatform}
+\usepackage{shellesc}
 
 % abntex2
 \usepackage{bookmark}
@@ -2307,35 +2306,95 @@ therefore the \topsep patch must need to be updated accordingly}}
         tag=[s]
 }
 
-% https://tex.stackexchange.com/questions/57353/how-to-get-caption-above-listing-with-minted
-% https://tex.stackexchange.com/questions/339931/latex-minted-package-using-custom-output-directory-build
-% https://tex.stackexchange.com/questions/223079/you-cant-use-a-prefix-with-charfb-error-when-importing-csv-into-latex
-\usepackage[newfloat,chapter,outputdir=setup/cache]{minted}
 
-% https://stackoverflow.com/questions/3245007/how-to-change-the-font-size-of-line-numbers-using-the-minted-latex-package
-\renewcommand\theFancyVerbLine{\normalsize\color{gray}\arabic{FancyVerbLine}}
+\makeatletter
 
-% https://tex.stackexchange.com/questions/320185/adjust-vertical-spacing-between-caption-and-listing-in-koma-scrartcl
-\captionsetup[listing]{position=top,skip=0pt}
-\newenvironment{code}{\captionsetup{type=listing}}{}
+\StrSubstitute{\jobname}{ }{_}[\mintedjobname]
+\StrSubstitute{\mintedjobname}{*}{_}[\mintedjobname]
+\StrSubstitute{\mintedjobname}{"}{}[\mintedjobname]
+\StrSubstitute{\mintedjobname}{'}{_}[\mintedjobname]
 
-% https://tex.stackexchange.com/questions/269491/mixing-minted-with-lstlisting
-% https://tex.stackexchange.com/questions/26220/control-spacing-around-table-caption
-\AtBeginEnvironment{code}{\setcounter{listing}{\value{lstlisting}}
-\setlength{\abovecaptionskip}{0pt}
-\setlength{\belowcaptionskip}{10pt}
-\setlength{\parskip}{0pt}
-\captionsetup{skip=0pt}
-% \vspace*{-1mm}
+\ifwindows
+  \providecommand{\DeleteFile}[2][]{%
+    \ifthenelse{\equal{#1}{}}%
+      {\IfFileExists{#2}{\ShellEscape{del #2}}{}}%
+      {\IfFileExists{#1/#2}{%
+        \StrSubstitute{#1}{/}{\@backslashchar}[\mintedwindir]
+        \ShellEscape{del \mintedwindir\@backslashchar #2}}{}}}
+\else
+  \providecommand{\DeleteFile}[2][]{%
+    \ifthenelse{\equal{#1}{}}%
+      {\IfFileExists{#2}{\ShellEscape{rm #2}}{}}%
+      {\IfFileExists{#1/#2}{\ShellEscape{rm #1/#2}}{}}}
+\fi
+
+\newboolean{AppMotherFuckerExists}
+\newread\mintedappexistsfile
+
+\newcommand{\TestAppMotherfuckerExists}[1]{
+  \ifwindows
+    \DeleteFile{\mintedjobname.aex}
+    \ShellEscape{for \string^\@percentchar i in (#1.exe #1.bat #1.cmd)
+      do set > \mintedjobname.aex <nul: /p
+      x=\string^\@percentchar \string~$PATH:i>> \mintedjobname.aex}
+    %$ <- balance syntax highlighting
+    \immediate\openin\mintedappexistsfile\mintedjobname.aex
+    \expandafter\def\expandafter\@tmp@cr\expandafter{\the\endlinechar}
+    \endlinechar=-1\relax
+    \readline\mintedappexistsfile to \mintedapppathifexists
+    \endlinechar=\@tmp@cr
+    \ifthenelse{\equal{\mintedapppathifexists}{}}
+     {\AppMotherFuckerExistsfalse}
+     {\AppMotherFuckerExiststrue}
+    \immediate\closein\mintedappexistsfile
+    \DeleteFile{\mintedjobname.aex}
+  \else
+    \ShellEscape{which #1 && touch \mintedjobname.aex}
+    \IfFileExists{\mintedjobname.aex}
+      {\AppMotherFuckerExiststrue
+        \DeleteFile{\mintedjobname.aex}}
+      {\AppMotherFuckerExistsfalse}
+  \fi
 }
-\AtEndEnvironment{code}{\stepcounter{lstlisting}}
 
-% https://tex.stackexchange.com/questions/269491/mixing-minted-with-lstlisting
-\AtBeginEnvironment{listing}{\setcounter{listing}{\value{lstlisting}}}
-\AtEndEnvironment{listing}{\stepcounter{lstlisting}}
+\makeatother
 
-% https://tex.stackexchange.com/questions/14166/red-box-drawn-around-question-mark-operator-in-minted-erlang-code
-\AtBeginEnvironment{code}{\renewcommand{\fcolorbox}[4][]{#4}}
+\TestAppMotherfuckerExists{pygmentize}
+
+\ifAppMotherFuckerExists
+  % https://tex.stackexchange.com/questions/57353/how-to-get-caption-above-listing-with-minted
+  % https://tex.stackexchange.com/questions/339931/latex-minted-package-using-custom-output-directory-build
+  % https://tex.stackexchange.com/questions/223079/you-cant-use-a-prefix-with-charfb-error-when-importing-csv-into-latex
+  \usepackage[newfloat,chapter,outputdir=setup/cache]{minted}
+
+  % https://stackoverflow.com/questions/3245007/how-to-change-the-font-size-of-line-numbers-using-the-minted-latex-package
+  \renewcommand\theFancyVerbLine{\normalsize\color{gray}\arabic{FancyVerbLine}}
+
+  % https://tex.stackexchange.com/questions/320185/adjust-vertical-spacing-between-caption-and-listing-in-koma-scrartcl
+  \captionsetup[listing]{position=top,skip=0pt}
+  \newenvironment{code}{\captionsetup{type=listing}}{}
+
+  % https://tex.stackexchange.com/questions/269491/mixing-minted-with-lstlisting
+  % https://tex.stackexchange.com/questions/26220/control-spacing-around-table-caption
+  \AtBeginEnvironment{code}{\setcounter{listing}{\value{lstlisting}}
+  \setlength{\abovecaptionskip}{0pt}
+  \setlength{\belowcaptionskip}{10pt}
+  \setlength{\parskip}{0pt}
+  \captionsetup{skip=0pt}
+  % \vspace*{-1mm}
+  }
+  \AtEndEnvironment{code}{\stepcounter{lstlisting}}
+
+  % https://tex.stackexchange.com/questions/269491/mixing-minted-with-lstlisting
+  \AtBeginEnvironment{listing}{\setcounter{listing}{\value{lstlisting}}}
+  \AtEndEnvironment{listing}{\stepcounter{lstlisting}}
+
+  % https://tex.stackexchange.com/questions/14166/red-box-drawn-around-question-mark-operator-in-minted-erlang-code
+  \AtBeginEnvironment{code}{\renewcommand{\fcolorbox}[4][]{#4}}
+
+\else
+  \PackageWarning{minted}{You must have `pygmentize' installed to use the minted package}
+\fi
 
 
 
