@@ -112,9 +112,11 @@ FIND_EXEC := $(if $(wildcard /bin/find),,/usr)/bin/find
 LATEXMK_THESIS := thesis
 LATEXMK_REPLACEMENT := latexmk
 GITIGNORE_SOURCE_PATH := .gitignore
-GITIGNORE_DESTINE_PATH := ./setup/.gitignore
 
-.PHONY: all help latex thesis verbose clean biber index start_timer biber_hook1 \
+GITIGNORE_DESTINE_PATH := ./setup/.gitignore
+FIX_GITIGNORE := $(if $(wildcard ${GITIGNORE_DESTINE_PATH}),,${GITIGNORE_DESTINE_PATH})
+
+.PHONY: all help latex thesis verbose clean biber index ${FIX_GITIGNORE} biber_hook1 \
 biber_hook2 pdflatex_hook1 pdflatex_hook2 pdflatex_hook3 pdflatex_hook4 pdflatex_hook5 pdflatex_hook6
 
 # http://stackoverflow.com/questions/1789594/how-do-i-write-the-cd-command-in-a-makefile
@@ -248,8 +250,6 @@ endif
 
 # Calculate the elapsed seconds and print them to the screen
 define print_results =
-. ./setup/scripts/timer_calculator.sh; \
-showTheElapsedSeconds "${current_dir}"; \
 printf '%s/main.log:10000000 ' "${CACHE_DIRECTORY}"; \
 printf '\n'
 endef
@@ -273,7 +273,6 @@ endef
 # https://tex.stackexchange.com/questions/323820/i-cant-write-on-file-foo-aux
 # https://stackoverflow.com/questions/11469989/how-can-i-strip-first-x-characters-from-string-using-sed
 define setup_envinronment =
-. ./setup/scripts/timer_calculator.sh
 $(eval current_dir := $(shell pwd)) echo ${current_dir} > /dev/null
 
 printf '\n';
@@ -308,10 +307,6 @@ endef
 ##   veryclean  Same as `clean`, but searches for all generated files outside
 ##              the cache directories.
 ##
-start_timer: $(if $(wildcard ${GITIGNORE_DESTINE_PATH}),,${GITIGNORE_DESTINE_PATH})
-	${setup_envinronment}
-
-
 # Keep updated our copy of the .gitignore
 # https://stackoverflow.com/questions/55886204/how-to-use-make-to-keep-a-file-synced
 ${GITIGNORE_DESTINE_PATH}: ${GITIGNORE_SOURCE_PATH}
@@ -323,12 +318,12 @@ ${GITIGNORE_DESTINE_PATH}: ${GITIGNORE_SOURCE_PATH}
 
 
 # Run pdflatex, biber, pdflatex
-biber: start_timer biber_hook1 index $(if ${ENABLE_DEBUG_MODE},,pdflatex_hook2)
+biber: ${FIX_GITIGNORE} biber_hook1 index $(if ${ENABLE_DEBUG_MODE},,pdflatex_hook2)
 	${copy_resulting_pdf}
 
 
 # https://stackoverflow.com/questions/46135614/how-to-call-makefile-recipe-rule-multiple-times
-${LATEXMK_REPLACEMENT}: start_timer pdflatex_hook1 biber_hook1 pdflatex_hook2 pdflatex_hook3 index pdflatex_hook4 biber_hook2 pdflatex_hook5
+${LATEXMK_REPLACEMENT}: ${FIX_GITIGNORE} pdflatex_hook1 biber_hook1 pdflatex_hook2 pdflatex_hook3 index pdflatex_hook4 biber_hook2 pdflatex_hook5
 	${copy_resulting_pdf}
 
 
@@ -355,38 +350,38 @@ pdflatex_hook1 pdflatex_hook2 pdflatex_hook3 pdflatex_hook4 pdflatex_hook5 pdfla
 
 
 # This rule will be called for every latex file and pdf associated
-latex pdflatex: start_timer pdflatex_hook1
+latex pdflatex: ${FIX_GITIGNORE} pdflatex_hook1
 	printf 'LATEX_PDF_FILES: %s\n' "${LATEX_PDF_FILES}"
 	${copy_resulting_pdf}
 
 
-latex1 pdflatex1: start_timer pdflatex_hook2
+latex1 pdflatex1: ${FIX_GITIGNORE} pdflatex_hook2
 	printf 'LATEX_PDF_FILES: %s\n' "${LATEX_PDF_FILES}"
 	${copy_resulting_pdf}
 
 
-latex2 pdflatex2: start_timer pdflatex_hook3
+latex2 pdflatex2: ${FIX_GITIGNORE} pdflatex_hook3
 	printf 'LATEX_PDF_FILES: %s\n' "${LATEX_PDF_FILES}"
 	${copy_resulting_pdf}
 
 
-latex3 pdflatex3: start_timer pdflatex_hook4
+latex3 pdflatex3: ${FIX_GITIGNORE} pdflatex_hook4
 	printf 'LATEX_PDF_FILES: %s\n' "${LATEX_PDF_FILES}"
 	${copy_resulting_pdf}
 
 
-latex4 pdflatex4: start_timer pdflatex_hook5
+latex4 pdflatex4: ${FIX_GITIGNORE} pdflatex_hook5
 	printf 'LATEX_PDF_FILES: %s\n' "${LATEX_PDF_FILES}"
 	${copy_resulting_pdf}
 
 
-latex5 pdflatex5: start_timer pdflatex_hook6
+latex5 pdflatex5: ${FIX_GITIGNORE} pdflatex_hook6
 	printf 'LATEX_PDF_FILES: %s\n' "${LATEX_PDF_FILES}"
 	${copy_resulting_pdf}
 
 
 # MAIN LATEXMK RULE
-${LATEXMK_THESIS}: start_timer
+${LATEXMK_THESIS}: ${FIX_GITIGNORE}
 	${LATEXMK_COMMAND} ${THESIS_MAIN_FILE}.tex || $(if ${HALT_ON_ERROR_MODE},eval "${print_results}; exit $$?",)
 	${copy_resulting_pdf}
 
