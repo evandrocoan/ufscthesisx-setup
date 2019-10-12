@@ -1193,41 +1193,6 @@ therefore the \topsep patch must need to be updated accordingly}}
 \makeatother
 
 
-% https://tex.stackexchange.com/questions/57353/how-to-get-caption-above-listing-with-minted
-% https://tex.stackexchange.com/questions/339931/latex-minted-package-using-custom-output-directory-build
-\usepackage[newfloat,chapter,outputdir=setup/cache]{minted}
-
-% https://stackoverflow.com/questions/3245007/how-to-change-the-font-size-of-line-numbers-using-the-minted-latex-package
-\renewcommand\theFancyVerbLine{\normalsize\color{gray}\arabic{FancyVerbLine}}
-
-% https://tex.stackexchange.com/questions/320185/adjust-vertical-spacing-between-caption-and-listing-in-koma-scrartcl
-\captionsetup[listing]{position=top,skip=0pt}
-\newenvironment{code}{\captionsetup{type=listing}}{}
-
-% https://tex.stackexchange.com/questions/269491/mixing-minted-with-lstlisting
-% https://tex.stackexchange.com/questions/26220/control-spacing-around-table-caption
-\AtBeginEnvironment{code}{\setcounter{listing}{\value{lstlisting}}
-\setlength{\abovecaptionskip}{0pt}
-\setlength{\belowcaptionskip}{10pt}
-\setlength{\parskip}{0pt}
-\captionsetup{skip=0pt}
-% \vspace*{-1mm}
-}
-\AtEndEnvironment{code}{\stepcounter{lstlisting}}
-
-% https://tex.stackexchange.com/questions/269491/mixing-minted-with-lstlisting
-\AtBeginEnvironment{listing}{\setcounter{listing}{\value{lstlisting}}}
-\AtEndEnvironment{listing}{\stepcounter{lstlisting}}
-
-% https://tex.stackexchange.com/questions/287947/figure-as-name-of-listings-in-listoflistings-with-minted-and-newfloat/287953#287953
-\makeatletter
-\let\l@listing\l@figure
-\def\newfloat@listoflisting@hook{\let\figurename\listingname}
-\makeatother
-
-% https://tex.stackexchange.com/questions/14166/red-box-drawn-around-question-mark-operator-in-minted-erlang-code
-\AtBeginEnvironment{code}{\renewcommand{\fcolorbox}[4][]{#4}}
-
 
 
 
@@ -2341,6 +2306,36 @@ therefore the \topsep patch must need to be updated accordingly}}
         morecomment=[s]{<!--}{-->},
         tag=[s]
 }
+
+% https://tex.stackexchange.com/questions/57353/how-to-get-caption-above-listing-with-minted
+% https://tex.stackexchange.com/questions/339931/latex-minted-package-using-custom-output-directory-build
+% https://tex.stackexchange.com/questions/223079/you-cant-use-a-prefix-with-charfb-error-when-importing-csv-into-latex
+\usepackage[newfloat,chapter,outputdir=setup/cache]{minted}
+
+% https://stackoverflow.com/questions/3245007/how-to-change-the-font-size-of-line-numbers-using-the-minted-latex-package
+\renewcommand\theFancyVerbLine{\normalsize\color{gray}\arabic{FancyVerbLine}}
+
+% https://tex.stackexchange.com/questions/320185/adjust-vertical-spacing-between-caption-and-listing-in-koma-scrartcl
+\captionsetup[listing]{position=top,skip=0pt}
+\newenvironment{code}{\captionsetup{type=listing}}{}
+
+% https://tex.stackexchange.com/questions/269491/mixing-minted-with-lstlisting
+% https://tex.stackexchange.com/questions/26220/control-spacing-around-table-caption
+\AtBeginEnvironment{code}{\setcounter{listing}{\value{lstlisting}}
+\setlength{\abovecaptionskip}{0pt}
+\setlength{\belowcaptionskip}{10pt}
+\setlength{\parskip}{0pt}
+\captionsetup{skip=0pt}
+% \vspace*{-1mm}
+}
+\AtEndEnvironment{code}{\stepcounter{lstlisting}}
+
+% https://tex.stackexchange.com/questions/269491/mixing-minted-with-lstlisting
+\AtBeginEnvironment{listing}{\setcounter{listing}{\value{lstlisting}}}
+\AtEndEnvironment{listing}{\stepcounter{lstlisting}}
+
+% https://tex.stackexchange.com/questions/14166/red-box-drawn-around-question-mark-operator-in-minted-erlang-code
+\AtBeginEnvironment{code}{\renewcommand{\fcolorbox}[4][]{#4}}
 
 
 
