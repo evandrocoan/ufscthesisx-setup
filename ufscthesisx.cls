@@ -906,6 +906,14 @@ therefore the \topsep patch must need to be updated accordingly}}
 % https://tex.stackexchange.com/questions/150369/incompatible-color-definition-when-using-tikz-with-color-package
 \usepackage{xcolor}
 
+% RGB colors in absolute values from 0 to 255 by using `RGB` tag
+\definecolor{darkblue}{RGB}{26,13,178}
+
+% RGB colors in percentage notation by using `rgb` tag
+\definecolor{darkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
 % Package setspace must be put before hyperref
 % http://ctan.sharelatex.com/tex-archive/macros/latex/contrib/hyperref/README.pdf
 \@ifclassloaded{memoir}{}{\usepackage{setspace}}
@@ -1189,6 +1197,9 @@ therefore the \topsep patch must need to be updated accordingly}}
 % https://tex.stackexchange.com/questions/339931/latex-minted-package-using-custom-output-directory-build
 \usepackage[newfloat,chapter,outputdir=setup/cache]{minted}
 
+% https://stackoverflow.com/questions/3245007/how-to-change-the-font-size-of-line-numbers-using-the-minted-latex-package
+\renewcommand\theFancyVerbLine{\normalsize\color{gray}\arabic{FancyVerbLine}}
+
 % https://tex.stackexchange.com/questions/320185/adjust-vertical-spacing-between-caption-and-listing-in-koma-scrartcl
 \captionsetup[listing]{position=top,skip=0pt}
 \newenvironment{code}{\captionsetup{type=listing}}{}
@@ -1255,14 +1266,6 @@ therefore the \topsep patch must need to be updated accordingly}}
 %
 % Settings
 %
-
-% RGB colors in absolute values from 0 to 255 by using `RGB` tag
-\definecolor{darkblue}{RGB}{26,13,178}
-
-% RGB colors in percentage notation by using `rgb` tag
-\definecolor{darkgreen}{rgb}{0,0.6,0}
-\definecolor{gray}{rgb}{0.5,0.5,0.5}
-\definecolor{mauve}{rgb}{0.58,0,0.82}
 
 % Basic settings for hyperref package
 \hypersetup{colorlinks,linkcolor=darkblue,citecolor=darkgreen}
