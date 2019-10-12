@@ -36,7 +36,6 @@ SHELL := /bin/bash
 
 # Print the usage instructions
 # https://gist.github.com/prwhite/8168133
-##
 ## Usage:
 ##   make <target> [debug=1]
 ##
