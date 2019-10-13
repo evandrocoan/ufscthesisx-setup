@@ -559,7 +559,7 @@ endef
 ##       5. dir            - the directory to put the files, defaults to '~/LatexBuild'
 ##
 ##     Example usage for Linux:
-##       make remote LATEXPASSWORD=123 LATEXADDRESS=linux@192.168.0.222 rules=latex \
+##       make remote LATEXPASSWORD=123 LATEXADDRESS=linux@192.168.0.222 rules=latex &&
 ##       		delete=1 dir=~/Downloads/Thesis
 ##
 ##     Example usage for Windows:
