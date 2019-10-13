@@ -2334,7 +2334,8 @@ therefore the \topsep patch must need to be updated accordingly}}
 \newcommand{\TestAppMotherfuckerExists}[1]{
   \ifwindows
     \DeleteFile{\mintedjobname.aex}
-    \ShellEscape{for \string^\@percentchar i in (#1.exe #1.bat #1.cmd)
+    \ShellEscape{@echo off
+      for \string^\@percentchar i in (#1.exe #1.bat #1.cmd)
       do set > \mintedjobname.aex <nul: /p
       x=\string^\@percentchar \string~$PATH:i>> \mintedjobname.aex}
     %$ <- balance syntax highlighting
