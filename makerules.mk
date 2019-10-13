@@ -271,24 +271,24 @@ endef
 # https://stackoverflow.com/questions/4210042/exclude-directory-from-find-command
 # https://tex.stackexchange.com/questions/323820/i-cant-write-on-file-foo-aux
 # https://stackoverflow.com/questions/11469989/how-can-i-strip-first-x-characters-from-string-using-sed
-define setup_envinronment =
-$(eval current_dir := $(shell pwd)) echo ${current_dir} > /dev/null
+setup_envinronment:
+	@:
+	$(eval current_dir := $(shell pwd)) echo ${current_dir} > /dev/null
 
-printf '\n';
-readarray -td' ' DIRECTORIES_TO_CREATE <<<"$(shell "${FIND_EXEC}" \
-		-not -path "./**.git**" \
-		-not -path "./pictures**" -type d \
-		-not -path "./setup**" -type d) "; \
-unset 'DIRECTORIES_TO_CREATE[-1]'; \
-declare -p DIRECTORIES_TO_CREATE; \
-for directory_name in "$${DIRECTORIES_TO_CREATE[@]}"; \
-do \
-	full_cache_directory="${CACHE_DIRECTORY}/$${directory_name:2}"; \
-	printf 'Creating %s\n' "$${full_cache_directory}"; \
-	mkdir -p "$${full_cache_directory}"; \
-done
-printf '\n';
-endef
+	printf '\n';
+	readarray -td' ' DIRECTORIES_TO_CREATE <<<"$(shell "${FIND_EXEC}" \
+			-not -path "./**.git**" \
+			-not -path "./pictures**" -type d \
+			-not -path "./setup**" -type d) "; \
+	unset 'DIRECTORIES_TO_CREATE[-1]'; \
+	declare -p DIRECTORIES_TO_CREATE; \
+	for directory_name in "$${DIRECTORIES_TO_CREATE[@]}"; \
+	do \
+		full_cache_directory="${CACHE_DIRECTORY}/$${directory_name:2}"; \
+		printf 'Creating %s\n' "$${full_cache_directory}"; \
+		mkdir -p "$${full_cache_directory}"; \
+	done
+	printf '\n';
 
 
 ## Targets:
