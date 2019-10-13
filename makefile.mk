@@ -34,21 +34,43 @@
 ECHOCMD:=/bin/echo -e
 SHELL := /bin/bash
 
+# Uncomment this if you have problems or call `make latex debug=1`
+# ENABLE_DEBUG_MODE := true
+ifdef debug
+	ifneq (0,${debug})
+		ENABLE_DEBUG_MODE := true
+	endif
+endif
+
 # http://stackoverflow.com/questions/1789594/how-do-i-write-the-cd-command-in-a-makefile
 .ONESHELL:
 
-# https://stackoverflow.com/questions/34369500/makefile-match-any-target-task
-.PHONY: all
-
 # https://stackoverflow.com/questions/24005166/gnu-make-silent-by-default
-MAKEFLAGS += --silent
+ifeq (,${ENABLE_DEBUG_MODE})
+	MAKEFLAGS += --silent
+endif
 
 # https://stackoverflow.com/questions/20582006/force-makefile-to-execute-script-after-building-any-target-just-before-exiting
-%:
+define DEFAULTTARGET :=
 	. ./setup/scripts/timer_calculator.sh
 	$(eval current_dir := $(shell pwd)) echo ${current_dir} > /dev/null
 
-	printf 'Calling setup/makerules.mk %s\n\n' "${@}"
-	make -f setup/makerules.mk $@
+	printf 'Calling setup/makerules.mk "%s"\n\n' "${MAKECMDGOALS}"
+	make -f setup/makerules.mk ${MAKECMDGOALS}
 
 	showTheElapsedSeconds "${current_dir}";
+endef
+
+%:
+	@:
+	$(if ${ENABLE_DEBUG_MODE},printf 'IS_MAKEFILE_RUNNING_TARGETS="%s"\n' "${IS_MAKEFILE_RUNNING_TARGETS}",)
+
+	$(if ${IS_MAKEFILE_RUNNING_TARGETS},,${DEFAULTTARGET})
+	$(eval IS_MAKEFILE_RUNNING_TARGETS=1)
+
+all:
+	@:
+	$(if ${ENABLE_DEBUG_MODE},printf 'IS_MAKEFILE_RUNNING_TARGETS="%s"\n' "${IS_MAKEFILE_RUNNING_TARGETS}",)
+
+	$(if ${IS_MAKEFILE_RUNNING_TARGETS},,${DEFAULTTARGET})
+	$(eval IS_MAKEFILE_RUNNING_TARGETS=1)

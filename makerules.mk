@@ -245,6 +245,8 @@ ifneq (,${ENABLE_DEBUG_MODE})
 			useless := $(shell printf '\n' 1>&2)
 		endif
 	endif
+
+	useless := $(if ${ENABLE_DEBUG_MODE},$(shell printf '\n' 1>&2),)
 endif
 
 # Calculate the elapsed seconds and print them to the screen
