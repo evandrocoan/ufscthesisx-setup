@@ -115,9 +115,6 @@ GITIGNORE_SOURCE_PATH := .gitignore
 GITIGNORE_DESTINE_PATH := ./setup/.gitignore
 FIX_GITIGNORE := $(if $(wildcard ${GITIGNORE_DESTINE_PATH}),,${GITIGNORE_DESTINE_PATH})
 
-.PHONY: all help latex thesis verbose clean biber index ${FIX_GITIGNORE} biber_hook1 \
-biber_hook2 pdflatex_hook1 pdflatex_hook2 pdflatex_hook3 pdflatex_hook4 pdflatex_hook5 pdflatex_hook6
-
 # http://stackoverflow.com/questions/1789594/how-do-i-write-the-cd-command-in-a-makefile
 .ONESHELL:
 
@@ -258,6 +255,7 @@ endef
 # Copies the PDF to the current directory
 # https://stackoverflow.com/questions/55671541/how-define-a-makefile-condition-and-reuse-it-in-several-build-rules/
 define copy_resulting_pdf =
+printf 'LATEX_PDF_FILES: %s\n' "${LATEX_PDF_FILES}"; \
 ${print_results}; \
 if [[ -f "${THESIS_MAIN_FILE_PATH}" ]]; \
 then \
@@ -318,29 +316,65 @@ ${GITIGNORE_DESTINE_PATH}: ${GITIGNORE_SOURCE_PATH}
 	cp -$(if ${ENABLE_DEBUG_MODE},v,)r "${GITIGNORE_SOURCE_PATH}" "${GITIGNORE_DESTINE_PATH}"
 
 
-# Run pdflatex, biber, pdflatex
-biber: ${FIX_GITIGNORE} biber_hook1 index $(if ${ENABLE_DEBUG_MODE},,pdflatex_hook2)
-	${copy_resulting_pdf}
-
-
 # https://stackoverflow.com/questions/46135614/how-to-call-makefile-recipe-rule-multiple-times
 ${LATEXMK_REPLACEMENT}: ${FIX_GITIGNORE} pdflatex_hook1 biber_hook1 pdflatex_hook2 pdflatex_hook3 index pdflatex_hook4 biber_hook2 pdflatex_hook5
 	${copy_resulting_pdf}
 
 
 # https://tex.stackexchange.com/questions/98204/index-not-working
-index: $(if $(wildcard ${CACHE_DIRECTORY}/${THESIS_MAIN_FILE}.idx),,pdflatex_hook1)
+index_hook1 index_hook2 index_hook3 index_hook4 index_hook5:
 	makeindex "${CACHE_DIRECTORY}/${THESIS_MAIN_FILE}.idx"
 	printf '\n'
+
+
+index: ${FIX_GITIGNORE} $(if $(wildcard ${CACHE_DIRECTORY}/${THESIS_MAIN_FILE}.idx),,pdflatex_hook1) index_hook1
+	${copy_resulting_pdf}
+
+
+index1: ${FIX_GITIGNORE} $(if $(wildcard ${CACHE_DIRECTORY}/${THESIS_MAIN_FILE}.idx),,pdflatex_hook2) index_hook2
+	${copy_resulting_pdf}
+
+
+index2: ${FIX_GITIGNORE} $(if $(wildcard ${CACHE_DIRECTORY}/${THESIS_MAIN_FILE}.idx),,pdflatex_hook3) index_hook3
+	${copy_resulting_pdf}
+
+
+index3: ${FIX_GITIGNORE} $(if $(wildcard ${CACHE_DIRECTORY}/${THESIS_MAIN_FILE}.idx),,pdflatex_hook4) index_hook4
+	${copy_resulting_pdf}
+
+
+index4: ${FIX_GITIGNORE} $(if $(wildcard ${CACHE_DIRECTORY}/${THESIS_MAIN_FILE}.idx),,pdflatex_hook5) index_hook5
+	${copy_resulting_pdf}
 
 
 # Call biber to process the bibliography and does not attempt to show the elapsed time
 # https://www.mankier.com/1/biber --debug
 # https://stackoverflow.com/questions/35552028/gnu-make-add-a-file-as-a-dependency-only-if-it-doesnt-exist-yet
-biber_hook1 biber_hook2: $(if $(wildcard ${CACHE_DIRECTORY}/${THESIS_MAIN_FILE}.bcf),,pdflatex_hook1)
+biber_hook1 biber_hook2 biber_hook3 biber_hook4 biber_hook5: $(if $(wildcard ${CACHE_DIRECTORY}/${THESIS_MAIN_FILE}.bcf),,pdflatex_hook1)
 	printf 'Running biber...\n'
 	biber ${BIBER_FLAGS} "${THESIS_MAIN_FILE}.bcf" $(if ${ENABLE_DEBUG_MODE},--validate_datamodel,)
 	printf '\n'
+
+
+# Run pdflatex, biber, pdflatex
+biber: ${FIX_GITIGNORE} index_hook1 biber_hook1 $(if ${ENABLE_DEBUG_MODE},,pdflatex_hook1)
+	${copy_resulting_pdf}
+
+
+biber1: ${FIX_GITIGNORE} index_hook2 biber_hook2 $(if ${ENABLE_DEBUG_MODE},,pdflatex_hook2)
+	${copy_resulting_pdf}
+
+
+biber2: ${FIX_GITIGNORE} index_hook3 biber_hook3 $(if ${ENABLE_DEBUG_MODE},,pdflatex_hook3)
+	${copy_resulting_pdf}
+
+
+biber3: ${FIX_GITIGNORE} index_hook4 biber_hook4 $(if ${ENABLE_DEBUG_MODE},,pdflatex_hook4)
+	${copy_resulting_pdf}
+
+
+biber4: ${FIX_GITIGNORE} index_hook5 biber_hook5 $(if ${ENABLE_DEBUG_MODE},,pdflatex_hook5)
+	${copy_resulting_pdf}
 
 
 # https://stackoverflow.com/questions/46135614/how-to-call-makefile-recipe-rule-multiple-times
@@ -352,32 +386,26 @@ pdflatex_hook1 pdflatex_hook2 pdflatex_hook3 pdflatex_hook4 pdflatex_hook5 pdfla
 
 # This rule will be called for every latex file and pdf associated
 latex pdflatex: ${FIX_GITIGNORE} pdflatex_hook1
-	printf 'LATEX_PDF_FILES: %s\n' "${LATEX_PDF_FILES}"
 	${copy_resulting_pdf}
 
 
 latex1 pdflatex1: ${FIX_GITIGNORE} pdflatex_hook2
-	printf 'LATEX_PDF_FILES: %s\n' "${LATEX_PDF_FILES}"
 	${copy_resulting_pdf}
 
 
 latex2 pdflatex2: ${FIX_GITIGNORE} pdflatex_hook3
-	printf 'LATEX_PDF_FILES: %s\n' "${LATEX_PDF_FILES}"
 	${copy_resulting_pdf}
 
 
 latex3 pdflatex3: ${FIX_GITIGNORE} pdflatex_hook4
-	printf 'LATEX_PDF_FILES: %s\n' "${LATEX_PDF_FILES}"
 	${copy_resulting_pdf}
 
 
 latex4 pdflatex4: ${FIX_GITIGNORE} pdflatex_hook5
-	printf 'LATEX_PDF_FILES: %s\n' "${LATEX_PDF_FILES}"
 	${copy_resulting_pdf}
 
 
 latex5 pdflatex5: ${FIX_GITIGNORE} pdflatex_hook6
-	printf 'LATEX_PDF_FILES: %s\n' "${LATEX_PDF_FILES}"
 	${copy_resulting_pdf}
 
 
