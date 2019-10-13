@@ -272,7 +272,6 @@ endef
 # https://tex.stackexchange.com/questions/323820/i-cant-write-on-file-foo-aux
 # https://stackoverflow.com/questions/11469989/how-can-i-strip-first-x-characters-from-string-using-sed
 setup_envinronment:
-	@:
 	$(eval current_dir := $(shell pwd)) echo ${current_dir} > /dev/null
 
 	printf '\n';
