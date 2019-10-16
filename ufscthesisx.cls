@@ -1552,6 +1552,21 @@ therefore the \topsep patch must need to be updated accordingly}}
 
 
 
+% https://tex.stackexchange.com/questions/512413/how-to-recognize-the-enumerate-shortlabels-in-my-custom-environment
+\newcounter{enumerateoptionalcount}
+
+\NewDocumentEnvironment{enumerateoptional}{O{)}}{%
+    \setcounter{enumerateoptionalcount}{0}%
+    \renewcommand*\descriptionlabel[1]{%
+      \stepcounter{enumerateoptionalcount}%
+      \normalfont ##1~\arabic{enumerateoptionalcount}#1%
+    }%
+    \description%
+  }%
+  {\enddescription}
+
+
+
 % How to create my own list of things
 % https://tex.stackexchange.com/questions/61086/how-to-create-my-own-list-of-things
 \newcommand{\mytextpreliminarylistname}{Short Table of Contents}
