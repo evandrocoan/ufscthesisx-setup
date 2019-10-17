@@ -1239,6 +1239,17 @@ therefore the \topsep patch must need to be updated accordingly}}
 
 
 
+% https://tex.stackexchange.com/questions/511589/how-to-fix-useshorthands-defineshorthand-usage-on-bookmark-entries
+\makeatletter
+\def\HyPsd@LetUnexpandableSpace#1{%
+  \if\noexpand~\noexpand#1%
+  \else
+    \expandafter\@firstofone
+  \fi{\expandafter\futurelet\expandafter#1\expandafter\@gobble\space\relax}}
+\makeatother
+
+
+
 % How could the `\everypar` justification statement be used?
 % https://tex.stackexchange.com/questions/365818/how-could-the-everypar-justification-statement-be-used
 \newbox\linebox \newbox\snapbox
