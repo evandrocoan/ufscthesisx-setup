@@ -25,6 +25,10 @@
 % Define versão necessária do LaTeX
 \NeedsTeXFormat{LaTeX2e}
 
+% https://tex.stackexchange.com/questions/83484/missing-number-treated-as-zero-what-is-wrong-in-here
+\errorcontextlines 10000
+
+
 
 
 
