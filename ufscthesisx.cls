@@ -922,6 +922,18 @@ therefore the \topsep patch must need to be updated accordingly}}
 % http://ctan.sharelatex.com/tex-archive/macros/latex/contrib/hyperref/README.pdf
 \@ifclassloaded{memoir}{}{\usepackage{setspace}}
 
+% Increase the space around the hyphen or dash - on the table of contents
+% APÊNDICE A – FUCK YOU . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3
+% https://tex.stackexchange.com/questions/49905/word-appendix-in-toc-with-memoir-class
+\@ifclassloaded{memoir}
+{
+  \renewcommand{\chapternumberline}[1]{%
+    \chapternumberlinehook{#1}%
+    \chapternumberlinebox\@tempdima{\@chapapp@head\@cftbsnum #1~~\@cftasnum~~}%
+    \@cftasnumb~}%
+}
+{}
+
 % Allows putting an [H] in \begin{figure} to specify the exact location of the figure
 % https://tex.stackexchange.com/questions/8625/force-figure-placement-in-text
 %
