@@ -969,6 +969,12 @@ therefore the \topsep patch must need to be updated accordingly}}
 % ^^J^^J^^J
 }}
 
+% https://tex.stackexchange.com/questions/512898/the-appendix-word-disappears-from-the-table-of-contents-when-using-include
+% https://tex.stackexchange.com/questions/1050/whats-the-difference-between-newcommand-and-newcommand
+\@ifclassloaded{setup/abntex2}{
+  \renewcommand*{\cftappendixname}{\apendicename\space\space}
+}{}
+
 % Allows putting an [H] in \begin{figure} to specify the exact location of the figure
 % https://tex.stackexchange.com/questions/8625/force-figure-placement-in-text
 %
