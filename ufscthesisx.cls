@@ -923,16 +923,51 @@ therefore the \topsep patch must need to be updated accordingly}}
 \@ifclassloaded{memoir}{}{\usepackage{setspace}}
 
 % Increase the space around the hyphen or dash - on the table of contents
-% APÊNDICE A – FUCK YOU . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3
+% APÊNDICE A –- SOMETHING . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3
+%
+% https://tex.stackexchange.com/questions/512916/how-to-increase-memoir-table-of-contents-spacing-between-appendix-and-its-hyphen
 % https://tex.stackexchange.com/questions/49905/word-appendix-in-toc-with-memoir-class
-\@ifclassloaded{memoir}
-{
-  \renewcommand{\chapternumberline}[1]{%
-    \chapternumberlinehook{#1}%
-    \chapternumberlinebox\@tempdima{\@chapapp@head\@cftbsnum #1~~\@cftasnum~~}%
-    \@cftasnumb~}%
+% https://tex.stackexchange.com/questions/152773/please-tutor-the-usage-of-patchcmd-and-xpatch
+% https://texfaq.org/FAQ-protect
+\xpretocmd{\l@appendix}{\def\@chapapp@extrahyphenspaces{~}}
+{\message{^^J^^JChapterformat patch 1 for chapternumberline could SUCCESSFULLY!^^J
+% ^^J^^J^^J
+}}
+{\message{^^J^^JChapterformat patch 1 for chapternumberline could NOT be applied!^^J
+% ^^J^^J^^J
+}}
+
+\xpretocmd{\l@chapter}{\def\@chapapp@extrahyphenspaces{}}
+{\message{^^J^^JChapterformat patch 2 for chapternumberline could SUCCESSFULLY!^^J
+% ^^J^^J^^J
+}}
+{\message{^^J^^JChapterformat patch 2 for chapternumberline could NOT be applied!^^J
+% ^^J^^J^^J
+}}
+
+\patchcmd{\chapternumberline}{\@cftasnum}{%
+  \@chapapp@extrahyphenspaces%
+  \@chapapp@extrahyphenspaces%
+  \@cftasnum%
+  \@chapapp@extrahyphenspaces%
 }
-{}
+{\message{^^J^^JChapterformat patch 3 for chapternumberline could SUCCESSFULLY!^^J
+% ^^J^^J^^J
+}}
+{\message{^^J^^JChapterformat patch 3 for chapternumberline could NOT be applied!^^J
+% ^^J^^J^^J
+}}
+
+\patchcmd{\chapternumberline}{\@cftasnumb}{%
+  \@cftasnumb%
+  \@chapapp@extrahyphenspaces%
+}
+{\message{^^J^^JChapterformat patch 4 for chapternumberline could SUCCESSFULLY!^^J
+% ^^J^^J^^J
+}}
+{\message{^^J^^JChapterformat patch 4 for chapternumberline could NOT be applied!^^J
+% ^^J^^J^^J
+}}
 
 % Allows putting an [H] in \begin{figure} to specify the exact location of the figure
 % https://tex.stackexchange.com/questions/8625/force-figure-placement-in-text
