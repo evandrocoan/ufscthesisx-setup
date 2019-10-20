@@ -1,8 +1,13 @@
-%% Always get the latest version from:
-%% https://github.com/evandroforks/abntex2/blob/master/tex/latex/abntex2/abntex2.cls
-%% wget https://raw.githubusercontent.com/evandroforks/abntex2/master/tex/latex/abntex2/abntex2.cls
+%% This class is called `setup/abntex2.cls` and not `abntex2.cls`.
+%% It was developed specially for:
+%%   1. https://github.com/evandrocoan/ufscthesisx
+%%   2. https://github.com/evandrocoan/ufscthesisx-setup
 %%
-%% abntex2.cls, v<VERSION> laurocesar
+%% Always get the latest version from:
+%%   1. https://github.com/evandroforks/abntex2/blob/master/tex/latex/abntex2/abntex2.cls
+%%   2. wget https://raw.githubusercontent.com/evandroforks/abntex2/master/tex/latex/abntex2/abntex2.cls
+%%
+%% setup/abntex2.cls, v<VERSION> laurocesar
 %% Copyright 2012-<COPYRIGHT_YEAR> by abnTeX2 group at https://www.abntex.net.br/
 %%
 %% This work may be distributed and/or modified under the
