@@ -138,12 +138,12 @@
 %
 % Repassa todos os parâmetros a classe abntex2,
 \DeclareOption*{%
-    \PassOptionsToClass{\CurrentOption}{abntex2}%
+    \PassOptionsToClass{\CurrentOption}{setup/abntex2}%
 }
 
 % Now we'll execute any options passed in
 \ProcessOptions\relax
-\LoadClass{abntex2}
+\LoadClass{setup/abntex2}
 
 
 
@@ -785,7 +785,7 @@
 % If document class is equal to something then do not use package
 % https://tex.stackexchange.com/questions/46223/if-document-class-is-equal-to-something-then-do-not-use-package
 \makeatletter
-\@ifclassloaded{abntex2}
+\@ifclassloaded{setup/abntex2}
 {
     % Package hyperref Warning: Token not allowed in a PDF string?
     % https://tex.stackexchange.com/questions/384885/package-hyperref-warning-token-not-allowed-in-a-pdf-string
@@ -1435,7 +1435,7 @@ therefore the \topsep patch must need to be updated accordingly}}
     \@ifclassloaded{memoir}{%
         \ismemoirloadedtrue%
     }{}
-    \@ifclassloaded{abntex2}{%
+    \@ifclassloaded{setup/abntex2}{%
         \isabntexloadedtrue%
     }{}
 
