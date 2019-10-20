@@ -50,8 +50,6 @@ ifeq (,${ENABLE_DEBUG_MODE})
 	MAKEFLAGS += --silent
 endif
 
-MAKECMDGOALS := setup_envinronment ${MAKECMDGOALS}
-
 # https://stackoverflow.com/questions/58367235/how-to-detect-if-the-makefile-silent-quiet-command-line-option
 # https://stackoverflow.com/questions/20582006/force-makefile-to-execute-script-after-building-any-target-just-before-exiting
 define DEFAULTTARGET :=

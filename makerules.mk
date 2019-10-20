@@ -271,7 +271,7 @@ endef
 # https://stackoverflow.com/questions/4210042/exclude-directory-from-find-command
 # https://tex.stackexchange.com/questions/323820/i-cant-write-on-file-foo-aux
 # https://stackoverflow.com/questions/11469989/how-can-i-strip-first-x-characters-from-string-using-sed
-setup_envinronment:
+setup_envinronment: ${FIX_GITIGNORE}
 	$(eval current_dir := $(shell pwd)) echo ${current_dir} > /dev/null
 
 	printf '\n';
@@ -316,7 +316,7 @@ ${GITIGNORE_DESTINE_PATH}: ${GITIGNORE_SOURCE_PATH}
 
 
 # https://stackoverflow.com/questions/46135614/how-to-call-makefile-recipe-rule-multiple-times
-${LATEXMK_REPLACEMENT}: ${FIX_GITIGNORE} pdflatex_hook1 biber_hook1 pdflatex_hook2 pdflatex_hook3 index pdflatex_hook4 biber_hook2 pdflatex_hook5
+${LATEXMK_REPLACEMENT}: setup_envinronment pdflatex_hook1 biber_hook1 pdflatex_hook2 pdflatex_hook3 index pdflatex_hook4 biber_hook2 pdflatex_hook5
 	${copy_resulting_pdf}
 
 
@@ -326,23 +326,23 @@ index_hook1 index_hook2 index_hook3 index_hook4 index_hook5:
 	printf '\n'
 
 
-index: ${FIX_GITIGNORE} $(if $(wildcard ${CACHE_DIRECTORY}/${THESIS_MAIN_FILE}.idx),,pdflatex_hook1) index_hook1
+index: setup_envinronment $(if $(wildcard ${CACHE_DIRECTORY}/${THESIS_MAIN_FILE}.idx),,pdflatex_hook1) index_hook1
 	${copy_resulting_pdf}
 
 
-index1: ${FIX_GITIGNORE} $(if $(wildcard ${CACHE_DIRECTORY}/${THESIS_MAIN_FILE}.idx),,pdflatex_hook2) index_hook2
+index1: setup_envinronment $(if $(wildcard ${CACHE_DIRECTORY}/${THESIS_MAIN_FILE}.idx),,pdflatex_hook2) index_hook2
 	${copy_resulting_pdf}
 
 
-index2: ${FIX_GITIGNORE} $(if $(wildcard ${CACHE_DIRECTORY}/${THESIS_MAIN_FILE}.idx),,pdflatex_hook3) index_hook3
+index2: setup_envinronment $(if $(wildcard ${CACHE_DIRECTORY}/${THESIS_MAIN_FILE}.idx),,pdflatex_hook3) index_hook3
 	${copy_resulting_pdf}
 
 
-index3: ${FIX_GITIGNORE} $(if $(wildcard ${CACHE_DIRECTORY}/${THESIS_MAIN_FILE}.idx),,pdflatex_hook4) index_hook4
+index3: setup_envinronment $(if $(wildcard ${CACHE_DIRECTORY}/${THESIS_MAIN_FILE}.idx),,pdflatex_hook4) index_hook4
 	${copy_resulting_pdf}
 
 
-index4: ${FIX_GITIGNORE} $(if $(wildcard ${CACHE_DIRECTORY}/${THESIS_MAIN_FILE}.idx),,pdflatex_hook5) index_hook5
+index4: setup_envinronment $(if $(wildcard ${CACHE_DIRECTORY}/${THESIS_MAIN_FILE}.idx),,pdflatex_hook5) index_hook5
 	${copy_resulting_pdf}
 
 
@@ -356,23 +356,23 @@ biber_hook1 biber_hook2 biber_hook3 biber_hook4 biber_hook5: $(if $(wildcard ${C
 
 
 # Run pdflatex, biber, pdflatex
-biber: ${FIX_GITIGNORE} index_hook1 biber_hook1 $(if ${ENABLE_DEBUG_MODE},,pdflatex_hook1)
+biber: setup_envinronment index_hook1 biber_hook1 $(if ${ENABLE_DEBUG_MODE},,pdflatex_hook1)
 	${copy_resulting_pdf}
 
 
-biber1: ${FIX_GITIGNORE} index_hook2 biber_hook2 $(if ${ENABLE_DEBUG_MODE},,pdflatex_hook2)
+biber1: setup_envinronment index_hook2 biber_hook2 $(if ${ENABLE_DEBUG_MODE},,pdflatex_hook2)
 	${copy_resulting_pdf}
 
 
-biber2: ${FIX_GITIGNORE} index_hook3 biber_hook3 $(if ${ENABLE_DEBUG_MODE},,pdflatex_hook3)
+biber2: setup_envinronment index_hook3 biber_hook3 $(if ${ENABLE_DEBUG_MODE},,pdflatex_hook3)
 	${copy_resulting_pdf}
 
 
-biber3: ${FIX_GITIGNORE} index_hook4 biber_hook4 $(if ${ENABLE_DEBUG_MODE},,pdflatex_hook4)
+biber3: setup_envinronment index_hook4 biber_hook4 $(if ${ENABLE_DEBUG_MODE},,pdflatex_hook4)
 	${copy_resulting_pdf}
 
 
-biber4: ${FIX_GITIGNORE} index_hook5 biber_hook5 $(if ${ENABLE_DEBUG_MODE},,pdflatex_hook5)
+biber4: setup_envinronment index_hook5 biber_hook5 $(if ${ENABLE_DEBUG_MODE},,pdflatex_hook5)
 	${copy_resulting_pdf}
 
 
@@ -384,32 +384,32 @@ pdflatex_hook1 pdflatex_hook2 pdflatex_hook3 pdflatex_hook4 pdflatex_hook5 pdfla
 
 
 # This rule will be called for every latex file and pdf associated
-latex pdflatex: ${FIX_GITIGNORE} pdflatex_hook1
+latex pdflatex: setup_envinronment pdflatex_hook1
 	${copy_resulting_pdf}
 
 
-latex1 pdflatex1: ${FIX_GITIGNORE} pdflatex_hook2
+latex1 pdflatex1: setup_envinronment pdflatex_hook2
 	${copy_resulting_pdf}
 
 
-latex2 pdflatex2: ${FIX_GITIGNORE} pdflatex_hook3
+latex2 pdflatex2: setup_envinronment pdflatex_hook3
 	${copy_resulting_pdf}
 
 
-latex3 pdflatex3: ${FIX_GITIGNORE} pdflatex_hook4
+latex3 pdflatex3: setup_envinronment pdflatex_hook4
 	${copy_resulting_pdf}
 
 
-latex4 pdflatex4: ${FIX_GITIGNORE} pdflatex_hook5
+latex4 pdflatex4: setup_envinronment pdflatex_hook5
 	${copy_resulting_pdf}
 
 
-latex5 pdflatex5: ${FIX_GITIGNORE} pdflatex_hook6
+latex5 pdflatex5: setup_envinronment pdflatex_hook6
 	${copy_resulting_pdf}
 
 
 # MAIN LATEXMK RULE
-${LATEXMK_THESIS}: ${FIX_GITIGNORE}
+${LATEXMK_THESIS}: setup_envinronment
 	${LATEXMK_COMMAND} ${THESIS_MAIN_FILE}.tex || $(if ${HALT_ON_ERROR_MODE},eval "${print_results}; exit $$?",)
 	${copy_resulting_pdf}
 
@@ -541,7 +541,7 @@ release:
 
 define REMOTE_COMMAND_TO_RUN :=
 cd $(if ${dir},${dir},~/LatexBuild); \
-printf '\nThe current directory is:\n'; pwd; \
+printf '\nThe current directory is:\n\n'; pwd; \
 printf 'Running the command: make ${rules}\n'; \
 make ${rules};
 endef
