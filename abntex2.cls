@@ -32,7 +32,7 @@
 % ------------------------------------------------------------------------
 % ------------------------------------------------------------------------
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{setup/abntex2}[<CURRENT_DATE> v<VERSION> abnTeX2]
+\ProvidesClass{setup/abntex2}[2016/11/15 v1.9.7 setup/abntex2]
 \RequirePackage{ifthen}
 %
 % Captura as options article e twocolumn
@@ -131,6 +131,35 @@
 % ---
 
 % ---
+% Customiza listas
+\RequirePackage[shortlabels]{enumitem}
+% ---
+
+% https://tex.stackexchange.com/questions/512413/how-to-recognize-the-enumerate-shortlabels-in-my-custom-environment
+% https://tex.stackexchange.com/questions/512692/how-to-define-commands-before-loading-the-hyperref-package-which-is-loaded-by?noredirect=1&lq=1
+% https://tex.stackexchange.com/questions/409432/conflict-between-hyperref-and-enumitem-packages-and-refstepcounter
+\makeatletter
+\def\renewenumerateoptionalitem{%
+  \let\itemenumerateoptional\item%
+  \renewcommand{\item}[1][]{%
+      \refstepcounter{enumerateoptionali}% increment the counter
+      \itemenumerateoptional[\bfseries##1~\theenumerateoptionali]%
+  }%
+}
+
+\newlist{enumerateoptional}{enumerate}{1}
+\setlist[enumerateoptional]{
+    before=\renewenumerateoptionalitem,
+    label=\arabic*,
+    nosep,
+    align=left,
+    leftmargin=*,
+    after=\let\item\itemenumerateoptional,
+}
+\makeatother
+
+
+% ---
 % Controla as referencias internas do PDF
 \RequirePackage{hyperref}
 \pdfstringdefDisableCommands{\def\\{, }\def\and{; }}
@@ -204,11 +233,6 @@
   \renewcommand{\subsubsectionautorefname}{subsubsection}
   \renewcommand{\paragraphautorefname}{subsubsubsection}
 }
-% ---
-
-% ---
-% Customiza listas
-\RequirePackage{enumitem}
 % ---
 
 % ---
