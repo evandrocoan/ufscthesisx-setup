@@ -136,6 +136,7 @@
 % ---
 
 % https://tex.stackexchange.com/questions/512413/how-to-recognize-the-enumerate-shortlabels-in-my-custom-environment
+% https://tex.stackexchange.com/questions/513020/how-can-i-stop-this-useless-empty-line-popping-up-in-the-middle-of-my-lists
 % https://tex.stackexchange.com/questions/512692/how-to-define-commands-before-loading-the-hyperref-package-which-is-loaded-by?noredirect=1&lq=1
 % https://tex.stackexchange.com/questions/409432/conflict-between-hyperref-and-enumitem-packages-and-refstepcounter
 \makeatletter
