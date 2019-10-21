@@ -540,7 +540,7 @@ release:
 
 
 define REMOTE_COMMAND_TO_RUN :=
-cd $(if ${dir},${dir},~/LatexBuild); \
+cd $(if ${dir},${dir},~/LatexBuild)/monograph; \
 printf '\nThe current directory is:\n'; pwd; \
 printf '\nRunning the command: make ${rules}\n'; \
 make ${rules};
@@ -581,7 +581,7 @@ remote:
 	printf 'Running the command which will actually send the files...\n'
 	passh -p $(if ${LATEXPASSWORD},${LATEXPASSWORD},admin123) \
 		rsync -rvu --copy-links --exclude ".git" --exclude "${CACHE_DIRECTORY}" --exclude "${THESIS_MAIN_FILE}.pdf" \
-		${args} ${current_dir}/* \
+		${args} ${current_dir}/../* \
 		'$(if ${LATEXADDRESS},${LATEXADDRESS},linux@192.168.0.222):$(if ${dir},${dir},~/LatexBuild)'
 
 	printf 'Running the command which will actually run make...\n'
@@ -592,6 +592,6 @@ remote:
 	printf 'Running the command which will copy back the generated PDF...\n'
 	-passh -p $(if ${LATEXPASSWORD},${LATEXPASSWORD},admin123) \
 		scp -o StrictHostKeyChecking=no \
-		'$(if ${LATEXADDRESS},${LATEXADDRESS},linux@192.168.0.222):$(if ${dir},${dir},~/LatexBuild)/main.pdf' \
+		'$(if ${LATEXADDRESS},${LATEXADDRESS},linux@192.168.0.222):$(if ${dir},${dir},~/LatexBuild)/monograph/main.pdf' \
 		"${current_dir}/"
 
