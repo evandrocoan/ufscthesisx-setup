@@ -573,25 +573,25 @@ remote:
 	$(if ${ENABLE_DEBUG_MODE},printf '\n',)
 	$(eval current_dir := $(shell pwd)) echo ${current_dir} > /dev/null
 
-	printf 'Just ensures the directory '%s' is created...\n' "${dir}"
+	printf '\nJust ensures the directory '%s' is created...\n' "${dir}"
 	passh -p $(if ${LATEXPASSWORD},${LATEXPASSWORD},admin123) \
 		ssh -o StrictHostKeyChecking=no $(if ${LATEXADDRESS},${LATEXADDRESS},linux@192.168.0.222) \
 		'mkdir -p $(if ${dir},${dir},~/LatexBuild)'
 
-	printf 'Running the command which will actually send the files...\n'
+	printf '\nRunning the command which will actually send the files...\n'
 	passh -p $(if ${LATEXPASSWORD},${LATEXPASSWORD},admin123) \
 		rsync -rvu --copy-links --exclude ".git" --exclude "${CACHE_DIRECTORY}" --exclude "${THESIS_MAIN_FILE}.pdf" \
 		${args} ${current_dir}/../* \
 		'$(if ${LATEXADDRESS},${LATEXADDRESS},linux@192.168.0.222):$(if ${dir},${dir},~/LatexBuild)'
 
-	printf 'Running the command which will actually run make...\n'
+	printf '\nRunning the command which will actually run make...\n'
 	passh -p $(if ${LATEXPASSWORD},${LATEXPASSWORD},admin123) \
 		ssh -o StrictHostKeyChecking=no $(if ${LATEXADDRESS},${LATEXADDRESS},linux@192.168.0.222) \
 		"${REMOTE_COMMAND_TO_RUN}" || $(if ${HALT_ON_ERROR_MODE},exit "$$?",)
 
-	printf 'Running the command which will copy back the generated PDF...\n'
+	printf '\nRunning the command which will copy back the generated PDF...\n';
 	-passh -p $(if ${LATEXPASSWORD},${LATEXPASSWORD},admin123) \
 		scp -o StrictHostKeyChecking=no \
 		'$(if ${LATEXADDRESS},${LATEXADDRESS},linux@192.168.0.222):$(if ${dir},${dir},~/LatexBuild)/monograph/main.pdf' \
-		"${current_dir}/"
+		"${current_dir}/";
 

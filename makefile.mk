@@ -56,7 +56,7 @@ define DEFAULTTARGET :=
 	. ./setup/scripts/timer_calculator.sh
 
 	$(eval current_dir := $(shell pwd)) echo ${current_dir} > /dev/null
-	printf 'Calling setup/makerules.mk "%s" %s\n' "${MAKECMDGOALS}" "${MAKEFLAGS}";
+	printf '\nCalling setup/makerules.mk "%s" %s\n' "${MAKECMDGOALS}" "${MAKEFLAGS}";
 
 	make -f setup/makerules.mk ${MAKECMDGOALS}
 	showTheElapsedSeconds "${current_dir}";
