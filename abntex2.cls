@@ -138,24 +138,22 @@
 % https://tex.stackexchange.com/questions/512413/how-to-recognize-the-enumerate-shortlabels-in-my-custom-environment
 % https://tex.stackexchange.com/questions/512692/how-to-define-commands-before-loading-the-hyperref-package-which-is-loaded-by?noredirect=1&lq=1
 % https://tex.stackexchange.com/questions/409432/conflict-between-hyperref-and-enumitem-packages-and-refstepcounter
+% https://tex.stackexchange.com/questions/513020/how-can-i-stop-this-useless-empty-line-popping-up-in-the-middle-of-my-lists
 \makeatletter
-\def\renewenumerateoptionalitem{%
-  \let\itemenumerateoptional\item%
+\let\enumerateoptional@item\@item
+\patchcmd\enumerateoptional@item{\if@noitemarg}{\iftrue}{}{
+  \message{^^J^^Jenumerateoptional enumitem environment could NOT be completely created!^^J^^J^^J^^J
+}}
+\enitkv@key{}{formatarg}{\def\enit@format##1{#1}}
 
-  % https://tex.stackexchange.com/questions/513020/how-can-i-stop-this-useless-empty-line-popping-up-in-the-middle-of-my-lists
-  \renewcommand{\item}[1][]{%
-      \itemenumerateoptional[%
-        ##1~%
-        \refstepcounter{enumerateoptionali}% Advance the counter
-        \theenumerateoptionali% Print the counter
-      ]%
-  }%
-}
+% Compatibility with older enumitem.sty
+\@ifundefined{enitkv@enumitem@formatarg}
+  {\enitkv@key{enumitem}{formatarg}{\def\enit@format##1{#1}}}{}
 
 \newlist{enumerateoptional}{enumerate}{1}
-\setlist[enumerateoptional]{
-    before=\renewenumerateoptionalitem,
-    label=\arabic*,
+\setlist[enumerateoptional]{%
+    before=\let\@item\enumerateoptional@item,
+    formatarg=########1~\@itemlabel,
     nosep,
     align=left,
     leftmargin=*,

@@ -933,16 +933,14 @@ therefore the \topsep patch must need to be updated accordingly}}
 {\message{^^J^^JChapterformat patch 1 for chapternumberline could SUCCESSFULLY!^^J
 % ^^J^^J^^J
 }}
-{\message{^^J^^JChapterformat patch 1 for chapternumberline could NOT be applied!^^J
-% ^^J^^J^^J
+{\message{^^J^^JChapterformat patch 1 for chapternumberline could NOT be applied!^^J^^J^^J^^J
 }}
 
 \xpretocmd{\l@chapter}{\def\@chapapp@extrahyphenspaces{}}
 {\message{^^J^^JChapterformat patch 2 for chapternumberline could SUCCESSFULLY!^^J
 % ^^J^^J^^J
 }}
-{\message{^^J^^JChapterformat patch 2 for chapternumberline could NOT be applied!^^J
-% ^^J^^J^^J
+{\message{^^J^^JChapterformat patch 2 for chapternumberline could NOT be applied!^^J^^J^^J^^J
 }}
 
 \patchcmd{\chapternumberline}{\@cftasnum}{%
@@ -954,8 +952,7 @@ therefore the \topsep patch must need to be updated accordingly}}
 {\message{^^J^^JChapterformat patch 3 for chapternumberline could SUCCESSFULLY!^^J
 % ^^J^^J^^J
 }}
-{\message{^^J^^JChapterformat patch 3 for chapternumberline could NOT be applied!^^J
-% ^^J^^J^^J
+{\message{^^J^^JChapterformat patch 3 for chapternumberline could NOT be applied!^^J^^J^^J^^J
 }}
 
 \patchcmd{\chapternumberline}{\@cftasnumb}{%
@@ -965,8 +962,7 @@ therefore the \topsep patch must need to be updated accordingly}}
 {\message{^^J^^JChapterformat patch 4 for chapternumberline could SUCCESSFULLY!^^J
 % ^^J^^J^^J
 }}
-{\message{^^J^^JChapterformat patch 4 for chapternumberline could NOT be applied!^^J
-% ^^J^^J^^J
+{\message{^^J^^JChapterformat patch 4 for chapternumberline could NOT be applied!^^J^^J^^J^^J
 }}
 
 % https://tex.stackexchange.com/questions/512898/the-appendix-word-disappears-from-the-table-of-contents-when-using-include
