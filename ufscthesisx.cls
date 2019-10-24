@@ -128,6 +128,7 @@
 
 % Prove acesso a classe 'ufscthesisx'
 \ProvidesClass{setup/ufscthesisx}[2016/11/15 1.0.0 setup/ufscthesisx]
+\RequirePackage{ifthen}
 
 % How can I properly resolve relative paths in `\usepackage`?
 % https://tex.stackexchange.com/questions/123999/how-can-i-properly-resolve-relative-paths-in-usepackage
@@ -141,9 +142,39 @@
     \PassOptionsToClass{\CurrentOption}{setup/abntex2}%
 }
 
+% https://en.wikibooks.org/wiki/LaTeX/Creating_Packages
+% https://tex.stackexchange.com/questions/61487/processoptions-and-processkeyvaloptions
+% https://tex.stackexchange.com/questions/12933/new-options-and-loaded-class-options-bug
+\newboolean{ufscthesisxdefaultfontsizeoption}
+\setboolean{ufscthesisxdefaultfontsizeoption}{false}
+
+\DeclareOption{10pt}{
+  \setboolean{ufscthesisxdefaultfontsizeoption}{true}
+}
+
+\DeclareOption{10.0pt}{
+  \setboolean{ufscthesisxdefaultfontsizeoption}{true}
+}
+
+\DeclareOption{10.00pt}{
+  \setboolean{ufscthesisxdefaultfontsizeoption}{true}
+}
+
+\DeclareOption{10.5pt}{
+  \setboolean{ufscthesisxdefaultfontsizeoption}{true}
+}
+
+\DeclareOption{10.50pt}{
+  \setboolean{ufscthesisxdefaultfontsizeoption}{true}
+}
+
 % Now we'll execute any options passed in
 \ProcessOptions\relax
 \LoadClass{setup/abntex2}
+
+\ifthenelse{\boolean{ufscthesisxdefaultfontsizeoption}}
+{\message{^^J^^Jufscthesisx notice: using font size 10.5pt^^J^^J}}
+{\message{^^J^^Jufscthesisx notice: NOT using the font size 10.5pt^^J^^J}}
 
 
 
@@ -303,16 +334,16 @@
 
 % Fontes dos títulos e seções
 % Tamanho da fonte padrão do 'ABNTEX'
-\renewcommand{\normalsize}{\fontsize{10.5pt}{11pt}}
+\ifthenelse{\boolean{ufscthesisxdefaultfontsizeoption}}{\renewcommand{\normalsize}{\fontsize{10.5pt}{11pt}}}{}
 
 % Caption package and Memoir
 % https://groups.google.com/forum/#!topic/comp.text.tex/RzpI2ATMev0
 % https://tex.stackexchange.com/questions/18931/memoir-class-with-subcaption-and-hyperref-packages
-% \DeclareCaptionFont{small}{\fontsize{9.5pt}{10.5pt}}
+% \ifthenelse{\boolean{ufscthesisxdefaultfontsizeoption}}{\DeclareCaptionFont{small}{\fontsize{9.5pt}{10.5pt}}}{}
 
 % Set caption font size in memoir
 % https://tex.stackexchange.com/questions/58943/set-caption-font-size-in-memoir
-\newcommand{\ufsccaptionsize}{\fontsize{9.5pt}{10.5pt}\selectfont}
+\newcommand{\ufsccaptionsize}{\ifthenelse{\boolean{ufscthesisxdefaultfontsizeoption}}{\fontsize{9.5pt}{10.5pt}\selectfont}{\normalfont}}
 \captionnamefont{\ufsccaptionsize}
 \captiontitlefont{\ufsccaptionsize}
 
@@ -351,22 +382,22 @@
 
 % Fontes padroes de part, chapter, section, subsection e subsubsection
 \renewcommand{\ABNTEXchapterfont}{\usefont{T1}{cmr}{bx}{n}}
-\renewcommand{\ABNTEXchapterfontsize}{\fontsize{10.5pt}{12pt}}
+\ifthenelse{\boolean{ufscthesisxdefaultfontsizeoption}}{\renewcommand{\ABNTEXchapterfontsize}{\fontsize{10.5pt}{12pt}}}{}
 
 \renewcommand{\ABNTEXpartfont}{\usefont{T1}{cmr}{bx}{n}}
-\renewcommand{\ABNTEXpartfontsize}{\fontsize{15pt}{18pt}}
+\ifthenelse{\boolean{ufscthesisxdefaultfontsizeoption}}{\renewcommand{\ABNTEXpartfontsize}{\fontsize{15pt}{18pt}}}{}
 
 \renewcommand{\ABNTEXsectionfont}{\usefont{T1}{cmr}{m}{n}}
-\renewcommand{\ABNTEXsectionfontsize}{\fontsize{10.5pt}{12pt}}
+\ifthenelse{\boolean{ufscthesisxdefaultfontsizeoption}}{\renewcommand{\ABNTEXsectionfontsize}{\fontsize{10.5pt}{12pt}}}{}
 
 \renewcommand{\ABNTEXsubsectionfont}{\usefont{T1}{cmr}{b}{n}}
-\renewcommand{\ABNTEXsubsectionfontsize}{\fontsize{10.5pt}{12pt}}
+\ifthenelse{\boolean{ufscthesisxdefaultfontsizeoption}}{\renewcommand{\ABNTEXsubsectionfontsize}{\fontsize{10.5pt}{12pt}}}{}
 
 \renewcommand{\ABNTEXsubsubsectionfont}{\usefont{T1}{cmr}{m}{n}}
-\renewcommand{\ABNTEXsubsubsectionfontsize}{\fontsize{10.5pt}{12pt}}
+\ifthenelse{\boolean{ufscthesisxdefaultfontsizeoption}}{\renewcommand{\ABNTEXsubsubsectionfontsize}{\fontsize{10.5pt}{12pt}}}{}
 
 \renewcommand{\ABNTEXsubsubsubsectionfont}{\usefont{T1}{cmr}{m}{it}}
-\renewcommand{\ABNTEXsubsubsubsectionfontsize}{\fontsize{10.5pt}{12pt}}
+\ifthenelse{\boolean{ufscthesisxdefaultfontsizeoption}}{\renewcommand{\ABNTEXsubsubsubsectionfontsize}{\fontsize{10.5pt}{12pt}}}{}
 
 
 % Comando que simula a finalizacao de uma parte no bookmark e
