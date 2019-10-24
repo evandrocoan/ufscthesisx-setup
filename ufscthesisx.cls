@@ -2417,7 +2417,7 @@ therefore the \topsep patch must need to be updated accordingly}}
     \immediate\closein\mintedappexistsfile
     \DeleteFile{\mintedjobname.aex}
   \else
-    \ShellEscape{which #1 && touch \mintedjobname.aex}
+    \ShellEscape{which #1 > /dev/null 2>&1 && touch \mintedjobname.aex}
     \IfFileExists{\mintedjobname.aex}
       {\AppMotherFuckerExiststrue
         \DeleteFile{\mintedjobname.aex}}
