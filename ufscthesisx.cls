@@ -2468,7 +2468,7 @@ therefore the \topsep patch must need to be updated accordingly}}
 
   % https://tex.stackexchange.com/questions/35546/minted-setstretch-and-font-size
   % https://tex.stackexchange.com/questions/484788/how-to-change-overall-font-size-of-minted
-  \setminted{fontsize=\small,fontfamily=zi4,linenos=true,numberblanklines=true,breaklines=true}
+  \setminted{fontsize=\small,fontfamily=zi4,linenos=true,numberblanklines=true,breaklines=true,breakanywhere=true}
 
   % https://stackoverflow.com/questions/3245007/how-to-change-the-font-size-of-line-numbers-using-the-minted-latex-package
   \renewcommand\theFancyVerbLine{\normalsize\color{gray}\arabic{FancyVerbLine}}
