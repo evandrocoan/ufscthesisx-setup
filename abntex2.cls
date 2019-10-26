@@ -312,7 +312,7 @@
 % ---
 
 % ---
-% Comando que cria capitulos nao numerados ja com bookmark anotado
+% Comando que cria capítulos não numerados já com bookmark anotado
 % ---
 \newcommand{\pretextualchapter}[1]{%
   \addtocounter{abntex@bookmarkcounter}{1}%
@@ -324,7 +324,7 @@
 % ---
 
 % ---
-% cleardoublepage se este documento nao for article
+% cleardoublepage se este documento não for article
 % ---
 \newcommand{\PRIVATEclearpageifneeded}{%
   \ifthenelse{\equal{\ABNTEXisarticle}{true}}{%
@@ -473,7 +473,7 @@
 % fonte das partes e do capitulo do TOC
 \renewcommand{\tocheadstart}{\ABNTEXchapterfont}
 
-% leaders para os capitulos
+% leaders para os capítulos
 \renewcommand*{\cftchapterdotsep}{\cftdotsep}
 
 % suprime espaço entre os itens de listings de diferentes capítulos
@@ -593,7 +593,7 @@
 % -----
 
 % ---
-% Configuracao dos titulos dos capitulos
+% Configuracao dos titulos dos capítulos
 % Novo estido do memoir
 % ABNT NBR 14724-2011 - 5.2.2-5.2.4; ABNT NBR 6024-2003 - 3.1-3.8
 \provideboolean{abntex@innonumchapter}
@@ -662,7 +662,7 @@
   }
   \renewcommand{\afterchapternum}{}
 
-  % impressao do capitulo nao numerado
+  % impressao do capitulo não numerado
   \renewcommand\printchapternonum{%
      \tocprintchapternonum%
      \setboolean{abntex@innonumchapter}{true}%
@@ -849,7 +849,7 @@
 % ---
 % Resumo e abstracts em diferentes idiomas - NBR 14724/2011
 
-% altera as margens padrões do memoir para abstract caso nao seja article
+% altera as margens padrões do memoir para abstract caso não seja article
 \ifthenelse{\equal{\ABNTEXisarticle}{true}}{%
     % em artigos, margens e fontes são as mesmas de memoir
   }{ % else
