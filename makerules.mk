@@ -71,6 +71,18 @@ ifdef debug
 	endif
 endif
 
+ifdef UFSCTHESISX_RSYNC_DIRECTORY
+	ifeq (,${UFSCTHESISX_RSYNC_DIRECTORY})
+		UFSCTHESISX_RSYNC_DIRECTORY := .
+	endif
+endif
+
+ifdef UFSCTHESISX_MAINTEX_DIRECTORY
+	ifeq (,${UFSCTHESISX_MAINTEX_DIRECTORY})
+		UFSCTHESISX_MAINTEX_DIRECTORY := .
+	endif
+endif
+
 ## Use halt=1 to stop running on errors instead of continuing the compilation!
 ## Also, use debug=1 to halt on errors and fix the errors dynamically.
 ##
@@ -280,14 +292,14 @@ setup_envinronment: ${FIX_GITIGNORE}
 			-not -path "./pictures**" -type d \
 			-not -path "./setup**" -type d) "; \
 	unset 'DIRECTORIES_TO_CREATE[-1]'; \
-	declare -p DIRECTORIES_TO_CREATE; \
+	declare -p DIRECTORIES_TO_CREATE $(if ${ENABLE_DEBUG_MODE},,> /dev/null); \
 	for directory_name in "$${DIRECTORIES_TO_CREATE[@]}"; \
 	do \
 		full_cache_directory="${CACHE_DIRECTORY}/$${directory_name:2}"; \
-		printf 'Creating %s\n' "$${full_cache_directory}"; \
+		printf 'Creating %s\n' "$${full_cache_directory}" $(if ${ENABLE_DEBUG_MODE},,> /dev/null); \
 		mkdir -p "$${full_cache_directory}"; \
 	done
-	printf '\n';
+	printf '\n' $(if ${ENABLE_DEBUG_MODE},,> /dev/null);
 
 
 ## Targets:
@@ -540,7 +552,7 @@ release:
 
 
 define REMOTE_COMMAND_TO_RUN :=
-cd $(if ${dir},${dir},~/LatexBuild)/monograph; \
+cd "$(if ${dir},${dir},~/LatexBuild)/${UFSCTHESISX_MAINTEX_DIRECTORY}"; \
 printf '\nThe current directory is:\n'; pwd; \
 printf '\nRunning the command: make ${rules}\n'; \
 make ${rules};
@@ -580,8 +592,12 @@ remote:
 
 	printf '\nRunning the command which will actually send the files...\n'
 	passh -p $(if ${LATEXPASSWORD},${LATEXPASSWORD},admin123) \
-		rsync -rvu --copy-links --exclude ".git" --exclude "${CACHE_DIRECTORY}" --exclude "${THESIS_MAIN_FILE}.pdf" \
-		${args} ${current_dir}/../* \
+		rsync -rvu --copy-links --exclude ".git" \
+		--exclude "_gsdata_" \
+		--exclude ".tmp.drivedownload" \
+		--exclude "${CACHE_DIRECTORY}" \
+		--exclude "${THESIS_MAIN_FILE}.pdf" \
+		${args} "${current_dir}/${UFSCTHESISX_RSYNC_DIRECTORY}/." \
 		'$(if ${LATEXADDRESS},${LATEXADDRESS},linux@192.168.0.222):$(if ${dir},${dir},~/LatexBuild)'
 
 	printf '\nRunning the command which will actually run make...\n'
@@ -592,6 +608,6 @@ remote:
 	printf '\nRunning the command which will copy back the generated PDF...\n';
 	-passh -p $(if ${LATEXPASSWORD},${LATEXPASSWORD},admin123) \
 		scp -o StrictHostKeyChecking=no \
-		'$(if ${LATEXADDRESS},${LATEXADDRESS},linux@192.168.0.222):$(if ${dir},${dir},~/LatexBuild)/monograph/main.pdf' \
+		'$(if ${LATEXADDRESS},${LATEXADDRESS},linux@192.168.0.222):$(if ${dir},${dir},~/LatexBuild)/${UFSCTHESISX_MAINTEX_DIRECTORY}/main.pdf' \
 		"${current_dir}/";
 
