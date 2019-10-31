@@ -1058,9 +1058,6 @@ therefore the \topsep patch must need to be updated accordingly}}
 % https://tex.stackexchange.com/questions/119919/no-spacing-between-enumerated-items-with-usepackageenumerate
 \usepackage[shortlabels]{enumitem}
 
-% https://tex.stackexchange.com/questions/148647/how-to-remove-space-before-enumerate
-\setlist[enumerate]{nosep}
-
 \usepackage{tabularx}
 \usepackage{multirow}
 
