@@ -609,5 +609,5 @@ remote:
 	-passh -p $(if ${LATEXPASSWORD},${LATEXPASSWORD},admin123) \
 		scp -o StrictHostKeyChecking=no \
 		'$(if ${LATEXADDRESS},${LATEXADDRESS},linux@192.168.0.222):$(if ${dir},${dir},~/LatexBuild)/${UFSCTHESISX_MAINTEX_DIRECTORY}/main.pdf' \
-		"${current_dir}/";
+		"${current_dir}/" || printf '\nNo PDF to copy back!\n';
 
