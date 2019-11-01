@@ -71,16 +71,30 @@ ifdef debug
 	endif
 endif
 
-ifdef UFSCTHESISX_RSYNC_DIRECTORY
-	ifeq (,${UFSCTHESISX_RSYNC_DIRECTORY})
-		UFSCTHESISX_RSYNC_DIRECTORY := .
-	endif
+ifeq (${UFSCTHESISX_RSYNC_DIRECTORY},)
+	UFSCTHESISX_RSYNC_DIRECTORY := .
 endif
 
-ifdef UFSCTHESISX_MAINTEX_DIRECTORY
-	ifeq (,${UFSCTHESISX_MAINTEX_DIRECTORY})
-		UFSCTHESISX_MAINTEX_DIRECTORY := .
-	endif
+ifeq (${UFSCTHESISX_MAINTEX_DIRECTORY},)
+	UFSCTHESISX_MAINTEX_DIRECTORY := .
+endif
+
+ifeq (${dir},)
+	UFSCTHESISX_ROOT_DIRECTORY := ~/LatexBuild
+else
+	UFSCTHESISX_ROOT_DIRECTORY := ${dir}
+endif
+
+ifeq (${LATEXPASSWORD},)
+	UFSCTHESISX_REMOTE_PASSWORD := admin123
+else
+	UFSCTHESISX_REMOTE_PASSWORD := ${LATEXPASSWORD}
+endif
+
+ifeq (${LATEXADDRESS},)
+	UFSCTHESISX_REMOTE_ADDRESS := linux@192.168.0.222
+else
+	UFSCTHESISX_REMOTE_ADDRESS := ${LATEXADDRESS}
 endif
 
 ## Use halt=1 to stop running on errors instead of continuing the compilation!
@@ -272,7 +286,7 @@ ${print_results}; \
 if [[ -f "${THESIS_MAIN_FILE_PATH}" ]]; \
 then \
 	printf 'Coping PDF...\n'; \
-	cp "${THESIS_MAIN_FILE_PATH}" "${current_dir}/${THESIS_OUTPUT_NAME}.pdf"; \
+	cp "${THESIS_MAIN_FILE_PATH}" "${CURRENT_DIR}/${THESIS_OUTPUT_NAME}.pdf"; \
 else \
 	printf '\nError: The PDF %s was not generated!\n' "${THESIS_MAIN_FILE_PATH}"; \
 	exit 1; \
@@ -283,9 +297,10 @@ endef
 # https://stackoverflow.com/questions/4210042/exclude-directory-from-find-command
 # https://tex.stackexchange.com/questions/323820/i-cant-write-on-file-foo-aux
 # https://stackoverflow.com/questions/11469989/how-can-i-strip-first-x-characters-from-string-using-sed
-setup_envinronment: ${FIX_GITIGNORE}
-	$(eval current_dir := $(shell pwd)) echo ${current_dir} > /dev/null
+pre_setup_envinronment: ${FIX_GITIGNORE}
+	$(eval CURRENT_DIR := $(shell pwd)) echo ${CURRENT_DIR} > /dev/null
 
+setup_envinronment: pre_setup_envinronment
 	printf '\n';
 	readarray -td' ' DIRECTORIES_TO_CREATE <<<"$(shell "${FIND_EXEC}" \
 			-not -path "./**.git**" \
@@ -552,7 +567,7 @@ release:
 
 
 define REMOTE_COMMAND_TO_RUN :=
-cd "$(if ${dir},${dir},~/LatexBuild)/${UFSCTHESISX_MAINTEX_DIRECTORY}"; \
+cd "${UFSCTHESISX_ROOT_DIRECTORY}/${UFSCTHESISX_MAINTEX_DIRECTORY}"; \
 printf '\nThe current directory is:\n'; pwd; \
 printf '\nRunning the command: make ${rules}\n'; \
 make ${rules};
@@ -581,33 +596,39 @@ endef
 ##
 #https://serverfault.com/questions/330503/scp-without-known-hosts-check
 #https://stackoverflow.com/questions/4780893/use-expect-in-bash-script-to-provide-password-to-ssh-command
-remote:
+remote: pre_setup_envinronment
 	$(if ${ENABLE_DEBUG_MODE},printf '\n',)
-	$(eval current_dir := $(shell pwd)) echo ${current_dir} > /dev/null
 
 	printf '\nJust ensures the directory '%s' is created...\n' "${dir}"
-	passh -p $(if ${LATEXPASSWORD},${LATEXPASSWORD},admin123) \
-		ssh -o StrictHostKeyChecking=no $(if ${LATEXADDRESS},${LATEXADDRESS},linux@192.168.0.222) \
-		'mkdir -p $(if ${dir},${dir},~/LatexBuild)'
+	passh -p "${UFSCTHESISX_REMOTE_PASSWORD}" \
+		ssh -o StrictHostKeyChecking=no \
+		"${UFSCTHESISX_REMOTE_ADDRESS}" \
+		'mkdir -p "${UFSCTHESISX_ROOT_DIRECTORY}"'
 
 	printf '\nRunning the command which will actually send the files...\n'
-	passh -p $(if ${LATEXPASSWORD},${LATEXPASSWORD},admin123) \
-		rsync -rvu --copy-links --exclude ".git" \
+	passh -p "${UFSCTHESISX_REMOTE_PASSWORD}" \
+		rsync ${args} \
+		--recursive \
+		--verbose \
+		--update \
+		--copy-links \
+		--exclude ".git" \
 		--exclude "_gsdata_" \
 		--exclude ".tmp.drivedownload" \
 		--exclude "${CACHE_DIRECTORY}" \
 		--exclude "${THESIS_MAIN_FILE}.pdf" \
-		${args} "${current_dir}/${UFSCTHESISX_RSYNC_DIRECTORY}/." \
-		'$(if ${LATEXADDRESS},${LATEXADDRESS},linux@192.168.0.222):$(if ${dir},${dir},~/LatexBuild)'
+		"${CURRENT_DIR}/${UFSCTHESISX_RSYNC_DIRECTORY}/." \
+		"${UFSCTHESISX_REMOTE_ADDRESS}:${UFSCTHESISX_ROOT_DIRECTORY}"
 
 	printf '\nRunning the command which will actually run make...\n'
-	passh -p $(if ${LATEXPASSWORD},${LATEXPASSWORD},admin123) \
-		ssh -o StrictHostKeyChecking=no $(if ${LATEXADDRESS},${LATEXADDRESS},linux@192.168.0.222) \
+	passh -p "${UFSCTHESISX_REMOTE_PASSWORD}" \
+		ssh -o StrictHostKeyChecking=no \
+		"${UFSCTHESISX_REMOTE_ADDRESS}" \
 		"${REMOTE_COMMAND_TO_RUN}" || $(if ${HALT_ON_ERROR_MODE},exit "$$?",)
 
 	printf '\nRunning the command which will copy back the generated PDF...\n';
-	-passh -p $(if ${LATEXPASSWORD},${LATEXPASSWORD},admin123) \
+	-passh -p "${UFSCTHESISX_REMOTE_PASSWORD}" \
 		scp -o StrictHostKeyChecking=no \
-		'$(if ${LATEXADDRESS},${LATEXADDRESS},linux@192.168.0.222):$(if ${dir},${dir},~/LatexBuild)/${UFSCTHESISX_MAINTEX_DIRECTORY}/main.pdf' \
-		"${current_dir}/" || printf '\nNo PDF to copy back!\n';
+		"${UFSCTHESISX_REMOTE_ADDRESS}:${UFSCTHESISX_ROOT_DIRECTORY}/${UFSCTHESISX_MAINTEX_DIRECTORY}/main.pdf" \
+		"${CURRENT_DIR}/" || printf '\nNo PDF to copy back!\n';
 
