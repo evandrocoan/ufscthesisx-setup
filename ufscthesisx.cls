@@ -664,12 +664,22 @@
 \makeatletter
 \newcommand{\palavraschaveufsc}[2]{%
     \@ifundefined{#1}{%
-        \message{palavraschaveufsc #1 is undefined}
+        \message{^^JNotice palavraschaveufsc: #1 is undefined for '#2'^^J}
         \expandafter\newcommand\csname#1\endcsname{}
-    }{%
-        \message{palavraschaveufsc #1 is defined}
-    }
+    }{\message{^^JNotice palavraschaveufsc: #1 is defined^^J}}
     {\expandafter\g@addto@macro\csname#1\endcsname{\item #2. }}
+
+    \@ifundefined{#1comvirgula}{%
+        \message{^^JNotice palavraschaveufsc: #1 is undefined for '#2'^^J}
+        \expandafter\newcommand\csname#1comvirgula\endcsname{}
+    }{\message{^^JNotice palavraschaveufsc: #1 is defined^^J}}
+    {\expandafter\g@addto@macro\csname#1comvirgula\endcsname{\item #2, }}
+
+    \@ifundefined{#1semitem}{%
+        \message{^^JNotice palavraschaveufsc: #1 is undefined for '#2'^^J}
+        \expandafter\newcommand\csname#1semitem\endcsname{}
+    }{\message{^^JNotice palavraschaveufsc: #1 is defined^^J}}
+    {\expandafter\g@addto@macro\csname#1semitem\endcsname{#2. }}
 }
 \makeatother
 
@@ -2496,234 +2506,4 @@ therefore the \topsep patch must need to be updated accordingly}}
   \PackageWarning{minted}{You must have `pygmentize' installed to use the minted package}
   % \PackageError{minted}{You must have `pygmentize' installed to use the minted package}{Minted Error}
 \fi
-
-
-
-
-
-
-
-
-
-
-
-
-%% README.md
-%% Copyright 2017 Evandro Coan
-%
-% This work may be distributed and/or modified under the
-% conditions of the LaTeX Project Public License, either version 1.3
-% of this license or (at your option) any later version.
-% The latest version of this license is in
-%   http://www.latex-project.org/lppl.txt
-% and version 1.3 or later is part of all distributions of LaTeX
-% version 2005/12/01 or later.
-%
-% This work has the LPPL maintenance status `maintained'.
-%
-% The Current Maintainer of this work is M. Y. Name.
-%
-% This work consists of the files:
-% 1. `README.md`,
-% 2. `basic.tex`,
-% 3. `commands.tex`,
-% 4. `commands_list.tex`
-% 5. `programming.tex`
-% 6. `badboxes.tex`
-\makeatletter
-
-
-
-\@ifundefined{hline}{       \def\hline{hline} }{}
-\@ifundefined{caption}{     \def\caption{caption} }{}
-\@ifundefined{RaggedRight}{ \def\RaggedRight{RaggedRight} }{}
-\@ifundefined{imprimirprograma}{  \def\imprimirprograma{imprimirprograma} }{}
-\@ifundefined{imprimirformacao}{  \def\imprimirformacao{imprimirformacao} }{}
-\@ifundefined{imprimirtitulo}{  \def\imprimirtitulo{imprimirtitulo} }{}
-\@ifundefined{imprimirsubtitulo}{  \def\imprimirsubtitulo{imprimirsubtitulo} }{}
-\@ifundefined{imprimircoorientador}{  \def\imprimircoorientador{imprimircoorientador} }{}
-\@ifundefined{palavraschaveingles}{  \def\palavraschaveingles{} }{}
-\@ifundefined{imprimirautor}{  \def\imprimirautor{imprimirautor} }{}
-\@ifundefined{imprimirorientadorRotulo}{  \def\imprimirorientadorRotulo{imprimirorientadorRotulo} }{}
-\@ifundefined{imprimirdata}{  \def\imprimirdata{imprimirdata} }{}
-\@ifundefined{imprimirtipotrabalho}{  \def\imprimirtipotrabalho{imprimirtipotrabalho} }{}
-\@ifundefined{imprimirinstituicao}{  \def\imprimirinstituicao{imprimirinstituicao} }{}
-\@ifundefined{imprimircentro}{  \def\imprimircentro{imprimircentro} }{}
-\@ifundefined{palavraschaveportugues}{  \def\palavraschaveportugues{} }{}
-\@ifundefined{currenttime}{         \def\currenttime{Current Time} }{}
-\@ifundefined{lstlistingname}{      \def\lstlistingname{LST Listing Name} }{}
-\@ifundefined{lstlistoflistings}{   \def\lstlistoflistings{LST List of Listing} }{}
-\@ifundefined{mathfrak}{            \def\mathfrak{mathfrak} }{}
-\@ifundefined{resizebox}{           \def\resizebox{resizebox} }{}
-\@ifundefined{legend}{              \def\legend{legend} }{}
-\@ifundefined{url}{                 \def\url{url} }{}
-\@ifundefined{gamma_x}{             \def\gamma_x{gamma_x} }{}
-\@ifundefined{boldsymbol}{          \def\boldsymbol{boldsymbol} }{}
-\@ifundefined{texorpdfstring}{      \def\texorpdfstring{texorpdfstring} }{}
-\@ifundefined{ABNTEXfontereduzida}{ \def\ABNTEXfontereduzida{ABNTEXfontereduzida} }{}
-\@ifundefined{citeonline}{          \def\citeonline{citeonline} }{}
-\@ifundefined{imprimircoordenador}{          \def\imprimircoordenador{imprimircoordenador} }{}
-\@ifundefined{imprimircoordenadorRotulo}{          \def\imprimircoordenadorRotulo{imprimircoordenadorRotulo} }{}
-\@ifundefined{imprimirinstituicaosigla}{          \def\imprimirinstituicaosigla{imprimirinstituicaosigla} }{}
-\@ifundefined{imprimirpalavraschave}{          \def\imprimirpalavraschave{imprimirpalavraschave} }{}
-\@ifundefined{autor}{          \def\autor{autor} }{}
-\@ifundefined{titulo}{          \def\titulo{titulo} }{}
-\@ifundefined{orientador}{          \def\orientador{orientador} }{}
-\@ifundefined{local}{          \def\local{local} }{}
-\@ifundefined{instituicao}{          \def\instituicao{instituicao} }{}
-\@ifundefined{tipotrabalho}{          \def\tipotrabalho{tipotrabalho} }{}
-\@ifundefined{data}{          \def\data{data} }{}
-\@ifundefined{preambulo}{          \def\preambulo{preambulo} }{}
-\@ifundefined{PRIVATEbookmarkthis}{          \def\PRIVATEbookmarkthis{PRIVATEbookmarkthis} }{}
-\@ifundefined{pretextual}{          \def\pretextual{pretextual} }{}
-\@ifundefined{imprimircapa}{          \def\imprimircapa{imprimircapa} }{}
-\@ifundefined{imprimirfolhaderosto}{          \def\imprimirfolhaderosto{imprimirfolhaderosto} }{}
-\@ifundefined{textual}{          \def\textual{textual} }{}
-\@ifundefined{phantompart}{          \def\phantompart{phantompart} }{}
-\@ifundefined{postextual}{          \def\postextual{postextual} }{}
-\@ifundefined{bfseries}{          \def\bfseries{bfseries} }{}
-\@ifundefined{larger}{          \def\larger{larger} }{}
-\@ifundefined{cftlastnumwidth}{          \def\cftlastnumwidth{cftlastnumwidth} }{}
-\@ifundefined{imprimirano}{          \def\imprimirano{imprimirano} }{}
-\@ifundefined{imprimirbiblioteca}{          \def\imprimirbiblioteca{imprimirbiblioteca} }{}
-\@ifundefined{imprimirarea}{          \def\imprimirarea{imprimirarea} }{}
-\@ifundefined{mytextpreliminarylistname}{          \def\mytextpreliminarylistname{mytextpreliminarylistname} }{}
-\@ifundefined{addGoToSummary}{          \def\addGoToSummary{addGoToSummary} }{}
-\@ifundefined{latex}{          \def\latex{latex} }{}
-
-\@ifundefined{ifnotempty}{  \newcommand{\ifnotempty}[3][]{ ifnotempty } }{}
-\@ifundefined{palavraschaveufsc}{  \newcommand{\palavraschaveufsc}[2]{} }{}
-\@ifundefined{programa}{ \newcommand{\programa}[1]{\renewcommand{\imprimirprograma}{#1}} }{}
-\@ifundefined{formacao}{ \newcommand{\formacao}[1]{\renewcommand{\imprimirformacao}{#1}} }{}
-\@ifundefined{addtoincludeonly}{ \newcommand{\addtoincludeonly}[1]{\renewcommand{\imprimirformacao}{#1}} }{}
-\@ifundefined{addtotextpreliminarycontent}{ \newcommand{\addtotextpreliminarycontent}[1]{\renewcommand{\imprimirformacao}{#1}} }{}
-\@ifundefined{area}{ \newcommand{\area}[1]{\renewcommand{\imprimirarea}{#1}} }{}
-\@ifundefined{biblioteca}{ \newcommand{\biblioteca}[1]{\renewcommand{\imprimirbiblioteca}{#1}} }{}
-\@ifundefined{instituicaosigla}{ \newcommand{\instituicaosigla}[1]{\renewcommand{\imprimirinstituicaosigla}{#1}} }{}
-\@ifundefined{ano}{ \newcommand{\ano}[1]{\renewcommand{\imprimirano}{#1}} }{}
-\@ifundefined{covername}{ \newcommand{\covername}{Capa} }{}
-\@ifundefined{coordenadorname}{ \newcommand{\coordenadorname}{Coordenador} }{}
-\@ifundefined{coordenador}{ \newcommand{\coordenador}[2][\coordenadorname]{\renewcommand{\imprimircoordenadorRotulo}{#1}\renewcommand{\imprimircoordenador}{#2}} }{}
-\@ifundefined{centro}{ \newcommand{\centro}[1]{\renewcommand{\imprimircentro}{#1}} }{}
-\@ifundefined{campus}{ \newcommand{\campus}[1]{\renewcommand{\imprimircentro}{#1}} }{}
-\@ifundefined{fullref}{ \newcommand{\fullref}[1]{\renewcommand{\imprimircentro}{#1}} }{}
-\@ifundefined{lword}{ \newcommand{\lword}[1]{\renewcommand{\imprimircentro}{#1}} }{}
-\@ifundefined{textual}{ \newcommand{\textual}[1]{\renewcommand{\imprimircentro}{#1}} }{}
-
-\definecolor{darkblue}{RGB}{26,13,178}
-\definecolor{darkgreen}{rgb}{0,0.6,0}
-\definecolor{gray}{rgb}{0.5,0.5,0.5}
-\definecolor{mauve}{rgb}{0.58,0,0.82}
-
-% How to rename an existing command?
-% https://tex.stackexchange.com/questions/193379/how-to-rename-an-existing-command
-\newcommand{\supertiny}{\fontsize{2pt}{2.5pt}\selectfont}
-\usepackage{lmodern}
-
-% How to replace a command with a dummy one?
-% https://tex.stackexchange.com/questions/387394/how-to-replace-a-command-with-a-dummy-one
-\@ifundefined{includegraphics}{
-    \newcommand{\includegraphics}[3][]{ \detokenize{ \includegraphics[#1]{#2 #3} } }
-}{}
-
-\@ifundefined{resizebox}{
-    \newcommand{\resizebox}[3][]{ resizebox }
-}{}
-
-\@ifundefined{SI}{
-    \newcommand{\SI}[3][]{ SI }
-}{}
-
-\@ifundefined{includepdf}{
-    \newcommand{\includepdf}[3][]{ SI }
-}{}
-
-\@ifundefined{modifiedincludepdf}{
-    \newcommand{\modifiedincludepdf}[4][]{
-        modifiedincludepdf
-    }
-}{}
-
-% How to create a dummy generic environment replacement?
-% https://tex.stackexchange.com/questions/387389/how-to-create-a-dummy-generic-environment-replacement
-\@ifundefined{longtable}{
-    \newenvironment{longtable}[0]
-    {longtable environment\par\verbatim\supertiny}
-    {\normalfont\endverbatim\endgraf replacement for debug mode}
-}{}
-
-\@ifundefined{fichacatalografica}
-{
-    \newenvironment{fichacatalografica}[0]
-    {fichacatalografica environment\par\verbatim\supertiny}
-    {\normalfont\endverbatim\endgraf replacement for debug mode}
-}{}
-
-\@ifundefined{folhadeaprovacao}{
-    \newenvironment{folhadeaprovacao}[0]
-    {folhadeaprovacao environment\par\verbatim\supertiny}
-    {\normalfont\endverbatim\endgraf replacement for debug mode}
-}{}
-
-\@ifundefined{apendicesenv}{
-    \newenvironment{apendicesenv}[0]
-    {apendicesenv environment\par\verbatim\supertiny}
-    {\normalfont\endverbatim\endgraf replacement for debug mode}
-}{}
-
-\@ifundefined{anexosenv}{
-    \newenvironment{anexosenv}[0]
-    {anexosenv environment\par\verbatim\supertiny}
-    {\normalfont\endverbatim\endgraf replacement for debug mode}
-}{}
-
-\@ifundefined{bluebox}{
-    \newenvironment{bluebox}[0]
-    {bluebox environment\par\verbatim\supertiny}
-    {\normalfont\endverbatim\endgraf replacement for debug mode}
-}{}
-
-\@ifundefined{citacao}{
-    \newenvironment{citacao}[0]
-    {citacao environment\par\verbatim\supertiny}
-    {\normalfont\endverbatim\endgraf replacement for debug mode}
-}{}
-
-\@ifundefined{resumo}{
-    \newenvironment{resumo}[0]
-    {resumo environment}
-    {replacement for debug mode}
-}{}
-
-\@ifundefined{sideways}{
-    \newenvironment{sideways}[0]
-    {sideways environment\par\verbatim\supertiny}
-    {\normalfont\endverbatim\endgraf replacement for debug mode}
-}{}
-
-\@ifundefined{landscape}{
-    \newenvironment{landscape}[0]
-    {landscape environment\par\verbatim\supertiny}
-    {\normalfont\endverbatim\endgraf replacement for debug mode}
-}{}
-
-\@ifundefined{lstlisting}{
-    \newenvironment{lstlisting}[0]
-    {lstlisting environment\par\verbatim\supertiny}
-    {\normalfont\endverbatim\endgraf replacement for debug mode}
-}{}
-
-
-
-\makeatother
-
-
-
-
-
-
-
-
-
-
 
