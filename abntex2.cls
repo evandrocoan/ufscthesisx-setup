@@ -130,6 +130,55 @@
 \newcommand{\abntex@ifnotempty}[2]{\ifthenelse{\not\equal{#1}{}}{#2}{}}
 % ---
 
+% Define o comando \fonte que respeita as configurações de caption do memoir ou do caption
+\newcommand{\fonte}[2][\fontename]{%
+  \M@gettitle{#2}%
+  \memlegendinfo{#2}%
+  \par
+  \begingroup
+     \@parboxrestore
+     \if@minipage
+       \@setminipage
+     \fi
+     \ABNTEXfontereduzida
+     %\configureseparator
+     \captiondelim{\ABNTEXcaptionfontedelim}
+     \@makecaption{\ABNTEXfontereduzida #1}{\ignorespaces\ABNTEXfontereduzida #2}\par
+  \endgroup}
+
+% Define o comando \notas que respeita as configurações de caption do memoir ou do caption
+\newcommand{\nota}[2][\notaname]{\fonte[#1]{#2}}
+
+% ---
+% Customiza listas
+\RequirePackage[shortlabels]{enumitem}
+
+% https://tex.stackexchange.com/questions/512413/how-to-recognize-the-enumerate-shortlabels-in-my-custom-environment
+% https://tex.stackexchange.com/questions/512692/how-to-define-commands-before-loading-the-hyperref-package-which-is-loaded-by
+% https://tex.stackexchange.com/questions/513020/how-can-i-stop-this-useless-empty-line-popping-up-in-the-middle-of-my-lists
+\RequirePackage{xpatch}
+
+\makeatletter
+\let\enumerateoptional@item\@item
+\patchcmd\enumerateoptional@item{\if@noitemarg}{\iftrue}{}{
+  \message{^^J^^Jenumerateoptional enumitem environment could NOT be completely created!^^J^^J^^J^^J
+}}
+\enitkv@key{}{formatarg}{\def\enit@format##1{#1}}
+
+% Compatibility with older enumitem.sty
+\@ifundefined{enitkv@enumitem@formatarg}
+  {\enitkv@key{enumitem}{formatarg}{\def\enit@format##1{#1}}}{}
+
+\newlist{enumerateoptional}{enumerate}{1}
+\setlist[enumerateoptional]{%
+    before=\let\@item\enumerateoptional@item,
+    formatarg=########1~\@itemlabel,
+    nosep,
+    align=left,
+    leftmargin=*,
+}
+\makeatother
+
 % ---
 % Controla as referencias internas do PDF
 \RequirePackage{hyperref}
@@ -210,37 +259,6 @@
 % Pacote que permite realizar operacoes matematicas no codigo TeX
 \RequirePackage{calc}
 % ---
-
-% ---
-% Customiza listas
-\RequirePackage{xpatch}
-\RequirePackage[shortlabels]{enumitem}
-% ---
-
-% % https://tex.stackexchange.com/questions/512413/how-to-recognize-the-enumerate-shortlabels-in-my-custom-environment
-% % https://tex.stackexchange.com/questions/512692/how-to-define-commands-before-loading-the-hyperref-package-which-is-loaded-by
-% % https://tex.stackexchange.com/questions/409432/conflict-between-hyperref-and-enumitem-packages-and-refstepcounter
-% % https://tex.stackexchange.com/questions/513020/how-can-i-stop-this-useless-empty-line-popping-up-in-the-middle-of-my-lists
-% \makeatletter
-% \let\enumerateoptional@item\H@item
-% \patchcmd\enumerateoptional@item{\if@noitemarg}{\iftrue}{}{
-%   \message{^^J^^Jenumerateoptional enumitem environment could NOT be completely created!^^J^^J^^J^^J
-% }}
-% \enitkv@key{}{formatarg}{\def\enit@format##1{#1}}
-
-% % Compatibility with older enumitem.sty
-% \@ifundefined{enitkv@enumitem@formatarg}
-%   {\enitkv@key{enumitem}{formatarg}{\def\enit@format##1{#1}}}{}
-
-% \newlist{enumerateoptional}{enumerate}{1}
-% \setlist[enumerateoptional]{%
-%     before=\let\@item\enumerateoptional@item,
-%     formatarg=########1~\@itemlabel,
-%     nosep,
-%     align=left,
-%     leftmargin=*,
-% }
-% \makeatother
 
 % ---
 % Margens - NBR 14724/2011 - 5.1 Formato
@@ -399,26 +417,6 @@
   }
   \let\ibgetab\IBGEtab
 }
-
-% Define o comando \fonte que respeita as configurações de caption do memoir ou do caption
-\newcommand{\fonte}[2][\fontename]{%
-  \M@gettitle{#2}%
-  \memlegendinfo{#2}%
-  \par
-  \begingroup
-     \@parboxrestore
-     \if@minipage
-       \@setminipage
-     \fi
-     \ABNTEXfontereduzida
-     %\configureseparator
-     \captiondelim{\ABNTEXcaptionfontedelim}
-     \@makecaption{\ABNTEXfontereduzida #1}{\ignorespaces\ABNTEXfontereduzida #2}\par
-  \endgroup}
-
-% Define o comando \notas que respeita as configurações de caption do memoir ou do caption
-\newcommand{\nota}[2][\notaname]{\fonte[#1]{#2}}
-
 
 % Altera os comandos \configurecaptions e \configureseparator para trabalhar com
 % o pacote caption e amigos.
