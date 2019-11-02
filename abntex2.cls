@@ -169,11 +169,11 @@
 \@ifundefined{enitkv@enumitem@formatarg}
   {\enitkv@key{enumitem}{formatarg}{\def\enit@format##1{#1}}}{}
 
+% https://tex.stackexchange.com/questions/433543/behaviour-of-enumitem-setlist
 \newlist{enumerateoptional}{enumerate}{1}
 \setlist[enumerateoptional]{%
     before=\let\@item\enumerateoptional@item,
     formatarg=########1~\@itemlabel,
-    nosep,
     align=left,
     leftmargin=*,
 }
