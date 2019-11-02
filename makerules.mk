@@ -56,7 +56,7 @@ THESIS_MAIN_FILE := main
 ##   make latex debug=1
 ##   make thesis debug=1
 ##
-## If you are using Windows Command Prompt `cmd.exe`, you must use this
+## If you are using Windows Command Prompt `cmd.exe`, you must use the
 ## command like this:
 ##  make help
 ##  set "debug=1" && make
@@ -100,10 +100,23 @@ endif
 ## Use halt=1 to stop running on errors instead of continuing the compilation!
 ## Also, use debug=1 to halt on errors and fix the errors dynamically.
 ##
-## Examples:
+## Examples (Linux):
 ##   make halt=1
 ##   make latex halt=1
 ##   make thesis halt=1
+##
+##   make debug=1 halt=1
+##   make latex debug=1 halt=1
+##   make thesis debug=1 halt=1
+##
+## Examples (Windows):
+##   set "halt=1" && make halt=1
+##   set "halt=1" && make latex halt=1
+##   set "halt=1" && make thesis halt=1
+##
+##   set "debug=1" && "halt=1" && make halt=1
+##   set "debug=1" && "halt=1" && make latex halt=1
+##   set "debug=1" && "halt=1" && make thesis halt=1
 ##
 # Uncomment this if you have problems or call `make latex debug=1`
 # HALT_ON_ERROR_MODE := true
