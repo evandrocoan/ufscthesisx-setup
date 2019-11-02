@@ -732,9 +732,10 @@
         {%
             \includegraphics[height=2.54cm,width=1.84cm]{setup/UFSC_sigla_fundo_claro.png}
 
+            {\setlength{\parskip}{0.2cm}
             \ABNTEXchapterfont\ufsccaptionsize\MakeTextUppercase{\imprimirinstituicao}
-            \par\MakeTextUppercase{\imprimircampus}
-            \par\MakeTextUppercase{\imprimirprograma}
+            \ABNTEXchapterfont\ufsccaptionsize\par\MakeTextUppercase{\imprimircampus}}%
+            \ABNTEXchapterfont\ufsccaptionsize\par\MakeTextUppercase{\imprimirprograma}
         }
 
         \vfill
@@ -744,8 +745,8 @@
         \vfill
         {%
         \center
-            {\ABNTEXchapterfont\MakeUppercase{\imprimirtitulo}}
-            \ifnotempty{\imprimirsubtitulo}{{\ABNTEXchapterfont\!:} \par \imprimirsubtitulo}
+            {\ABNTEXchapterfont\MakeUppercase{\imprimirtitulo}}%
+            \ifnotempty{\imprimirsubtitulo}{{\ABNTEXchapterfont:} \par \imprimirsubtitulo}
         }
         \vfill
 
