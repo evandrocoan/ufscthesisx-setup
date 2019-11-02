@@ -327,34 +327,50 @@
 
 % Fontes dos títulos e seções
 % Tamanho da fonte padrão do 'ABNTEX'
-\ifthenelse{\boolean{ufscthesisxdefaultfontsizeoption}}{\renewcommand{\normalsize}{\fontsize{12.0pt}{14.5pt}}}{}
+% https://tex.stackexchange.com/questions/460835/set-font-size-and-line-spacing
+% Set the default font size as 12pt with 1.5cm spacing between lines, 12/2 = 6, 12+6 = 18, i.e., one half spacing
+\ifthenelse{\boolean{ufscthesisxdefaultfontsizeoption}}{\renewcommand{\normalsize}{\fontsize{12.0pt}{18.0pt}}}{}
 
 % Caption package and Memoir
 % https://groups.google.com/forum/#!topic/comp.text.tex/RzpI2ATMev0
 % https://tex.stackexchange.com/questions/18931/memoir-class-with-subcaption-and-hyperref-packages
-% \ifthenelse{\boolean{ufscthesisxdefaultfontsizeoption}}{\DeclareCaptionFont{small}{\fontsize{10.0pt}{10.5pt}}}{}
-%
+\ifthenelse{\boolean{ufscthesisxdefaultfontsizeoption}}{
+    \DeclareCaptionFont{small}{\fontsize{10pt}{10pt}}
+  \renewcommand{\footnotesize}{\fontsize{10pt}{10pt}\selectfont}
+}{}
+
 % Set caption font size in memoir
 % https://tex.stackexchange.com/questions/58943/set-caption-font-size-in-memoir
-\newcommand{\ufsccaptionsize}{\ifthenelse{\boolean{ufscthesisxdefaultfontsizeoption}}{\fontsize{10.0pt}{10.5pt}\selectfont}{\normalfont}}
+\newcommand{\ufsccaptionsize}{\ifthenelse{\boolean{ufscthesisxdefaultfontsizeoption}}{\fontsize{10pt}{10pt}\selectfont}{\normalfont}}
+
+% https://latex.org/forum/viewtopic.php?t=22437
+% https://tex.stackexchange.com/questions/346411/how-does-footnotesep-work-anyway
+\setlength{\footnotesep}{0.7\baselineskip}
+
 \captionnamefont{\ufsccaptionsize}
 \captiontitlefont{\ufsccaptionsize}
 
+% Paragraph size is given by
+% Default value for UFSC 1.5cm
 \setlength{\parindent}{1.5cm}
-\setlength{\baselineskip}{1.5cm}
+
+% Package setspace must be put before hyperref
+% http://ctan.sharelatex.com/tex-archive/macros/latex/contrib/hyperref/README.pdf
+% https://tex.stackexchange.com/questions/270557/undefined-control-sequence-on-onehalfspacing
+% https://tex.stackexchange.com/questions/374401/setting-text-in-onehalfspacing-footnotes-singlespacing-with-memoir
+\@ifclassloaded{memoir}{}{
+  \OnehalfSpacing
+}
 
 % Set the UFSC epigrafe font size
-%
 % Changing font size in an example environment
 % https://tex.stackexchange.com/questions/123528/changing-font-size-in-an-example-environment
 \expandafter\def\expandafter\epigrafe\expandafter{\epigrafe\ufsccaptionsize}
 
 % Fonte padrão utilizada no texto
 % http://tug.org/fonts/
-%
 % The three default family font variables and the \familydefault variable should not be confused with their respective switch:
 % http://www.forkosh.com/pstex/latexcommands.htm
-%
 % variable value activated by
 \renewcommand{\familydefault}{cmr}
 
@@ -372,30 +388,29 @@
 %\scdefault sc  \scshape, \textsc{}
 %\sldefault sl  \slshape, \textsl{}
 
-
 % Selects a roman (i.e., serifed) font family
 \renewcommand{\rmdefault}{cmr}
 
 % Fontes padroes de part, chapter, section, subsection e subsubsection
-\ifthenelse{\boolean{ufscthesisxdefaultfontsizeoption}}{\renewcommand{\ABNTEXfontereduzida}{\fontsize{10.0pt}{10.5pt}}}{}
+\ifthenelse{\boolean{ufscthesisxdefaultfontsizeoption}}{\renewcommand{\ABNTEXfontereduzida}{\fontsize{10pt}{10pt}}}{}
 
 \renewcommand{\ABNTEXchapterfont}{\usefont{T1}{cmr}{bx}{n}}
-\ifthenelse{\boolean{ufscthesisxdefaultfontsizeoption}}{\renewcommand{\ABNTEXchapterfontsize}{\fontsize{12.0pt}{14.5pt}}}{}
+\ifthenelse{\boolean{ufscthesisxdefaultfontsizeoption}}{\renewcommand{\ABNTEXchapterfontsize}{\fontsize{12.0pt}{12.0pt}}}{}
 
 \renewcommand{\ABNTEXpartfont}{\usefont{T1}{cmr}{bx}{n}}
 \ifthenelse{\boolean{ufscthesisxdefaultfontsizeoption}}{\renewcommand{\ABNTEXpartfontsize}{\fontsize{15pt}{18pt}}}{}
 
 \renewcommand{\ABNTEXsectionfont}{\usefont{T1}{cmr}{m}{n}}
-\ifthenelse{\boolean{ufscthesisxdefaultfontsizeoption}}{\renewcommand{\ABNTEXsectionfontsize}{\fontsize{12.0pt}{12.5pt}}}{}
+\ifthenelse{\boolean{ufscthesisxdefaultfontsizeoption}}{\renewcommand{\ABNTEXsectionfontsize}{\fontsize{12.0pt}{12.0pt}}}{}
 
 \renewcommand{\ABNTEXsubsectionfont}{\usefont{T1}{cmr}{b}{n}}
-\ifthenelse{\boolean{ufscthesisxdefaultfontsizeoption}}{\renewcommand{\ABNTEXsubsectionfontsize}{\fontsize{12.0pt}{12.5pt}}}{}
+\ifthenelse{\boolean{ufscthesisxdefaultfontsizeoption}}{\renewcommand{\ABNTEXsubsectionfontsize}{\fontsize{12.0pt}{12.0pt}}}{}
 
 \renewcommand{\ABNTEXsubsubsectionfont}{\usefont{T1}{cmr}{m}{n}}
-\ifthenelse{\boolean{ufscthesisxdefaultfontsizeoption}}{\renewcommand{\ABNTEXsubsubsectionfontsize}{\fontsize{12.0pt}{12.5pt}}}{}
+\ifthenelse{\boolean{ufscthesisxdefaultfontsizeoption}}{\renewcommand{\ABNTEXsubsubsectionfontsize}{\fontsize{12.0pt}{12.0pt}}}{}
 
 \renewcommand{\ABNTEXsubsubsubsectionfont}{\usefont{T1}{cmr}{m}{it}}
-\ifthenelse{\boolean{ufscthesisxdefaultfontsizeoption}}{\renewcommand{\ABNTEXsubsubsubsectionfontsize}{\fontsize{12.0pt}{12.5pt}}}{}
+\ifthenelse{\boolean{ufscthesisxdefaultfontsizeoption}}{\renewcommand{\ABNTEXsubsubsubsectionfontsize}{\fontsize{12.0pt}{12.0pt}}}{}
 
 
 % Comando que simula a finalizacao de uma parte no bookmark e
@@ -732,8 +747,8 @@
         {%
             \includegraphics[height=2.54cm,width=1.84cm]{setup/UFSC_sigla_fundo_claro.png}
 
-            {\setlength{\parskip}{0.2cm}
-            \ABNTEXchapterfont\ufsccaptionsize\MakeTextUppercase{\imprimirinstituicao}
+            {\setlength{\parskip}{0.35cm}%
+            \ABNTEXchapterfont\ufsccaptionsize\MakeTextUppercase{\imprimirinstituicao}%
             \ABNTEXchapterfont\ufsccaptionsize\par\MakeTextUppercase{\imprimircampus}}%
             \ABNTEXchapterfont\ufsccaptionsize\par\MakeTextUppercase{\imprimirprograma}
         }
@@ -957,10 +972,6 @@ therefore the \topsep patch must need to be updated accordingly}}
 \definecolor{darkgreen}{rgb}{0,0.6,0}
 \definecolor{gray}{rgb}{0.5,0.5,0.5}
 \definecolor{mauve}{rgb}{0.58,0,0.82}
-
-% Package setspace must be put before hyperref
-% http://ctan.sharelatex.com/tex-archive/macros/latex/contrib/hyperref/README.pdf
-\@ifclassloaded{memoir}{}{\usepackage{setspace}}
 
 % Increase the space around the hyphen or dash - on the table of contents
 % APÊNDICE A –- SOMETHING . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3
