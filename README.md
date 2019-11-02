@@ -19,18 +19,19 @@ Para usá-lo,
 você deve utilizar a classe `setup/ufscthesisx` como classe do seu documento,
 e então incluir onde está são os arquivos de sua bibliografia:
 ```latex
-% The UFSC font size is 10.5, but memoir embedded by `abntex2` only accepts 10 and 11pt.
-% However, problem will be fixed the `ufscthesisx` package.
+% Uncomment the following line if you want to use other biblatex settings
+% \PassOptionsToPackage{style=numeric,repeatfields=true,backend=biber,backref=true,citecounter=true}{biblatex}
 \documentclass[
-10pt,          % Padrão UFSC para versão final
-% 12pt,        % Pode usar tamanho 12pt para defesa
-a5paper,       % Padrão UFSC para versão final
-twoside,       % Impressão nos dois lados da folha
+\lang{english}{brazilian,brazil},
+12pt, % Padrão UFSC para versão final
+a4paper, % Padrão UFSC para versão final
+twoside, % Impressão nos dois lados da folha
 chapter=TITLE, % Título de capítulos em caixa alta
 section=TITLE, % Título de seções em caixa alta
 ]{setup/ufscthesisx}
 
-% Use the 'aftertext/references.bib' file to include your bibliography
+% Utilize o arquivo aftertext/references.bib para incluir sua bibliografia.
+% http://tug.ctan.org/tex-archive/macros/latex/contrib/cleveref/cleveref.pdf
 \addbibresource{aftertext/references.bib}
 ```
 
@@ -57,8 +58,6 @@ git log
 Se você quiser saber quais são todos os comandos de compilação disponíveis,
 basta chamar utilizar o comando `make help`. Exemplo:
 ```
-$ make help
-
  Usage:
    make <target> [debug=1]
 
@@ -69,20 +68,33 @@ $ make help
    make latex debug=1
    make thesis debug=1
 
- If you are using Windows Command Prompt `cmd.exe`, you must use this
+ If you are using Windows Command Prompt `cmd.exe`, you must use the
  command like this:
   make help
   set "debug=1" && make
   set "debug=1" && make latex
   set "debug=1" && make thesis
 
- Use halt=1 to continue running on errors instead of stopping the compilation!
- Also use debug=1 to halt on errors and fix the errors dynamically.
+ Use halt=1 to stop running on errors instead of continuing the compilation!
+ Also, use debug=1 to halt on errors and fix the errors dynamically.
 
- Examples:
+ Examples (Linux):
    make halt=1
    make latex halt=1
    make thesis halt=1
+
+   make debug=1 halt=1
+   make latex debug=1 halt=1
+   make thesis debug=1 halt=1
+
+ Examples (Windows):
+   set "halt=1" && make halt=1
+   set "halt=1" && make latex halt=1
+   set "halt=1" && make thesis halt=1
+
+   set "debug=1" && "halt=1" && make halt=1
+   set "debug=1" && "halt=1" && make latex halt=1
+   set "debug=1" && "halt=1" && make thesis halt=1
 
  Targets:
    all        Call the `thesis` make rule
@@ -118,7 +130,7 @@ $ make help
        5. dir            - the directory to put the files, defaults to '~/LatexBuild'
 
      Example usage for Linux:
-       make remote LATEXPASSWORD=123 LATEXADDRESS=linux@192.168.0.222 rules=latex
+       make remote LATEXPASSWORD=123 LATEXADDRESS=linux@192.168.0.222 rules=latex &&
                 delete=1 dir=~/Downloads/Thesis
 
      Example usage for Windows:

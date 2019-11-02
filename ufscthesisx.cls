@@ -335,18 +335,22 @@
 % https://groups.google.com/forum/#!topic/comp.text.tex/RzpI2ATMev0
 % https://tex.stackexchange.com/questions/18931/memoir-class-with-subcaption-and-hyperref-packages
 \ifthenelse{\boolean{ufscthesisxdefaultfontsizeoption}}{
-    \DeclareCaptionFont{small}{\fontsize{10pt}{10pt}}
-  \renewcommand{\footnotesize}{\fontsize{10pt}{10pt}\selectfont}
+  \DeclareCaptionFont{small}{\fontsize{10pt}{12pt}\selectfont}
+  \renewcommand{\footnotesize}{\fontsize{10pt}{12pt}\selectfont}
 }{}
 
 % Set caption font size in memoir
 % https://tex.stackexchange.com/questions/58943/set-caption-font-size-in-memoir
-\newcommand{\ufsccaptionsize}{\ifthenelse{\boolean{ufscthesisxdefaultfontsizeoption}}{\fontsize{10pt}{10pt}\selectfont}{\normalfont}}
+\newcommand{\ufsccaptionsize}{\ifthenelse{\boolean{ufscthesisxdefaultfontsizeoption}}{\fontsize{10pt}{12pt}\selectfont}{\normalfont}}
 
 % https://latex.org/forum/viewtopic.php?t=22437
 % https://tex.stackexchange.com/questions/346411/how-does-footnotesep-work-anyway
-\setlength{\footnotesep}{0.7\baselineskip}
+% https://tex.stackexchange.com/questions/133008/make-footnotesep-same-as-line-spacing-using-custom-thesis-class
+% https://tex.stackexchange.com/questions/514592/how-can-i-see-the-line-spacing-between-lines
+% https://tex.stackexchange.com/questions/514682/how-to-get-the-normalsize-or-small-font-baselineskip-size
+\setlength{\footnotesep}{\f@baselineskip}
 
+% https://tex.stackexchange.com/questions/327843/how-to-put-figure-caption-on-top
 \captionnamefont{\ufsccaptionsize}
 \captiontitlefont{\ufsccaptionsize}
 
@@ -359,7 +363,9 @@
 % https://tex.stackexchange.com/questions/270557/undefined-control-sequence-on-onehalfspacing
 % https://tex.stackexchange.com/questions/374401/setting-text-in-onehalfspacing-footnotes-singlespacing-with-memoir
 \@ifclassloaded{memoir}{}{
+  % \SingleSpacing
   \OnehalfSpacing
+  % \DoubleSpacing
 }
 
 % Set the UFSC epigrafe font size
@@ -392,7 +398,7 @@
 \renewcommand{\rmdefault}{cmr}
 
 % Fontes padroes de part, chapter, section, subsection e subsubsection
-\ifthenelse{\boolean{ufscthesisxdefaultfontsizeoption}}{\renewcommand{\ABNTEXfontereduzida}{\fontsize{10pt}{10pt}}}{}
+\ifthenelse{\boolean{ufscthesisxdefaultfontsizeoption}}{\renewcommand{\ABNTEXfontereduzida}{\fontsize{10pt}{12pt}}}{}
 
 \renewcommand{\ABNTEXchapterfont}{\usefont{T1}{cmr}{bx}{n}}
 \ifthenelse{\boolean{ufscthesisxdefaultfontsizeoption}}{\renewcommand{\ABNTEXchapterfontsize}{\fontsize{12.0pt}{12.0pt}}}{}
@@ -401,16 +407,16 @@
 \ifthenelse{\boolean{ufscthesisxdefaultfontsizeoption}}{\renewcommand{\ABNTEXpartfontsize}{\fontsize{15pt}{18pt}}}{}
 
 \renewcommand{\ABNTEXsectionfont}{\usefont{T1}{cmr}{m}{n}}
-\ifthenelse{\boolean{ufscthesisxdefaultfontsizeoption}}{\renewcommand{\ABNTEXsectionfontsize}{\fontsize{12.0pt}{12.0pt}}}{}
+\ifthenelse{\boolean{ufscthesisxdefaultfontsizeoption}}{\renewcommand{\ABNTEXsectionfontsize}{\fontsize{12.0pt}{14.0pt}}}{}
 
 \renewcommand{\ABNTEXsubsectionfont}{\usefont{T1}{cmr}{b}{n}}
-\ifthenelse{\boolean{ufscthesisxdefaultfontsizeoption}}{\renewcommand{\ABNTEXsubsectionfontsize}{\fontsize{12.0pt}{12.0pt}}}{}
+\ifthenelse{\boolean{ufscthesisxdefaultfontsizeoption}}{\renewcommand{\ABNTEXsubsectionfontsize}{\fontsize{12.0pt}{14.0pt}}}{}
 
 \renewcommand{\ABNTEXsubsubsectionfont}{\usefont{T1}{cmr}{m}{n}}
-\ifthenelse{\boolean{ufscthesisxdefaultfontsizeoption}}{\renewcommand{\ABNTEXsubsubsectionfontsize}{\fontsize{12.0pt}{12.0pt}}}{}
+\ifthenelse{\boolean{ufscthesisxdefaultfontsizeoption}}{\renewcommand{\ABNTEXsubsubsectionfontsize}{\fontsize{12.0pt}{14.0pt}}}{}
 
 \renewcommand{\ABNTEXsubsubsubsectionfont}{\usefont{T1}{cmr}{m}{it}}
-\ifthenelse{\boolean{ufscthesisxdefaultfontsizeoption}}{\renewcommand{\ABNTEXsubsubsubsectionfontsize}{\fontsize{12.0pt}{12.0pt}}}{}
+\ifthenelse{\boolean{ufscthesisxdefaultfontsizeoption}}{\renewcommand{\ABNTEXsubsubsubsectionfontsize}{\fontsize{12.0pt}{14.0pt}}}{}
 
 
 % Comando que simula a finalizacao de uma parte no bookmark e
@@ -590,6 +596,7 @@
 }
 
 % Comandos auxiliares
+% https://tex.stackexchange.com/questions/514592/how-can-i-see-the-line-spacing-between-lines
 \newcommand{\showfont}
 {%
     (\foreignlanguage{english}
@@ -599,8 +606,10 @@
         series: \f@series{},
         shape: \f@shape{},
         size: \f@size{},
-        baseline: \f@baselineskip{}
-    })
+        baseline: \f@baselineskip{},
+        linespread: \f@linespread{},
+        linespacing: \the\baselineskip{}%
+    })%
 }
 
 % Comandos auxiliares
@@ -613,8 +622,10 @@
         \f@series{},
         \f@shape{},
         \f@size{},
-        \f@baselineskip{}
-    })
+        \f@baselineskip{},%
+        \f@linespread{},
+        \the\baselineskip{}%
+    })%
 }
 
 %Numeração dos floats por capítulo
