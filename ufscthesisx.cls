@@ -148,33 +148,26 @@
 \newboolean{ufscthesisxdefaultfontsizeoption}
 \setboolean{ufscthesisxdefaultfontsizeoption}{false}
 
-\DeclareOption{10pt}{
+\DeclareOption{12pt}{
   \setboolean{ufscthesisxdefaultfontsizeoption}{true}
 }
 
-\DeclareOption{10.0pt}{
+\DeclareOption{12.0pt}{
   \setboolean{ufscthesisxdefaultfontsizeoption}{true}
 }
 
-\DeclareOption{10.00pt}{
+\DeclareOption{12.00pt}{
   \setboolean{ufscthesisxdefaultfontsizeoption}{true}
 }
 
-\DeclareOption{10.5pt}{
-  \setboolean{ufscthesisxdefaultfontsizeoption}{true}
-}
-
-\DeclareOption{10.50pt}{
-  \setboolean{ufscthesisxdefaultfontsizeoption}{true}
-}
 
 % Now we'll execute any options passed in
 \ProcessOptions\relax
 \LoadClass{setup/abntex2}
 
 \ifthenelse{\boolean{ufscthesisxdefaultfontsizeoption}}
-{\message{^^J^^Jufscthesisx notice: using font size 10.5pt^^J^^J}}
-{\message{^^J^^Jufscthesisx notice: NOT using the font size 10.5pt^^J^^J}}
+{\message{^^J^^Jufscthesisx notice: using font size 12pt^^J^^J}}
+{\message{^^J^^Jufscthesisx notice: NOT using the font size 12pt^^J^^J}}
 
 
 
@@ -334,18 +327,21 @@
 
 % Fontes dos títulos e seções
 % Tamanho da fonte padrão do 'ABNTEX'
-\ifthenelse{\boolean{ufscthesisxdefaultfontsizeoption}}{\renewcommand{\normalsize}{\fontsize{10.5pt}{11pt}}}{}
+\ifthenelse{\boolean{ufscthesisxdefaultfontsizeoption}}{\renewcommand{\normalsize}{\fontsize{12.0pt}{14.5pt}}}{}
 
 % Caption package and Memoir
 % https://groups.google.com/forum/#!topic/comp.text.tex/RzpI2ATMev0
 % https://tex.stackexchange.com/questions/18931/memoir-class-with-subcaption-and-hyperref-packages
-% \ifthenelse{\boolean{ufscthesisxdefaultfontsizeoption}}{\DeclareCaptionFont{small}{\fontsize{9.5pt}{10.5pt}}}{}
-
+% \ifthenelse{\boolean{ufscthesisxdefaultfontsizeoption}}{\DeclareCaptionFont{small}{\fontsize{10.0pt}{10.5pt}}}{}
+%
 % Set caption font size in memoir
 % https://tex.stackexchange.com/questions/58943/set-caption-font-size-in-memoir
-\newcommand{\ufsccaptionsize}{\ifthenelse{\boolean{ufscthesisxdefaultfontsizeoption}}{\fontsize{9.5pt}{10.5pt}\selectfont}{\normalfont}}
+\newcommand{\ufsccaptionsize}{\ifthenelse{\boolean{ufscthesisxdefaultfontsizeoption}}{\fontsize{10.0pt}{10.5pt}\selectfont}{\normalfont}}
 \captionnamefont{\ufsccaptionsize}
 \captiontitlefont{\ufsccaptionsize}
+
+\setlength{\parindent}{1.5cm}
+\setlength{\baselineskip}{1.5cm}
 
 % Set the UFSC epigrafe font size
 %
@@ -381,23 +377,25 @@
 \renewcommand{\rmdefault}{cmr}
 
 % Fontes padroes de part, chapter, section, subsection e subsubsection
+\ifthenelse{\boolean{ufscthesisxdefaultfontsizeoption}}{\renewcommand{\ABNTEXfontereduzida}{\fontsize{10.0pt}{10.5pt}}}{}
+
 \renewcommand{\ABNTEXchapterfont}{\usefont{T1}{cmr}{bx}{n}}
-\ifthenelse{\boolean{ufscthesisxdefaultfontsizeoption}}{\renewcommand{\ABNTEXchapterfontsize}{\fontsize{10.5pt}{12pt}}}{}
+\ifthenelse{\boolean{ufscthesisxdefaultfontsizeoption}}{\renewcommand{\ABNTEXchapterfontsize}{\fontsize{12.0pt}{14.5pt}}}{}
 
 \renewcommand{\ABNTEXpartfont}{\usefont{T1}{cmr}{bx}{n}}
 \ifthenelse{\boolean{ufscthesisxdefaultfontsizeoption}}{\renewcommand{\ABNTEXpartfontsize}{\fontsize{15pt}{18pt}}}{}
 
 \renewcommand{\ABNTEXsectionfont}{\usefont{T1}{cmr}{m}{n}}
-\ifthenelse{\boolean{ufscthesisxdefaultfontsizeoption}}{\renewcommand{\ABNTEXsectionfontsize}{\fontsize{10.5pt}{12pt}}}{}
+\ifthenelse{\boolean{ufscthesisxdefaultfontsizeoption}}{\renewcommand{\ABNTEXsectionfontsize}{\fontsize{12.0pt}{12.5pt}}}{}
 
 \renewcommand{\ABNTEXsubsectionfont}{\usefont{T1}{cmr}{b}{n}}
-\ifthenelse{\boolean{ufscthesisxdefaultfontsizeoption}}{\renewcommand{\ABNTEXsubsectionfontsize}{\fontsize{10.5pt}{12pt}}}{}
+\ifthenelse{\boolean{ufscthesisxdefaultfontsizeoption}}{\renewcommand{\ABNTEXsubsectionfontsize}{\fontsize{12.0pt}{12.5pt}}}{}
 
 \renewcommand{\ABNTEXsubsubsectionfont}{\usefont{T1}{cmr}{m}{n}}
-\ifthenelse{\boolean{ufscthesisxdefaultfontsizeoption}}{\renewcommand{\ABNTEXsubsubsectionfontsize}{\fontsize{10.5pt}{12pt}}}{}
+\ifthenelse{\boolean{ufscthesisxdefaultfontsizeoption}}{\renewcommand{\ABNTEXsubsubsectionfontsize}{\fontsize{12.0pt}{12.5pt}}}{}
 
 \renewcommand{\ABNTEXsubsubsubsectionfont}{\usefont{T1}{cmr}{m}{it}}
-\ifthenelse{\boolean{ufscthesisxdefaultfontsizeoption}}{\renewcommand{\ABNTEXsubsubsubsectionfontsize}{\fontsize{10.5pt}{12pt}}}{}
+\ifthenelse{\boolean{ufscthesisxdefaultfontsizeoption}}{\renewcommand{\ABNTEXsubsubsubsectionfontsize}{\fontsize{12.0pt}{12.5pt}}}{}
 
 
 % Comando que simula a finalizacao de uma parte no bookmark e
