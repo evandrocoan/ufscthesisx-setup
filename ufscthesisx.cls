@@ -321,8 +321,9 @@
 
 
 % Margens
-\setlrmarginsandblock{2.5cm}{1.5cm}{*}
-\setulmarginsandblock{2cm}{1.5cm}{*}
+% https://tex.stackexchange.com/questions/378119/how-to-set-margins-in-memoir-class
+\setlrmarginsandblock{3cm}{2cm}{*}
+\setulmarginsandblock{3cm}{2cm}{*}
 \checkandfixthelayout
 
 % Fontes dos títulos e seções
@@ -758,7 +759,7 @@
         {%
             \includegraphics[height=2.54cm,width=1.84cm]{setup/UFSC_sigla_fundo_claro.png}
 
-            {\setlength{\parskip}{0.35cm}%
+            {\setlength{\parskip}{0.30cm}%
             \ABNTEXchapterfont\ufsccaptionsize\MakeTextUppercase{\imprimirinstituicao}%
             \ABNTEXchapterfont\ufsccaptionsize\par\MakeTextUppercase{\imprimircampus}}%
             \ABNTEXchapterfont\ufsccaptionsize\par\MakeTextUppercase{\imprimirprograma}
