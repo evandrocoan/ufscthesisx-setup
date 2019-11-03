@@ -158,22 +158,25 @@
 % https://tex.stackexchange.com/questions/513020/how-can-i-stop-this-useless-empty-line-popping-up-in-the-middle-of-my-lists
 \RequirePackage{xpatch}
 
+% https://tex.stackexchange.com/questions/514708/illegal-parameter-number-in-definition-of-enitc-after-using-setlistenumerat
 \makeatletter
-\let\enumerateoptional@item\@item
-\patchcmd\enumerateoptional@item{\if@noitemarg}{\iftrue}{}{
-  \message{^^J^^Jenumerateoptional enumitem environment could NOT be completely created!^^J^^J^^J^^J
-}}
-\enitkv@key{}{formatarg}{\def\enit@format##1{#1}}
+\def\renewenumerateoptionalitem{%
+  \let\itemenumerateoptional\@item%
+  \renewcommand{\@item}[1][]{%
+      \itemenumerateoptional
+        [##1~%
+         \refstepcounter{enumerateoptionali}% Advance the counter
+         \theenumerateoptionali]% Print it
+  }%
+}
 
-% Compatibility with older enumitem.sty
-\@ifundefined{enitkv@enumitem@formatarg}
-  {\enitkv@key{enumitem}{formatarg}{\def\enit@format##1{#1}}}{}
-
-% https://tex.stackexchange.com/questions/433543/behaviour-of-enumitem-setlist
+% https://tex.stackexchange.com/questions/88990/enumitem-revert-nolistsep
+% https://tex.stackexchange.com/questions/75578/how-to-change-list-settings-globally
+% https://tex.stackexchange.com/questions/463151/why-does-setlistnosep-doesnt-work-in-a-tabular-environment
 \newlist{enumerateoptional}{enumerate}{1}
-\setlist[enumerateoptional]{%
-    before=\let\@item\enumerateoptional@item,
-    formatarg=########1~\@itemlabel,
+\setlist[enumerateoptional]{
+    before=\renewenumerateoptionalitem,
+    label=\arabic*,
     align=left,
     leftmargin=*,
 }

@@ -342,6 +342,7 @@
 
 % Set caption font size in memoir
 % https://tex.stackexchange.com/questions/58943/set-caption-font-size-in-memoir
+% https://tex.stackexchange.com/questions/103566/controlling-the-spacing-between-lines-with-fontsize-selectfont
 \newcommand{\ufsccaptionsize}{\ifthenelse{\boolean{ufscthesisxdefaultfontsizeoption}}{\fontsize{10pt}{12pt}\selectfont}{\normalfont}}
 
 % https://latex.org/forum/viewtopic.php?t=22437
@@ -759,6 +760,8 @@
         {%
             % https://en.wikibooks.org/wiki/LaTeX/Floats,_Figures_and_Captions
             \includegraphics[height=2.54cm,width=1.84cm]{setup/UFSC_sigla_fundo_claro.png}
+
+            % https://tex.stackexchange.com/questions/103566/controlling-the-spacing-between-lines-with-fontsize-selectfont
             {\ABNTEXchapterfont\ufsccaptionsize\DoubleSpacing
               \par\MakeTextUppercase{\imprimirinstituicao}
               \par\MakeTextUppercase{\imprimircampus}
