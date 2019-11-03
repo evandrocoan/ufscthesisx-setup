@@ -1738,7 +1738,6 @@ therefore the \topsep patch must need to be updated accordingly}}
     \setlength\cftlstlistingoldnumwidth{\cftlstlistingnumwidth}
 
     % Calculate the size of the header
-    %
     % What is the use of percent signs (%) at the end of lines?
     % https://tex.stackexchange.com/questions/7453/what-is-the-use-of-percent-signs-at-the-end-of-lines
     \newcommand{\calculatelisteningsheader}

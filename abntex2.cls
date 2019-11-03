@@ -158,25 +158,20 @@
 % https://tex.stackexchange.com/questions/512413/how-to-recognize-the-enumerate-shortlabels-in-my-custom-environment
 % https://tex.stackexchange.com/questions/512692/how-to-define-commands-before-loading-the-hyperref-package-which-is-loaded-by
 % https://tex.stackexchange.com/questions/513020/how-can-i-stop-this-useless-empty-line-popping-up-in-the-middle-of-my-lists
-\RequirePackage{xpatch}
+\RequirePackage{etoolbox}
 
 % https://tex.stackexchange.com/questions/514708/illegal-parameter-number-in-definition-of-enitc-after-using-setlistenumerat
-\def\renewenumerateoptionalitem{%
-  \let\itemenumerateoptional\@item%
-  \renewcommand{\@item}[1][]{%
-      \itemenumerateoptional
-        [##1~%
-         \refstepcounter{enumerateoptionali}% Advance the counter
-         \theenumerateoptionali]% Print it
-  }%
-}
+\let\@itemenumerateoptional\@item
+\patchcmd\@itemenumerateoptional{\if@noitemarg}{\iftrue}{}{\FAILEDCREATEENUMERAOPTIONAL}
+\newcommand\enumerateoptionallabelformat[1]{#1~\@itemlabel}
 
 % https://tex.stackexchange.com/questions/88990/enumitem-revert-nolistsep
 % https://tex.stackexchange.com/questions/75578/how-to-change-list-settings-globally
 % https://tex.stackexchange.com/questions/463151/why-does-setlistnosep-doesnt-work-in-a-tabular-environment
 \newlist{enumerateoptional}{enumerate}{1}
-\setlist[enumerateoptional]{
-    before=\renewenumerateoptionalitem,
+\setlist[enumerateoptional]{%
+    before=\let\@item\@itemenumerateoptional,
+    format=\enumerateoptionallabelformat,
     label=\arabic*,
     align=left,
     leftmargin=*,
