@@ -1719,8 +1719,8 @@ therefore the \topsep patch must need to be updated accordingly}}
     \@ifpackageloaded{babel}{\@ifpackagewith{babel}{english}{\addto\captionsenglish{\renewcommand{\lstlistingname}{Code}}}{}}{}
     \@ifpackageloaded{babel}{\@ifpackagewith{babel}{english}{\addto\captionsenglish{\renewcommand{\lstlistlistingname}{List of Codes}}}{}}{}
 
-    \@ifundefined{listlistingname}{ \newcommand{\listlistingname}{Lst Listing Name} }{}
-    \@ifundefined{listingname}{ \newcommand{\listingname}{Listing Name} }{}
+    \@ifundefined{listlistingname}{ \newcommand{\listlistingname}{Listing of Codes} }{}
+    \@ifundefined{listingname}{ \newcommand{\listingname}{Codes} }{}
 
     \@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{\renewcommand{\listlistingname}{Lista de Códigos}}}{}}{}
     \@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{\renewcommand{\listingname}{Código}}}{}}{}
