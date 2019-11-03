@@ -686,21 +686,21 @@
 \makeatletter
 \newcommand{\palavraschaveufsc}[2]{%
     \@ifundefined{#1}{%
-        \message{^^JNotice palavraschaveufsc: #1 is undefined for '#2'^^J}
+        \message{^^JNotice palavraschaveufsc: #1 is undefined with '#2'^^J}
         \expandafter\newcommand\csname#1\endcsname{}
-    }{\message{^^JNotice palavraschaveufsc: #1 is defined^^J}}
+    }{\message{^^JNotice palavraschaveufsc: #1 is defined with '#2'^^J}}
     {\expandafter\g@addto@macro\csname#1\endcsname{\item #2. }}
 
     \@ifundefined{#1comvirgula}{%
-        \message{^^JNotice palavraschaveufsc: #1 is undefined for '#2'^^J}
+        \message{^^JNotice palavraschaveufsc: #1 is undefined with '#2'^^J}
         \expandafter\newcommand\csname#1comvirgula\endcsname{}
-    }{\message{^^JNotice palavraschaveufsc: #1 is defined^^J}}
+    }{\message{^^JNotice palavraschaveufsc: #1 is defined with '#2'^^J}}
     {\expandafter\g@addto@macro\csname#1comvirgula\endcsname{\item #2, }}
 
     \@ifundefined{#1semitem}{%
-        \message{^^JNotice palavraschaveufsc: #1 is undefined for '#2'^^J}
+        \message{^^JNotice palavraschaveufsc: #1 is undefined with '#2'^^J}
         \expandafter\newcommand\csname#1semitem\endcsname{}
-    }{\message{^^JNotice palavraschaveufsc: #1 is defined^^J}}
+    }{\message{^^JNotice palavraschaveufsc: #1 is defined with '#2'^^J}}
     {\expandafter\g@addto@macro\csname#1semitem\endcsname{#2. }}
 }
 \makeatother
