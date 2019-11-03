@@ -757,12 +757,13 @@
 
         \center
         {%
+            % https://en.wikibooks.org/wiki/LaTeX/Floats,_Figures_and_Captions
             \includegraphics[height=2.54cm,width=1.84cm]{setup/UFSC_sigla_fundo_claro.png}
-
-            {\setlength{\parskip}{0.30cm}%
-            \ABNTEXchapterfont\ufsccaptionsize\MakeTextUppercase{\imprimirinstituicao}%
-            \ABNTEXchapterfont\ufsccaptionsize\par\MakeTextUppercase{\imprimircampus}}%
-            \ABNTEXchapterfont\ufsccaptionsize\par\MakeTextUppercase{\imprimirprograma}
+            {\ABNTEXchapterfont\ufsccaptionsize\DoubleSpacing
+              \par\MakeTextUppercase{\imprimirinstituicao}
+              \par\MakeTextUppercase{\imprimircampus}
+              \par\MakeTextUppercase{\imprimirprograma}
+            }
         }
 
         \vfill
