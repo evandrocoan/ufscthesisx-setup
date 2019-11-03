@@ -1152,12 +1152,6 @@ therefore the \topsep patch must need to be updated accordingly}}
 % https://tex.stackexchange.com/questions/403651/while-loading-fancyvrb-siunitx-and-bigfoot-i-got-input-stack-size-5000-tex-st
 \usepackage{fancyvrb}
 
-% Memoir class conflict with datetime
-% https://tex.stackexchange.com/questions/162353/memoir-class-conflict-with-datetime
-% https://tex.stackexchange.com/questions/49071/difference-between-let-foo-relax-and-def-foo-for-disabling
-\let\ordinal\relax
-\usepackage{datetime}
-
 % gives you the possibility to rotate any object of an arbitrary angle.
 \usepackage{rotating}
 
@@ -1270,6 +1264,17 @@ therefore the \topsep patch must need to be updated accordingly}}
 \TestAppMotherfuckerExists{pygmentize}
 
 \ifAppMotherFuckerExists
+  % https://github.com/gpoore/minted/issues/246 Package minted Warning: Unexpected value for option `chapter'(minted) is ignored
+  % https://tex.stackexchange.com/questions/514711/package-minted-warning-unexpected-value-for-option-chapterminted-is-ignored
+  \begingroup
+  \def\x#1chapter=TITLE,#2\@nil{%
+    \endgroup\def\@classoptionslist{#1#2}%
+  }\expandafter\x\@classoptionslist\@nil
+  \begingroup
+  \def\x#1section=TITLE,#2\@nil{%
+    \endgroup\def\@classoptionslist{#1#2}%
+  }\expandafter\x\@classoptionslist\@nil
+
   % https://tex.stackexchange.com/questions/57353/how-to-get-caption-above-listing-with-minted
   % https://tex.stackexchange.com/questions/339931/latex-minted-package-using-custom-output-directory-build
   % https://tex.stackexchange.com/questions/223079/you-cant-use-a-prefix-with-charfb-error-when-importing-csv-into-latex
@@ -1308,6 +1313,12 @@ therefore the \topsep patch must need to be updated accordingly}}
   \PackageWarning{minted}{You must have `pygmentize' installed to use the minted package}
   % \PackageError{minted}{You must have `pygmentize' installed to use the minted package}{Minted Error}
 \fi
+
+% Memoir class conflict with datetime
+% https://tex.stackexchange.com/questions/162353/memoir-class-conflict-with-datetime
+% https://tex.stackexchange.com/questions/49071/difference-between-let-foo-relax-and-def-foo-for-disabling
+\let\ordinal\relax
+\usepackage{datetime}
 
 % Package csquotes Warning: Load 'inputenc' before 'csquotes'
 % Package biblatex Warning: 'babel/polyglossia' detected but 'csquotes' missing
