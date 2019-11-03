@@ -28,6 +28,8 @@
 % https://tex.stackexchange.com/questions/83484/missing-number-treated-as-zero-what-is-wrong-in-here
 \errorcontextlines 10000
 
+\makeatletter
+
 
 
 
@@ -665,11 +667,9 @@
 \xpretocmd{\endresumo}{\endgraf}{}{}
 
 % \imprimirpalavraschave{Palavras-chaves}{latex. abntex. editoração de texto.}
-\makeatletter
 \newcommand{\imprimirpalavraschave}[2]{%
     \@ifundefined{parOriginal}{}{\parOriginal}\vspace{\onelineskip}\textbf{#1}: #2
 }
-\makeatother
 
 % Create a list of things like (\usepackage{paralist})
 %   \palavraschaveufsc{englishkeywordslist}{keyword 1}
@@ -683,7 +683,6 @@
 % https://tex.stackexchange.com/questions/191266/defining-macros-with-arguments
 % https://tex.stackexchange.com/questions/65780/macro-defining-macro
 % https://tex.stackexchange.com/questions/20456/removing-a-backslash-when-passing-arguments-to-newcommand
-\makeatletter
 \newcommand{\palavraschaveufsc}[2]{%
     \@ifundefined{#1}{%
         \message{^^JNotice palavraschaveufsc: #1 is undefined with '#2'^^J}
@@ -703,7 +702,6 @@
     }{\message{^^JNotice palavraschaveufsc: #1 is defined with '#2'^^J}}
     {\expandafter\g@addto@macro\csname#1semitem\endcsname{#2. }}
 }
-\makeatother
 
 % ------------------------------------------------------------------------
 % ------------------------------------------------------------------------
@@ -800,7 +798,6 @@
 %
 % How to add an empty line between paragraphs?
 % https://tex.stackexchange.com/questions/135134/how-to-add-an-empty-line-between-paragraphs
-\makeatletter
 \renewcommand{\folhaderostocontent}
 {%
     \begin{center}
@@ -847,18 +844,15 @@
 
     \end{center}
 }
-\makeatother
 
 % If document class is equal to something then do not use package
 % https://tex.stackexchange.com/questions/46223/if-document-class-is-equal-to-something-then-do-not-use-package
-\makeatletter
 \@ifclassloaded{setup/abntex2}
 {
     % Package hyperref Warning: Token not allowed in a PDF string?
     % https://tex.stackexchange.com/questions/384885/package-hyperref-warning-token-not-allowed-in-a-pdf-string
     \pdfstringdefDisableCommands{\let\uppercase\relax}
 }{}
-\makeatother
 
 
 % Patch the `abntex2` citacao environment removing the extra space from its top
@@ -903,7 +897,6 @@ therefore the \topsep patch must need to be updated accordingly}}
 % https://tex.stackexchange.com/questions/485830/why-latex-does-not-tell-me-which-command-is-undefined
 % https://tex.stackexchange.com/questions/482886/how-to-add-babel-captions-to-newfloat-package-environments
 % https://tex.stackexchange.com/questions/482523/how-to-override-command-on-my-preamble-after-its-redefinition-by-my-class-with
-\makeatletter
 \@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{%
     \renewcommand{\orientadorname}{Orientador}
     \renewcommand{\coorientadorname}{Coorientador}
@@ -915,9 +908,7 @@ therefore the \topsep patch must need to be updated accordingly}}
     \renewcommand{\chapterautorefname}{Capítulo}
     \renewcommand{\equationautorefname}{Equação}
 }}{}}{}
-\makeatother
 
-\makeatletter
 \@ifpackageloaded{babel}{\@ifpackagewith{babel}{english}{\addto\captionsenglish{%
     \renewcommand{\covername}{Cover}
     \renewcommand{\orientadorname}{Supervisor}
@@ -928,7 +919,6 @@ therefore the \topsep patch must need to be updated accordingly}}
     \renewcommand{\chapterautorefname}{Chapter}
     \renewcommand{\equationautorefname}{Equation}
 }}{}}{}
-\makeatother
 
 % https://tex.stackexchange.com/questions/443603/how-to-appear-subsubsection-in-chapter-in-my-list-of-contents
 \setcounter{secnumdepth}{6}
@@ -965,7 +955,6 @@ therefore the \topsep patch must need to be updated accordingly}}
 % 4. `commands_list.tex`
 % 5. `programming.tex`
 % 6. `badboxes.tex`
-\makeatletter
 
 
 
@@ -1397,7 +1386,6 @@ therefore the \topsep patch must need to be updated accordingly}}
 \newcommand*{\fullref}[1]{\hyperref[{#1}]{\Cref{#1}: \nameref{#1}}} % One single link
 
 
-\makeatother
 
 
 
@@ -1445,13 +1433,11 @@ therefore the \topsep patch must need to be updated accordingly}}
 
 
 % https://tex.stackexchange.com/questions/511589/how-to-fix-useshorthands-defineshorthand-usage-on-bookmark-entries
-\makeatletter
 \def\HyPsd@LetUnexpandableSpace#1{%
   \if\noexpand~\noexpand#1%
   \else
     \expandafter\@firstofone
   \fi{\expandafter\futurelet\expandafter#1\expandafter\@gobble\space\relax}}
-\makeatother
 
 
 
@@ -1518,7 +1504,6 @@ therefore the \topsep patch must need to be updated accordingly}}
     \fi%
 }
 
-\makeatletter
 \@namedef{OT1-zwidthchar}{255}
 \@namedef{T1-zwidthchar}{"17}
 
@@ -1552,7 +1537,6 @@ therefore the \topsep patch must need to be updated accordingly}}
     \hyphenchar\font\savedhchar%
     \relax%
 }
-\makeatother
 
 
 
@@ -1618,63 +1602,62 @@ therefore the \topsep patch must need to be updated accordingly}}
     {$|$}
     \Acrobatmenu{GoBack}{\textcolor{ultramarine}{$\leftarrow$}}
 }}
-\makeatletter
-    \newif\ifismemoirloaded\ismemoirloadedfalse
-    \newif\ifisabntexloaded\isabntexloadedfalse
-    \@ifclassloaded{memoir}{%
-        \ismemoirloadedtrue%
-    }{}
-    \@ifclassloaded{setup/abntex2}{%
-        \isabntexloadedtrue%
-    }{}
 
-    \newcommand{\addGoToSummary}
-    {%
-        \@ifundefined{printparttitle}{\message{printparttitle patch for addGoToSummary could NOT
-                    be applied because there is no printparttitle command available!^^J}}{%
-            \let\oldAddGoToprintparttitle\printparttitle
-            \xapptocmd{\printparttitle}{~\protect\goToSummaryText}{}{}
-        }
-        \@ifundefined{Sectionformat}{\message{Sectionformat patch for addGoToSummary could NOT
-                    be applied because there is no Sectionformat command available!^^J}}{%
-            \let\oldAddGoToSectionformat\Sectionformat
-            \xapptocmd{\Sectionformat}{~\protect\goToSummaryText}{}{}
-        }
+\newif\ifismemoirloaded\ismemoirloadedfalse
+\newif\ifisabntexloaded\isabntexloadedfalse
+\@ifclassloaded{memoir}{%
+    \ismemoirloadedtrue%
+}{}
+\@ifclassloaded{setup/abntex2}{%
+    \isabntexloadedtrue%
+}{}
 
-        \ifismemoirloaded
-            \ifisabntexloaded
-                \let\oldAddGoToABNTEXchapterupperifneeded\ABNTEXchapterupperifneeded
-                \xapptocmd{\ABNTEXchapterupperifneeded}{~\protect\goToSummaryText}{}{}
-            \else
-                \let\oldAddGoToprintchaptertitle\printchaptertitle
-                \xapptocmd{\printchaptertitle}{~\protect\goToSummaryText}{}{}
-            \fi
-        \else
-            \@ifundefined{Chapterformat}{\message{Chapterformat patch for addGoToSummary could NOT
-                        be applied because there is no Chapterformat command available!^^J}}{%
-                \let\oldAddGoToChapterformat\Chapterformat
-                \xapptocmd{\Chapterformat}{~\protect\goToSummaryText}{}{}
-            }
-        \fi
+\newcommand{\addGoToSummary}
+{%
+    \@ifundefined{printparttitle}{\message{printparttitle patch for addGoToSummary could NOT
+                be applied because there is no printparttitle command available!^^J}}{%
+        \let\oldAddGoToprintparttitle\printparttitle
+        \xapptocmd{\printparttitle}{~\protect\goToSummaryText}{}{}
+    }
+    \@ifundefined{Sectionformat}{\message{Sectionformat patch for addGoToSummary could NOT
+                be applied because there is no Sectionformat command available!^^J}}{%
+        \let\oldAddGoToSectionformat\Sectionformat
+        \xapptocmd{\Sectionformat}{~\protect\goToSummaryText}{}{}
     }
 
-    \newcommand{\removeGoToSummary}
-    {%
-        \@ifundefined{oldAddGoToprintparttitle}{}{\let\printparttitle\oldAddGoToprintparttitle}
-        \@ifundefined{oldAddGoToSectionformat}{}{\let\Sectionformat\oldAddGoToSectionformat}
-
-        \ifismemoirloaded
-            \ifisabntexloaded
-                \@ifundefined{oldAddGoToABNTEXchapterupperifneeded}{}{\let\ABNTEXchapterupperifneeded\oldAddGoToABNTEXchapterupperifneeded}
-            \else
-                \@ifundefined{oldAddGoToprintchaptertitle}{}{\let\printchaptertitle\oldAddGoToprintchaptertitle}
-            \fi
+    \ifismemoirloaded
+        \ifisabntexloaded
+            \let\oldAddGoToABNTEXchapterupperifneeded\ABNTEXchapterupperifneeded
+            \xapptocmd{\ABNTEXchapterupperifneeded}{~\protect\goToSummaryText}{}{}
         \else
-            \@ifundefined{oldAddGoToChapterformat}{}{\let\Chapterformat\oldAddGoToChapterformat}
+            \let\oldAddGoToprintchaptertitle\printchaptertitle
+            \xapptocmd{\printchaptertitle}{~\protect\goToSummaryText}{}{}
         \fi
-    }
+    \else
+        \@ifundefined{Chapterformat}{\message{Chapterformat patch for addGoToSummary could NOT
+                    be applied because there is no Chapterformat command available!^^J}}{%
+            \let\oldAddGoToChapterformat\Chapterformat
+            \xapptocmd{\Chapterformat}{~\protect\goToSummaryText}{}{}
+        }
+    \fi
+}
 
-\makeatother
+\newcommand{\removeGoToSummary}
+{%
+    \@ifundefined{oldAddGoToprintparttitle}{}{\let\printparttitle\oldAddGoToprintparttitle}
+    \@ifundefined{oldAddGoToSectionformat}{}{\let\Sectionformat\oldAddGoToSectionformat}
+
+    \ifismemoirloaded
+        \ifisabntexloaded
+            \@ifundefined{oldAddGoToABNTEXchapterupperifneeded}{}{\let\ABNTEXchapterupperifneeded\oldAddGoToABNTEXchapterupperifneeded}
+        \else
+            \@ifundefined{oldAddGoToprintchaptertitle}{}{\let\printchaptertitle\oldAddGoToprintchaptertitle}
+        \fi
+    \else
+        \@ifundefined{oldAddGoToChapterformat}{}{\let\Chapterformat\oldAddGoToChapterformat}
+    \fi
+}
+
 \let\oldAddGoTotableofcontents\tableofcontents
 % Insert internal document link
 \renewcommand{\tableofcontents}{%
@@ -1708,7 +1691,6 @@ therefore the \topsep patch must need to be updated accordingly}}
 
 % Setting Entries of List of Listings in LaTeX. Package Listings
 % http://tex.stackexchange.com/questions/228936/setting-entries-of-list-of-listings-in-latex-package-listings
-\makeatletter
 \@ifclassloaded{memoir}{%
     \newlength\mylen
 
@@ -1732,13 +1714,11 @@ therefore the \topsep patch must need to be updated accordingly}}
     \@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{\Crefname{listing}{Código}{Códigos}}}{}}{}
 
     \begingroup
-    \makeatletter
         \let\newcounter\@gobble\let\setcounter\@gobbletwo
         \globaldefs\@ne \let\c@loldepth\@ne
         \newlistof{listings}{lol}{\lstlistlistingname}
         \newlistof{lstlistoflistings}{lol}{\lstlistlistingname}
         \newlistentry{lstlisting}{lol}{0}
-    \makeatother
     \endgroup
 
     % Why the empty space size is increasing each call to my calculate listing header command?
@@ -1764,7 +1744,6 @@ therefore the \topsep patch must need to be updated accordingly}}
     % https://tex.stackexchange.com/questions/14135/how-to-automatically-add-text-immediately-after-begindocument
     \AtBeginDocument{\calculatelisteningsheader}
 }{}
-\makeatother
 
 
 
@@ -1834,7 +1813,6 @@ therefore the \topsep patch must need to be updated accordingly}}
     \fontdimen7\font=.167em\relax
 }
 
-\makeatletter
 \DeclareRobustCommand\vttfamily
 {%
     \not@math@alphabet\vttfamily\relax
@@ -1842,14 +1820,12 @@ therefore the \topsep patch must need to be updated accordingly}}
     \selectfont
 }
 \DeclareTextFontCommand{\textvtt}{\vttfamily}
-\makeatother
 
 
 
 % Logical String Length
 % https://tex.stackexchange.com/questions/87638/logical-string-length
 \newcommand{\includeonlyfilelist}[0]{}
-\makeatletter
 \newcommand{\addtoincludeonly}[1]
 {%
     \StrLen{\includeonlyfilelist}[\includeonlyfilelistlen]
@@ -1870,7 +1846,6 @@ therefore the \topsep patch must need to be updated accordingly}}
     \else
     \fi
 }
-\makeatother
 
 
 % https://tex.stackexchange.com/questions/329631/creating-new-captions-and-caption-counters
@@ -1883,17 +1858,15 @@ therefore the \topsep patch must need to be updated accordingly}}
 
 \DeclareFloatingEnvironment[fileext=loq,placement={!hbtp},name=\quadrosname,within=chapter,listname=\listofquadrosname]{quadro}
 
-\makeatletter
-    \@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{\renewcommand{\quadrosname}{Quadro}}}{}}{}
-    \@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{\renewcommand{\listofquadrosname}{Lista de Quadros}}}{}}{}
+\@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{\renewcommand{\quadrosname}{Quadro}}}{}}{}
+\@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{\renewcommand{\listofquadrosname}{Lista de Quadros}}}{}}{}
 
-    \@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{\crefname{quadro}{quadro}{quadros}}}{}}{}
-    \@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{\Crefname{quadro}{Quadro}{Quadros}}}{}}{}
+\@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{\crefname{quadro}{quadro}{quadros}}}{}}{}
+\@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{\Crefname{quadro}{Quadro}{Quadros}}}{}}{}
 
-    % fix fig. being used instead of figure
-    \@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{\crefname{figure}{figura}{figuras}}}{}}{}
-    \@ifpackageloaded{babel}{\@ifpackagewith{babel}{english}{\addto\captionsenglish{\crefname{figure}{figure}{figures}}}{}}{}
-\makeatother
+% fix fig. being used instead of figure
+\@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{\crefname{figure}{figura}{figuras}}}{}}{}
+\@ifpackageloaded{babel}{\@ifpackagewith{babel}{english}{\addto\captionsenglish{\crefname{figure}{figure}{figures}}}{}}{}
 
 % https://tex.stackexchange.com/questions/479086/styling-and-spacing-around-float-caption-for-listing
 % https://tex.stackexchange.com/questions/97673/merge-items-in-list-of-floats
@@ -1901,7 +1874,6 @@ therefore the \topsep patch must need to be updated accordingly}}
 \captionsetup[quadro]{skip=1mm}
 
 % https://tex.stackexchange.com/questions/176418/remove-list-of-newfloat-from-toc
-\makeatletter
 \newcommand{\AdjustForMemoir}[1]{%
   \csletcs{kept@listof#1}{listof#1}%
   \csdef{listof#1}{%
@@ -1912,7 +1884,6 @@ therefore the \topsep patch must need to be updated accordingly}}
   }
 }
 \def\append@star#1{#1*}
-\makeatother
 \AdjustForMemoir{quadro}
 \newlistentry{quadro}{loq}{0}
 
@@ -1963,20 +1934,15 @@ therefore the \topsep patch must need to be updated accordingly}}
 %
 % how to suppress “Underfull \vbox (badness 10000) … while \output is active”?
 % https://tex.stackexchange.com/questions/62296/how-to-suppress-underfull-vbox-badness-10000-while-output-is-active
-\makeatletter
-    \def\@textbottom{\vskip \z@ \@plus 7pt}
-    \let\@texttop\relax
-\makeatother
+\def\@textbottom{\vskip \z@ \@plus 7pt}
+\let\@texttop\relax
 
 % Why Latex is hyphenating some words automatically, but others dont? hyphenmins{22} %left=2, right=2
 % https://tex.stackexchange.com/questions/387076/why-latex-is-hyphenating-some-words-automatically-but-others-dont
-\makeatletter
-    \@ifpackagewith{babel}{brazil}{  \def\brazilhyphenmins{11} }{}
-    \@ifpackagewith{babel}{english}{ \def\englishhyphenmins{11} }{}
-    \@ifpackagewith{babel}{french}{  \def\frenchhyphenmins{11} }{}
-\makeatother
+\@ifpackagewith{babel}{brazil}{  \def\brazilhyphenmins{11} }{}
+\@ifpackagewith{babel}{english}{ \def\englishhyphenmins{11} }{}
+\@ifpackagewith{babel}{french}{  \def\frenchhyphenmins{11} }{}
 
-\makeatletter
 \@ifpackageloaded{url}
 {
     % Bad formatting using URLs in bibtex
@@ -1994,13 +1960,10 @@ therefore the \topsep patch must need to be updated accordingly}}
     %
     % Forcing linebreaks in \url
     % https://tex.stackexchange.com/questions/3033/forcing-linebreaks-in-url/10401
-    \makeatletter
-        \g@addto@macro{\UrlBreaks}{\UrlOrds}
-    \makeatother
+    \g@addto@macro{\UrlBreaks}{\UrlOrds}
 
     % How to fix this url bad box for stackoverflow link?
     % https://tex.stackexchange.com/questions/384427/how-to-fix-this-url-bad-box-for-stackoverflow-link
-    \makeatletter
     \g@addto@macro{\UrlBreaks}
     {%
         \do\a\do\b\do\c\do\d\do\e\do\f\do\g%
@@ -2013,9 +1976,7 @@ therefore the \topsep patch must need to be updated accordingly}}
         \do\V\do\W\do\X\do\Y\do\Z%
         \do\/\do\_\do\-%
     }
-    \makeatother
 }{}
-\makeatother
 
 
 
@@ -2525,3 +2486,6 @@ therefore the \topsep patch must need to be updated accordingly}}
         tag=[s]
 }
 
+
+
+\makeatother
