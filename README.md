@@ -58,6 +58,8 @@ git log
 Se você quiser saber quais são todos os comandos de compilação disponíveis,
 basta chamar utilizar o comando `make help`. Exemplo:
 ```
+$ make help
+
  Usage:
    make <target> [debug=1]
 
@@ -123,21 +125,28 @@ basta chamar utilizar o comando `make help`. Exemplo:
               https://github.com/clarkwang/passh
 
        You can define the following parameters:
-       1. LATEXPASSWORD  - the remote machine SHH password
-       2. LATEXADDRESS   - the remote machine 'user@ipaddress'
-       3. rules          - the rules/arguments to pass to the remote invocation of make
-       4. args           - arguments to pass to the rsync program
-       5. dir            - the directory to put the files, defaults to '~/LatexBuild'
+       3. rules - the rules/arguments to pass to the remote invocation of make
+       5. UFSCTHESISX_ROOT_DIRECTORY  - the directory to put the files, defaults to '~/LatexBuild'
+       4. UFSCTHESISX_RSYNC_ARGUMENTS - arguments to pass to the rsync program, see 'rsync --help'
+       1. UFSCTHESISX_REMOTE_PASSWORD - the remote machine SHH password, defaults to 'admin123'
+       2. UFSCTHESISX_REMOTE_ADDRESS  - the remote machine 'user@ipaddress', defaults to 'linux@192.168.0.222'
 
      Example usage for Linux:
-       make remote LATEXPASSWORD=123 LATEXADDRESS=linux@192.168.0.222 rules=latex &&
-                delete=1 dir=~/Downloads/Thesis
+       make remote rules="latex debug=1" &&
+              debug=1 &&
+              UFSCTHESISX_ROOT_DIRECTORY=~/Downloads/Thesis &&
+              UFSCTHESISX_REMOTE_ADDRESS=linux@192.168.0.222 &&
+              UFSCTHESISX_REMOTE_PASSWORD=123 &&
+              UFSCTHESISX_RSYNC_ARGUMENTS="--delete"
 
      Example usage for Windows:
-       set "LATEXPASSWORD=123" && set "LATEXADDRESS=linux@192.168.0.222" &&
-                set "rules=latex" && set "delete=1" &&
-                set "dir=~/Downloads/Thesis" &&
-                make remote
+       set "rules=latex debug=1" &&
+              set "debug=1" &&
+              set "UFSCTHESISX_ROOT_DIRECTORY=~/Downloads/Thesis" &&
+              set "UFSCTHESISX_REMOTE_ADDRESS=linux@192.168.0.222" &&
+              set "UFSCTHESISX_REMOTE_PASSWORD=123" &&
+              set "UFSCTHESISX_RSYNC_ARGUMENTS=--delete" &&
+              make remote
 ```
 
 Caso você tenha problemas,

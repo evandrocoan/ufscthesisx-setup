@@ -79,22 +79,16 @@ ifeq (${UFSCTHESISX_MAINTEX_DIRECTORY},)
 	UFSCTHESISX_MAINTEX_DIRECTORY := .
 endif
 
-ifeq (${dir},)
+ifeq (${UFSCTHESISX_ROOT_DIRECTORY},)
 	UFSCTHESISX_ROOT_DIRECTORY := ~/LatexBuild
-else
-	UFSCTHESISX_ROOT_DIRECTORY := ${dir}
 endif
 
-ifeq (${LATEXPASSWORD},)
+ifeq (${UFSCTHESISX_REMOTE_PASSWORD},)
 	UFSCTHESISX_REMOTE_PASSWORD := admin123
-else
-	UFSCTHESISX_REMOTE_PASSWORD := ${LATEXPASSWORD}
 endif
 
-ifeq (${LATEXADDRESS},)
+ifeq (${UFSCTHESISX_REMOTE_ADDRESS},)
 	UFSCTHESISX_REMOTE_ADDRESS := linux@192.168.0.222
-else
-	UFSCTHESISX_REMOTE_ADDRESS := ${LATEXADDRESS}
 endif
 
 ## Use halt=1 to stop running on errors instead of continuing the compilation!
@@ -591,28 +585,35 @@ endef
 ##              https://github.com/clarkwang/passh
 ##
 ##       You can define the following parameters:
-##       1. LATEXPASSWORD  - the remote machine SHH password
-##       2. LATEXADDRESS   - the remote machine 'user@ipaddress'
-##       3. rules          - the rules/arguments to pass to the remote invocation of make
-##       4. args           - arguments to pass to the rsync program
-##       5. dir            - the directory to put the files, defaults to '~/LatexBuild'
+##       3. rules - the rules/arguments to pass to the remote invocation of make
+##       5. UFSCTHESISX_ROOT_DIRECTORY  - the directory to put the files, defaults to '~/LatexBuild'
+##       4. UFSCTHESISX_RSYNC_ARGUMENTS - arguments to pass to the rsync program, see 'rsync --help'
+##       1. UFSCTHESISX_REMOTE_PASSWORD - the remote machine SHH password, defaults to 'admin123'
+##       2. UFSCTHESISX_REMOTE_ADDRESS  - the remote machine 'user@ipaddress', defaults to 'linux@192.168.0.222'
 ##
 ##     Example usage for Linux:
-##       make remote LATEXPASSWORD=123 LATEXADDRESS=linux@192.168.0.222 rules=latex &&
-##       		delete=1 dir=~/Downloads/Thesis
+##       make remote rules="latex debug=1" &&
+##              debug=1 &&
+##              UFSCTHESISX_ROOT_DIRECTORY=~/Downloads/Thesis &&
+##              UFSCTHESISX_REMOTE_ADDRESS=linux@192.168.0.222 &&
+##              UFSCTHESISX_REMOTE_PASSWORD=123 &&
+##              UFSCTHESISX_RSYNC_ARGUMENTS="--delete"
 ##
 ##     Example usage for Windows:
-##       set "LATEXPASSWORD=123" && set "LATEXADDRESS=linux@192.168.0.222" &&
-##       		set "rules=latex" && set "delete=1" &&
-##       		set "dir=~/Downloads/Thesis" &&
-##       		make remote
+##       set "rules=latex debug=1" &&
+##              set "debug=1" &&
+##              set "UFSCTHESISX_ROOT_DIRECTORY=~/Downloads/Thesis" &&
+##              set "UFSCTHESISX_REMOTE_ADDRESS=linux@192.168.0.222" &&
+##              set "UFSCTHESISX_REMOTE_PASSWORD=123" &&
+##              set "UFSCTHESISX_RSYNC_ARGUMENTS=--delete" &&
+##              make remote
 ##
 #https://serverfault.com/questions/330503/scp-without-known-hosts-check
 #https://stackoverflow.com/questions/4780893/use-expect-in-bash-script-to-provide-password-to-ssh-command
 remote: pre_setup_envinronment
 	$(if ${ENABLE_DEBUG_MODE},printf '\n',)
 
-	printf '\nJust ensures the directory '%s' is created...\n' "${dir}"
+	printf '\nJust ensures the directory '%s' is created...\n' "${UFSCTHESISX_ROOT_DIRECTORY}"
 	passh -p "${UFSCTHESISX_REMOTE_PASSWORD}" \
 		ssh -o StrictHostKeyChecking=no \
 		"${UFSCTHESISX_REMOTE_ADDRESS}" \
@@ -620,7 +621,7 @@ remote: pre_setup_envinronment
 
 	printf '\nRunning the command which will actually send the files...\n'
 	passh -p "${UFSCTHESISX_REMOTE_PASSWORD}" \
-		rsync ${args} \
+		rsync ${UFSCTHESISX_RSYNC_ARGUMENTS} \
 		--recursive \
 		--verbose \
 		--update \
