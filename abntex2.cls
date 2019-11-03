@@ -33,6 +33,8 @@
 % ------------------------------------------------------------------------
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{setup/abntex2}[2016/11/15 v1.9.7 setup/abntex2]
+
+\makeatletter
 \RequirePackage{ifthen}
 %
 % Captura as options article e twocolumn
@@ -159,7 +161,6 @@
 \RequirePackage{xpatch}
 
 % https://tex.stackexchange.com/questions/514708/illegal-parameter-number-in-definition-of-enitc-after-using-setlistenumerat
-\makeatletter
 \def\renewenumerateoptionalitem{%
   \let\itemenumerateoptional\@item%
   \renewcommand{\@item}[1][]{%
@@ -180,7 +181,6 @@
     align=left,
     leftmargin=*,
 }
-\makeatother
 
 % ---
 % Controla as referencias internas do PDF
@@ -504,7 +504,6 @@
 
 % No caso de Sumario (TOC) especifico da ABNT-6027-2012
 
-\makeatletter
 \ifthenelse{\boolean{ABNTEXsumario-abnt-6027-2012}}{
   \settocpreprocessor{chapter}{%
   \let\tempf@rtoc\f@rtoc%
@@ -517,7 +516,6 @@
   \texorpdfstring{\MakeTextUppercase{\tempf@rtoc}}{\tempf@rtoc}}%
   }
 }{}
-\makeatother
 %
 \ifthenelse{\boolean{ABNTEXsumario-abnt-6027-2012}}{%
 
@@ -916,10 +914,8 @@
 % ---
 % Definicoes compartilhadas entre Apendices e Anexos
 % ---
-\makeatletter
 \newcommand\@switch[1]{ \@writefile{toc}{\renewcommand*{\cftappendixname}{#1 \space}} }
 \newcommand{\switchchapname}[1]{ \protected@write \@auxout {}{\string\@switch{#1} }}
-\makeatother
 
 \newcommand{\PRIVATEapendiceconfig}[2]{%
  \setboolean{abntex@apendiceousecao}{true}%
@@ -984,7 +980,6 @@
 }
 
 % atalhos para \partpage ou \appendixpage*
-\makeatletter
 \newcommand{\partapendices}{%
 \tocpartapendices%
 \@ifstar{\appendixpage*}{\partpage}}
@@ -992,7 +987,6 @@
 \newcommand{\partanexos}{%
 \tocpartanexos%
 \@ifstar{\appendixpage*}{\partpage}}
-\makeatother
 % ---
 
 
@@ -1049,9 +1043,7 @@
    % \assinatura*{name} -> Creates the box with the line and name under
    %     it, but the box has no position assigned. However the line and the
    %     name are centralized with respect to each other.
-\makeatletter
 \newcommand{\assinatura}{\@ifstar{\ABNTEXsign}{\ABNTEXcsign}}
-\makeatother
    % assinatura com estrela
 \newcommand{\ABNTEXsign}[1]{%
   \parbox[t]{\ABNTEXsignwidth}{\SingleSpacing\vspace*{\ABNTEXsignskip}\centering%
@@ -1103,7 +1095,6 @@
 
 % ---
 % Conteudo padrao da Folha de Rosto
-\makeatletter
 \newcommand{\folhaderostocontent}{
   \begin{center}
 
@@ -1140,7 +1131,6 @@
 
   \end{center}
 }
-\makeatother
 
 \newcommand{\imprimirfolhaderostostar}[1]{%
   \begin{folhaderosto*}{#1}
@@ -1152,11 +1142,12 @@
      \folhaderostocontent
   \end{folhaderosto}}
 
-\makeatletter
 \newcommand{\imprimirfolhaderosto}[1][\folhaderostoname]{%
    \@ifstar
      \imprimirfolhaderostostar
      \imprimirfolhaderostonostar
 }
-\makeatother
+
+
 % ---
+\makeatother
