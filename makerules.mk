@@ -91,6 +91,12 @@ ifeq (${UFSCTHESISX_REMOTE_ADDRESS},)
 	UFSCTHESISX_REMOTE_ADDRESS := linux@192.168.0.222
 endif
 
+ifeq (${UFSCTHESISX_RSYNC_ARGUMENTS},)
+	ifneq (${args},)
+		UFSCTHESISX_RSYNC_ARGUMENTS := ${args}
+	endif
+endif
+
 ## Use halt=1 to stop running on errors instead of continuing the compilation!
 ## Also, use debug=1 to halt on errors and fix the errors dynamically.
 ##
@@ -576,6 +582,11 @@ release:
 define REMOTE_COMMAND_TO_RUN :=
 cd "${UFSCTHESISX_ROOT_DIRECTORY}/${UFSCTHESISX_MAINTEX_DIRECTORY}"; \
 printf '\nThe current directory is:\n'; pwd; \
+if [[ "w" != "w${UFSCTHESISX_RSYNC_ARGUMENTS}" ]] && [[ "${UFSCTHESISX_RSYNC_ARGUMENTS}" == *"--delete"* ]]; \
+	then \
+		printf '\nRemoving cache directory:\n'; \
+		rm -rfv setup/cache; \
+	fi; \
 printf '\nRunning the command: make ${rules}\n'; \
 make ${rules};
 endef
@@ -585,27 +596,27 @@ endef
 ##              https://github.com/clarkwang/passh
 ##
 ##       You can define the following parameters:
+##       4. args - arguments to pass to the rsync program, see 'rsync --help'
 ##       3. rules - the rules/arguments to pass to the remote invocation of make
 ##       5. UFSCTHESISX_ROOT_DIRECTORY  - the directory to put the files, defaults to '~/LatexBuild'
-##       4. UFSCTHESISX_RSYNC_ARGUMENTS - arguments to pass to the rsync program, see 'rsync --help'
 ##       1. UFSCTHESISX_REMOTE_PASSWORD - the remote machine SHH password, defaults to 'admin123'
 ##       2. UFSCTHESISX_REMOTE_ADDRESS  - the remote machine 'user@ipaddress', defaults to 'linux@192.168.0.222'
 ##
 ##     Example usage for Linux:
 ##       make remote rules="latex debug=1" &&
 ##              debug=1 &&
+##              args="--delete"
 ##              UFSCTHESISX_ROOT_DIRECTORY=~/Downloads/Thesis &&
 ##              UFSCTHESISX_REMOTE_ADDRESS=linux@192.168.0.222 &&
 ##              UFSCTHESISX_REMOTE_PASSWORD=123 &&
-##              UFSCTHESISX_RSYNC_ARGUMENTS="--delete"
 ##
 ##     Example usage for Windows:
 ##       set "rules=latex debug=1" &&
 ##              set "debug=1" &&
+##              set "args=--delete" &&
 ##              set "UFSCTHESISX_ROOT_DIRECTORY=~/Downloads/Thesis" &&
 ##              set "UFSCTHESISX_REMOTE_ADDRESS=linux@192.168.0.222" &&
 ##              set "UFSCTHESISX_REMOTE_PASSWORD=123" &&
-##              set "UFSCTHESISX_RSYNC_ARGUMENTS=--delete" &&
 ##              make remote
 ##
 #https://serverfault.com/questions/330503/scp-without-known-hosts-check
@@ -631,7 +642,7 @@ remote: pre_setup_envinronment
 		--exclude ".tmp.drivedownload" \
 		--exclude "${CACHE_DIRECTORY}" \
 		--exclude "${THESIS_MAIN_FILE}.pdf" \
-		"${CURRENT_DIR}/${UFSCTHESISX_RSYNC_DIRECTORY}/." \
+		"${CURRENT_DIR}/${UFSCTHESISX_RSYNC_DIRECTORY}/./" \
 		"${UFSCTHESISX_REMOTE_ADDRESS}:${UFSCTHESISX_ROOT_DIRECTORY}"
 
 	printf '\nRunning the command which will actually run make...\n'
