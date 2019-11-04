@@ -1233,16 +1233,21 @@ therefore the \topsep patch must need to be updated accordingly}}
 \TestAppMotherfuckerExists{pygmentize}
 
 \ifAppMotherFuckerExists
-  % https://github.com/gpoore/minted/issues/246 Package minted Warning: Unexpected value for option `chapter'(minted) is ignored
+  % https://tex.stackexchange.com/questions/110292/testing-for-a-documentclass-option
   % https://tex.stackexchange.com/questions/514711/package-minted-warning-unexpected-value-for-option-chapterminted-is-ignored
-  \begingroup
-  \def\x#1chapter=TITLE,#2\@nil{%
-    \endgroup\def\@classoptionslist{#1#2}%
-  }\expandafter\x\@classoptionslist\@nil
-  \begingroup
-  \def\x#1section=TITLE,#2\@nil{%
-    \endgroup\def\@classoptionslist{#1#2}%
-  }\expandafter\x\@classoptionslist\@nil
+  \@ifclasswith{setup/ufscthesisx}{chapter=TITLE}{
+    \begingroup
+    \def\x#1chapter=TITLE,#2\@nil{%
+      \endgroup\def\@classoptionslist{#1#2}%
+    }\expandafter\x\@classoptionslist\@nil
+  }{}
+
+  \@ifclasswith{setup/ufscthesisx}{section=TITLE}{
+    \begingroup
+    \def\x#1section=TITLE,#2\@nil{%
+      \endgroup\def\@classoptionslist{#1#2}%
+    }\expandafter\x\@classoptionslist\@nil
+  }
 
   % https://tex.stackexchange.com/questions/57353/how-to-get-caption-above-listing-with-minted
   % https://tex.stackexchange.com/questions/339931/latex-minted-package-using-custom-output-directory-build
