@@ -889,37 +889,6 @@ therefore the \topsep patch must need to be updated accordingly}}
   {\multicitedelim}
   {\usebibmacro{postnote}}
 
-% Ao contrario da norma abnt-6027-2012, que as figuras estejam listadas na Lista de
-% Ilustrações,  a UFSC pede que as figuras estejam na Lista de Figuras.
-%
-% Remove the colon appended to variables by 'abntex2' because they show up on places they shouldn't
-%
-% https://tex.stackexchange.com/questions/485830/why-latex-does-not-tell-me-which-command-is-undefined
-% https://tex.stackexchange.com/questions/482886/how-to-add-babel-captions-to-newfloat-package-environments
-% https://tex.stackexchange.com/questions/482523/how-to-override-command-on-my-preamble-after-its-redefinition-by-my-class-with
-\@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{%
-    \renewcommand{\orientadorname}{Orientador}
-    \renewcommand{\coorientadorname}{Coorientador}
-    \renewcommand{\quadroname}{Quadro}
-    \renewcommand{\listofquadrosname}{Lista de Quadros}
-    \renewcommand{\listfigurename}{Lista de Figuras}
-    \renewcommand{\tableautorefname}{Tabela}
-    \renewcommand{\figureautorefname}{Figura}
-    \renewcommand{\chapterautorefname}{Capítulo}
-    \renewcommand{\equationautorefname}{Equação}
-}}{}}{}
-
-\@ifpackageloaded{babel}{\@ifpackagewith{babel}{english}{\addto\captionsenglish{%
-    \renewcommand{\covername}{Cover}
-    \renewcommand{\orientadorname}{Supervisor}
-    \renewcommand{\coorientadorname}{Co\hyp{}supervisor}
-    \renewcommand{\listfigurename}{List of Figures}
-    \renewcommand{\tableautorefname}{Table}
-    \renewcommand{\figureautorefname}{Figure}
-    \renewcommand{\chapterautorefname}{Chapter}
-    \renewcommand{\equationautorefname}{Equation}
-}}{}}{}
-
 % https://tex.stackexchange.com/questions/443603/how-to-appear-subsubsection-in-chapter-in-my-list-of-contents
 \setcounter{secnumdepth}{6}
 \setcounter{tocdepth}{6}
@@ -2496,6 +2465,42 @@ therefore the \topsep patch must need to be updated accordingly}}
         tag=[s]
 }
 
+
+
+
+
+
+
+% Ao contrario da norma abnt-6027-2012, que as figuras estejam listadas na Lista de
+% Ilustrações,  a UFSC pede que as figuras estejam na Lista de Figuras.
+%
+% Remove the colon appended to variables by 'abntex2' because they show up on places they shouldn't
+%
+% https://tex.stackexchange.com/questions/485830/why-latex-does-not-tell-me-which-command-is-undefined
+% https://tex.stackexchange.com/questions/482886/how-to-add-babel-captions-to-newfloat-package-environments
+% https://tex.stackexchange.com/questions/482523/how-to-override-command-on-my-preamble-after-its-redefinition-by-my-class-with
+\@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{%
+    \renewcommand{\orientadorname}{Orientador}
+    \renewcommand{\coorientadorname}{Coorientador}
+    \renewcommand{\quadroname}{Quadro}
+    \renewcommand{\listofquadrosname}{Lista de Quadros}
+    \renewcommand{\listfigurename}{Lista de Figuras}
+    \renewcommand{\tableautorefname}{Tabela}
+    \renewcommand{\figureautorefname}{Figura}
+    \renewcommand{\chapterautorefname}{Capítulo}
+    \renewcommand{\equationautorefname}{Equação}
+}}{}}{}
+
+\@ifpackageloaded{babel}{\@ifpackagewith{babel}{english}{\addto\captionsenglish{%
+    \renewcommand{\covername}{Cover}
+    \renewcommand{\orientadorname}{Supervisor}
+    \renewcommand{\coorientadorname}{Co\hyp{}supervisor}
+    \renewcommand{\listfigurename}{List of Figures}
+    \renewcommand{\tableautorefname}{Table}
+    \renewcommand{\figureautorefname}{Figure}
+    \renewcommand{\chapterautorefname}{Chapter}
+    \renewcommand{\equationautorefname}{Equation}
+}}{}}{}
 
 
 \makeatother
