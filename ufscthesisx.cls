@@ -1263,16 +1263,42 @@ therefore the \topsep patch must need to be updated accordingly}}
 
   % https://tex.stackexchange.com/questions/320185/adjust-vertical-spacing-between-caption-and-listing-in-koma-scrartcl
   \captionsetup[listing]{position=top,skip=0pt}
-  \newenvironment{code}{\captionsetup{type=listing}}{}
+
+  % https://tex.stackexchange.com/questions/514835/how-to-replace-a-command-argument-as-2-with-something-else
+  \newcommand{\specialcodelistingcontentsline}[1]{\contentsline{lstlisting}}
+
+  % https://tex.stackexchange.com/questions/514715/how-to-fix-minted-and-listings-hyphen-alignment-on-my-list-of-codes
+  \newenvironment{code}{
+    \captionsetup{type=listing}
+
+    % https://tex.stackexchange.com/questions/514847/xpatch-fails-if-passoptionstopackagefrenchbabel-is-used
+    \def\makesafecoloncatcoderestore##1{%
+        \edef##1{\catcode`:=\the\catcode`:\relax}%
+    }
+
+    % https://tex.stackexchange.com/questions/335104/save-and-restore-the-makeatletter-makeatother-state
+    \makesafecoloncatcoderestore\restorecodecoloncatcode
+    \catcode`\:=12
+
+    \xpatchcmd{\addcontentsline}
+    {\contentsline}
+    {\specialcodelistingcontentsline}{
+      % \message{^^J^^JCould YES patch the contentsline environment!^^J^^J^^J^^J^^J^^J^^J^^J^^J}
+    }
+    {\FAILEDPATCHSPECIALCONTENTSLINE}
+
+    % \xshowcmd\addcontentsline
+    \restorecodecoloncatcode
+  }{}
 
   % https://tex.stackexchange.com/questions/269491/mixing-minted-with-lstlisting
   % https://tex.stackexchange.com/questions/26220/control-spacing-around-table-caption
   \AtBeginEnvironment{code}{\setcounter{listing}{\value{lstlisting}}
-  \setlength{\abovecaptionskip}{0pt}
-  \setlength{\belowcaptionskip}{10pt}
-  \setlength{\parskip}{0pt}
-  \captionsetup{skip=0pt}
-  % \vspace*{-1mm}
+    \setlength{\abovecaptionskip}{0pt}
+    \setlength{\belowcaptionskip}{10pt}
+    \setlength{\parskip}{0pt}
+    \captionsetup{skip=0pt}
+    % \vspace*{-1mm}
   }
   \AtEndEnvironment{code}{\stepcounter{lstlisting}}
 
