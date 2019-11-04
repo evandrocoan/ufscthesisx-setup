@@ -582,9 +582,9 @@ release:
 define REMOTE_COMMAND_TO_RUN :=
 cd "${UFSCTHESISX_ROOT_DIRECTORY}/${UFSCTHESISX_MAINTEX_DIRECTORY}"; \
 printf '\nThe current directory is:\n'; pwd; \
-if [[ "w" != "w${UFSCTHESISX_RSYNC_ARGUMENTS}" ]] && [[ "${UFSCTHESISX_RSYNC_ARGUMENTS}" == *"--delete"* ]]; \
+if [[ "w--delete" == "w$(findstring --delete,${UFSCTHESISX_RSYNC_ARGUMENTS})" ]]; \
 	then \
-		printf '\nRemoving cache directory:\n'; \
+		printf '\nRemoving cache directory...\n'; \
 		rm -rfv setup/cache; \
 	fi; \
 printf '\nRunning the command: make ${rules}\n'; \
