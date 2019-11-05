@@ -1180,6 +1180,57 @@ therefore the \topsep patch must need to be updated accordingly}}
 % https://tex.stackexchange.com/questions/388489/custom-list-throw-latex-error-command-mycustomfiction-already-defined
 \usepackage{morewrites}
 
+% http://tex.stackexchange.com/questions/228936/setting-entries-of-list-of-listings-in-latex-package-listings
+% https://tex.stackexchange.com/questions/223079/you-cant-use-a-prefix-with-charfb-error-when-importing-csv-into-latex
+\@ifclassloaded{memoir}{%
+    % https://tex.stackexchange.com/questions/485830/why-latex-does-not-tell-me-which-command-is-undefined
+    \@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{\renewcommand{\lstlistingname}{Código}}}{}}{}
+    \@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{\renewcommand{\lstlistlistingname}{Lista de Códigos}}}{}}{}
+
+    \@ifpackageloaded{babel}{\@ifpackagewith{babel}{english}{\addto\captionsenglish{\renewcommand{\lstlistingname}{Code}}}{}}{}
+    \@ifpackageloaded{babel}{\@ifpackagewith{babel}{english}{\addto\captionsenglish{\renewcommand{\lstlistlistingname}{List of Codes}}}{}}{}
+
+    \@ifundefined{listlistingname}{ \newcommand{\listlistingname}{Listing of Codes} }{}
+    \@ifundefined{listingname}{ \newcommand{\listingname}{Codes} }{}
+
+    \@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{\renewcommand{\listlistingname}{Lista de Códigos}}}{}}{}
+    \@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{\renewcommand{\listingname}{Código}}}{}}{}
+
+    \@ifpackageloaded{babel}{\@ifpackagewith{babel}{english}{\addto\captionsenglish{\renewcommand{\listingname}{Code}}}{}}{}
+    \@ifpackageloaded{babel}{\@ifpackagewith{babel}{english}{\addto\captionsenglish{\renewcommand{\listlistingname}{List of Codes}}}{}}{}
+
+    \@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{\crefname{listing}{código}{códigos}}}{}}{}
+    \@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{\Crefname{listing}{Código}{Códigos}}}{}}{}
+
+    \begingroup
+        \let\newcounter\@gobble\let\setcounter\@gobbletwo
+        \globaldefs\@ne \let\c@loldepth\@ne
+        \newlistof{listings}{lol}{\lstlistlistingname}
+        \newlistof{lstlistoflistings}{lol}{\lstlistlistingname}
+        \newlistentry{lstlisting}{lol}{0}
+    \endgroup
+
+    % Why the empty space size is increasing each call to my calculate listing header command?
+    % https://tex.stackexchange.com/questions/388411/why-the-empty-space-size-is-increasing-each-call
+    \newlength\cftlstlistingoldnumwidth
+    \setlength\cftlstlistingoldnumwidth{\cftlstlistingnumwidth}
+
+    % Calculate the size of the header
+    % https://tex.stackexchange.com/questions/7453/what-is-the-use-of-percent-signs-at-the-end-of-lines
+    \newcommand{\calculatelstlistingsheader}{%
+        \renewcommand\cftlstlistingpresnum{\lstlistingname~}%
+
+        % https://tex.stackexchange.com/questions/52861/what-is-the-plain-tex-equivalent-of-settowidth
+        \newlength\cftlstlistinginitialnumwidth
+        \settowidth\cftlstlistinginitialnumwidth{\cftlstlistingpresnum\cftlstlistingaftersnum ab}%
+        \setlength\cftlstlistingnumwidth{\dimexpr\cftlstlistingoldnumwidth+\cftlstlistinginitialnumwidth}%
+        \renewcommand\cftlstlistingaftersnum{\hfill\textendash\hfill}%
+    }
+
+    % https://tex.stackexchange.com/questions/14135/how-to-automatically-add-text-immediately-after-begindocument
+    \AtBeginDocument{\calculatelstlistingsheader}
+}{}
+
 % https://tex.stackexchange.com/questions/380799/warning-when-adding-package-minted
 \StrSubstitute{\jobname}{ }{_}[\mintedjobname]
 \StrSubstitute{\mintedjobname}{*}{_}[\mintedjobname]
@@ -1697,59 +1748,6 @@ therefore the \topsep patch must need to be updated accordingly}}
 
 % Create a bold title all in upper case.
 \newcommand{\Title}[1]{\textbf{\MakeUppercase{#1}}}
-
-
-
-% Setting Entries of List of Listings in LaTeX. Package Listings
-% http://tex.stackexchange.com/questions/228936/setting-entries-of-list-of-listings-in-latex-package-listings
-\@ifclassloaded{memoir}{%
-    % https://tex.stackexchange.com/questions/485830/why-latex-does-not-tell-me-which-command-is-undefined
-    \@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{\renewcommand{\lstlistingname}{Código}}}{}}{}
-    \@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{\renewcommand{\lstlistlistingname}{Lista de Códigos}}}{}}{}
-
-    \@ifpackageloaded{babel}{\@ifpackagewith{babel}{english}{\addto\captionsenglish{\renewcommand{\lstlistingname}{Code}}}{}}{}
-    \@ifpackageloaded{babel}{\@ifpackagewith{babel}{english}{\addto\captionsenglish{\renewcommand{\lstlistlistingname}{List of Codes}}}{}}{}
-
-    \@ifundefined{listlistingname}{ \newcommand{\listlistingname}{Listing of Codes} }{}
-    \@ifundefined{listingname}{ \newcommand{\listingname}{Codes} }{}
-
-    \@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{\renewcommand{\listlistingname}{Lista de Códigos}}}{}}{}
-    \@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{\renewcommand{\listingname}{Código}}}{}}{}
-
-    \@ifpackageloaded{babel}{\@ifpackagewith{babel}{english}{\addto\captionsenglish{\renewcommand{\listingname}{Code}}}{}}{}
-    \@ifpackageloaded{babel}{\@ifpackagewith{babel}{english}{\addto\captionsenglish{\renewcommand{\listlistingname}{List of Codes}}}{}}{}
-
-    \@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{\crefname{listing}{código}{códigos}}}{}}{}
-    \@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{\Crefname{listing}{Código}{Códigos}}}{}}{}
-
-    \begingroup
-        \let\newcounter\@gobble\let\setcounter\@gobbletwo
-        \globaldefs\@ne \let\c@loldepth\@ne
-        \newlistof{listings}{lol}{\lstlistlistingname}
-        \newlistof{lstlistoflistings}{lol}{\lstlistlistingname}
-        \newlistentry{lstlisting}{lol}{0}
-    \endgroup
-
-    % Why the empty space size is increasing each call to my calculate listing header command?
-    % https://tex.stackexchange.com/questions/388411/why-the-empty-space-size-is-increasing-each-call
-    \newlength\cftlstlistingoldnumwidth
-    \setlength\cftlstlistingoldnumwidth{\cftlstlistingnumwidth}
-
-    % Calculate the size of the header
-    % https://tex.stackexchange.com/questions/7453/what-is-the-use-of-percent-signs-at-the-end-of-lines
-    \newcommand{\calculatelstlistingsheader}{%
-        \renewcommand\cftlstlistingpresnum{\lstlistingname~}%
-
-        % https://tex.stackexchange.com/questions/52861/what-is-the-plain-tex-equivalent-of-settowidth
-        \newlength\cftlstlistinginitialnumwidth
-        \settowidth\cftlstlistinginitialnumwidth{\cftlstlistingpresnum\cftlstlistingaftersnum ab}%
-        \setlength\cftlstlistingnumwidth{\dimexpr\cftlstlistingoldnumwidth+\cftlstlistinginitialnumwidth}%
-        \renewcommand\cftlstlistingaftersnum{\hfill\textendash\hfill}%
-    }
-
-    % https://tex.stackexchange.com/questions/14135/how-to-automatically-add-text-immediately-after-begindocument
-    \AtBeginDocument{\calculatelstlistingsheader}
-}{}
 
 
 
