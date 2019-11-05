@@ -1703,8 +1703,6 @@ therefore the \topsep patch must need to be updated accordingly}}
 % Setting Entries of List of Listings in LaTeX. Package Listings
 % http://tex.stackexchange.com/questions/228936/setting-entries-of-list-of-listings-in-latex-package-listings
 \@ifclassloaded{memoir}{%
-    \newlength\mylen
-
     % https://tex.stackexchange.com/questions/485830/why-latex-does-not-tell-me-which-command-is-undefined
     \@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{\renewcommand{\lstlistingname}{Código}}}{}}{}
     \@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{\renewcommand{\lstlistlistingname}{Lista de Códigos}}}{}}{}
@@ -1738,21 +1736,19 @@ therefore the \topsep patch must need to be updated accordingly}}
     \setlength\cftlstlistingoldnumwidth{\cftlstlistingnumwidth}
 
     % Calculate the size of the header
-    % What is the use of percent signs (%) at the end of lines?
     % https://tex.stackexchange.com/questions/7453/what-is-the-use-of-percent-signs-at-the-end-of-lines
-    \newcommand{\calculatelisteningsheader}
-    {%
+    \newcommand{\calculatelstlistingsheader}{%
         \renewcommand\cftlstlistingpresnum{\lstlistingname~}%
-        \settowidth\mylen{\cftlstlistingpresnum\cftlstlistingaftersnum}%
-        \setlength\cftlstlistingnumwidth{\dimexpr\cftlstlistingoldnumwidth+\mylen}%
+
+        % https://tex.stackexchange.com/questions/52861/what-is-the-plain-tex-equivalent-of-settowidth
+        \newlength\cftlstlistinginitialnumwidth
+        \settowidth\cftlstlistinginitialnumwidth{\cftlstlistingpresnum\cftlstlistingaftersnum ab}%
+        \setlength\cftlstlistingnumwidth{\dimexpr\cftlstlistingoldnumwidth+\cftlstlistinginitialnumwidth}%
         \renewcommand\cftlstlistingaftersnum{\hfill\textendash\hfill}%
     }
 
-    % Ensure it is called at least one time
-    \calculatelisteningsheader
-
     % https://tex.stackexchange.com/questions/14135/how-to-automatically-add-text-immediately-after-begindocument
-    \AtBeginDocument{\calculatelisteningsheader}
+    \AtBeginDocument{\calculatelstlistingsheader}
 }{}
 
 
@@ -1896,6 +1892,42 @@ therefore the \topsep patch must need to be updated accordingly}}
 \def\append@star#1{#1*}
 \AdjustForMemoir{quadro}
 \newlistentry{quadro}{loq}{0}
+
+% https://tex.stackexchange.com/questions/514996/how-to-have-a-dynamic-cft-numwidth-i-e-accordingly-to-the-number-size
+\newlength\cftquadrooldnumwidth
+\setlength\cftquadrooldnumwidth{\cftquadronumwidth}
+
+% Calculate the size of the header
+% https://tex.stackexchange.com/questions/7453/what-is-the-use-of-percent-signs-at-the-end-of-lines
+\newcommand{\calculatelquadrosheader}{%
+    \renewcommand\cftquadropresnum{\quadrosname~}%
+
+    % https://tex.stackexchange.com/questions/52861/what-is-the-plain-tex-equivalent-of-settowidth
+    \newlength\cftquadroinitialnumwidth
+    \settowidth\cftquadroinitialnumwidth{\cftquadropresnum\cftquadroaftersnum ab}%
+    \setlength\cftquadronumwidth{\dimexpr\cftquadrooldnumwidth+\cftquadroinitialnumwidth}%
+    \renewcommand\cftquadroaftersnum{\hfill\textendash\hfill}%
+}
+
+% https://tex.stackexchange.com/questions/14135/how-to-automatically-add-text-immediately-after-begindocument
+\AtBeginDocument{\calculatelquadrosheader}
+
+% https://tex.stackexchange.com/questions/514996/how-to-have-a-dynamic-cft-numwidth-i-e-accordingly-to-the-number-size
+\newlength\cftfigureoldnumwidth
+\setlength\cftfigureoldnumwidth{\cftfigurenumwidth}
+
+% Calculate the size of the header
+% https://tex.stackexchange.com/questions/7453/what-is-the-use-of-percent-signs-at-the-end-of-lines
+\newcommand{\calculatelfigureheader}{%
+    % https://tex.stackexchange.com/questions/52861/what-is-the-plain-tex-equivalent-of-settowidth
+    \newlength\cftfigureinitialnumwidth
+    \settowidth\cftfigureinitialnumwidth{\cftfigurepresnum\cftfigureaftersnum a}%
+    \setlength\cftfigurenumwidth{\dimexpr\cftfigureoldnumwidth+\cftfigureinitialnumwidth}%
+    \renewcommand\cftfigureaftersnum{\hfill\textendash\hfill}%
+}
+
+% https://tex.stackexchange.com/questions/14135/how-to-automatically-add-text-immediately-after-begindocument
+\AtBeginDocument{\calculatelfigureheader}
 
 
 
@@ -2513,7 +2545,7 @@ therefore the \topsep patch must need to be updated accordingly}}
 \@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{%
     \renewcommand{\orientadorname}{Orientador}
     \renewcommand{\coorientadorname}{Coorientador}
-    \renewcommand{\quadroname}{Quadro}
+    \renewcommand{\quadrosname}{Quadro}
     \renewcommand{\listofquadrosname}{Lista de Quadros}
     \renewcommand{\listfigurename}{Lista de Figuras}
     \renewcommand{\tableautorefname}{Tabela}
