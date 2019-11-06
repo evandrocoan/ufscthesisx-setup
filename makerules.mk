@@ -654,6 +654,10 @@ remote: pre_setup_envinronment
 	printf '\nRunning the command which will copy back the generated PDF...\n';
 	-passh -p "${UFSCTHESISX_REMOTE_PASSWORD}" \
 		scp -o StrictHostKeyChecking=no \
+		"${UFSCTHESISX_REMOTE_ADDRESS}:${UFSCTHESISX_ROOT_DIRECTORY}/${UFSCTHESISX_MAINTEX_DIRECTORY}/setup/cache/main.log" \
+		"${CURRENT_DIR}/" || printf '\nNo log file to copy back!\n';
+	-passh -p "${UFSCTHESISX_REMOTE_PASSWORD}" \
+		scp -o StrictHostKeyChecking=no \
 		"${UFSCTHESISX_REMOTE_ADDRESS}:${UFSCTHESISX_ROOT_DIRECTORY}/${UFSCTHESISX_MAINTEX_DIRECTORY}/main.pdf" \
 		"${CURRENT_DIR}/" || printf '\nNo PDF to copy back!\n';
 
