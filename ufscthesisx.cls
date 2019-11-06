@@ -434,11 +434,7 @@
 
 
 % Fontes das entradas do sumario
-%
-% How to make the table of contents section title upper case without messing with the space between the chapter and section?
 % https://tex.stackexchange.com/questions/399828/how-to-make-the-table-of-contents-section-title-upper-case-without-messing-with
-%
-% How to make section name uppercase in ToC?
 % https://tex.stackexchange.com/questions/156916/how-to-make-section-name-uppercase-in-toc
 \let\oldcontentsline\contentsline
 \def\contentsline#1#2{%
@@ -1210,7 +1206,6 @@ therefore the \topsep patch must need to be updated accordingly}}
         \newlistentry{lstlisting}{lol}{0}
     \endgroup
 
-    % Why the empty space size is increasing each call to my calculate listing header command?
     % https://tex.stackexchange.com/questions/388411/why-the-empty-space-size-is-increasing-each-call
     \newlength\cftlstlistingoldnumwidth
     \setlength\cftlstlistingoldnumwidth{\cftlstlistingnumwidth}
