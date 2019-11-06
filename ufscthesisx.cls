@@ -1316,25 +1316,6 @@ therefore the \topsep patch must need to be updated accordingly}}
   % https://tex.stackexchange.com/questions/514715/how-to-fix-minted-and-listings-hyphen-alignment-on-my-list-of-codes
   \newenvironment{code}{
     \captionsetup{type=listing}
-
-    % https://tex.stackexchange.com/questions/514847/xpatch-fails-if-passoptionstopackagefrenchbabel-is-used
-    \def\makesafecoloncatcoderestore##1{%
-        \edef##1{\catcode`:=\the\catcode`:\relax}%
-    }
-
-    % https://tex.stackexchange.com/questions/335104/save-and-restore-the-makeatletter-makeatother-state
-    \makesafecoloncatcoderestore\restorecodecoloncatcode
-    \catcode`\:=12
-
-    \xpatchcmd{\addcontentsline}
-    {\contentsline}
-    {\specialcodelistingcontentsline}{
-      % \message{^^J^^JCould YES patch the contentsline environment!^^J^^J^^J^^J^^J^^J^^J^^J^^J}
-    }
-    {\FAILEDPATCHSPECIALCONTENTSLINE}
-
-    % \xshowcmd\addcontentsline
-    \restorecodecoloncatcode
   }{}
 
   % https://tex.stackexchange.com/questions/269491/mixing-minted-with-lstlisting
