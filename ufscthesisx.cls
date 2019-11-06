@@ -2539,8 +2539,14 @@ therefore the \topsep patch must need to be updated accordingly}}
     \renewcommand{\orientadorname}{Orientador}
     \renewcommand{\coorientadorname}{Coorientador}
     \renewcommand{\quadrosname}{Quadro}
+    \renewcommand{\folhadeaprovacaoname}{Folha de Aprovação}
+    \renewcommand{\folhaderostoname}{Folha de Rosto}
+    \renewcommand{\listfigurename}{Lista de Ilustrações}
+    \renewcommand{\listtablename}{Lista de Tabelas}
     \renewcommand{\listofquadrosname}{Lista de Quadros}
     \renewcommand{\listfigurename}{Lista de Figuras}
+    \renewcommand{\listadesiglasname}{Lista de Abreviaturas e Siglas}
+    \renewcommand{\listadesimbolosname}{Lista de Símbolos}
     \renewcommand{\tableautorefname}{Tabela}
     \renewcommand{\figureautorefname}{Figura}
     \renewcommand{\chapterautorefname}{Capítulo}
@@ -2551,7 +2557,14 @@ therefore the \topsep patch must need to be updated accordingly}}
     \renewcommand{\covername}{Cover}
     \renewcommand{\orientadorname}{Supervisor}
     \renewcommand{\coorientadorname}{Co\hyp{}supervisor}
+    \renewcommand{\folhadeaprovacaoname}{Approval}
+    \renewcommand{\folhaderostoname}{Title Page}
+    \renewcommand{\errataname}{Errata Sheet}
+    \renewcommand{\listfigurename}{List of Illustrations}
+    \renewcommand{\listtablename}{List of Tables}
     \renewcommand{\listfigurename}{List of Figures}
+    \renewcommand{\listadesiglasname}{List of Abbreviations and Acronyms}
+    \renewcommand{\listadesimbolosname}{List of Symbols}
     \renewcommand{\tableautorefname}{Table}
     \renewcommand{\figureautorefname}{Figure}
     \renewcommand{\chapterautorefname}{Chapter}
