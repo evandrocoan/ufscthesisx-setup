@@ -1922,6 +1922,22 @@ therefore the \topsep patch must need to be updated accordingly}}
 % https://tex.stackexchange.com/questions/14135/how-to-automatically-add-text-immediately-after-begindocument
 \AtBeginDocument{\calculatelfigureheader}
 
+% https://tex.stackexchange.com/questions/514996/how-to-have-a-dynamic-cft-numwidth-i-e-accordingly-to-the-number-size
+\newlength\cfttableoldnumwidth
+\setlength\cfttableoldnumwidth{\cfttablenumwidth}
+
+% Calculate the size of the header
+% https://tex.stackexchange.com/questions/7453/what-is-the-use-of-percent-signs-at-the-end-of-lines
+\newcommand{\calculateltableheader}{%
+    % https://tex.stackexchange.com/questions/52861/what-is-the-plain-tex-equivalent-of-settowidth
+    \newlength\cfttableinitialnumwidth
+    \settowidth\cfttableinitialnumwidth{\cfttablepresnum\cfttableaftersnum a}%
+    \setlength\cfttablenumwidth{\dimexpr\cfttableoldnumwidth+\cfttableinitialnumwidth}%
+    \renewcommand\cfttableaftersnum{\hfill\textendash\hfill}%
+}
+
+% https://tex.stackexchange.com/questions/14135/how-to-automatically-add-text-immediately-after-begindocument
+\AtBeginDocument{\calculateltableheader}
 
 
 
