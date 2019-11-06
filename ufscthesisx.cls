@@ -1851,7 +1851,10 @@ therefore the \topsep patch must need to be updated accordingly}}
 % https://tex.stackexchange.com/questions/479086/styling-and-spacing-around-float-caption-for-listing
 % https://tex.stackexchange.com/questions/97673/merge-items-in-list-of-floats
 % https://tex.stackexchange.com/questions/23313/how-can-i-reduce-padding-after-figure
-\captionsetup[quadro]{skip=1mm}
+% https://tex.stackexchange.com/questions/515157/package-caption-warning-the-caption-type-was-already-set-to-quadro-on-input
+\AtBeginEnvironment{quadro}{
+  \captionsetup{skip=1mm}
+}
 
 % https://tex.stackexchange.com/questions/176418/remove-list-of-newfloat-from-toc
 \newcommand{\AdjustForMemoir}[1]{%
