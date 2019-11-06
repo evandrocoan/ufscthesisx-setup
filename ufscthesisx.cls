@@ -1176,6 +1176,108 @@ therefore the \topsep patch must need to be updated accordingly}}
 % https://tex.stackexchange.com/questions/388489/custom-list-throw-latex-error-command-mycustomfiction-already-defined
 \usepackage{morewrites}
 
+% https://tex.stackexchange.com/questions/62611/how-to-make-ref-references-include-the-word-figure
+% https://tex.stackexchange.com/questions/121865/nameref-how-to-display-section-name-and-its-number
+\usepackage[nameinlink]{cleveref}
+\newcommand*{\typeref}[1]{\hyperref[{#1}]{\Cref{#1}}} % One single link
+\newcommand*{\fullref}[1]{\hyperref[{#1}]{\Cref{#1}: \nameref{#1}}} % One single link
+
+% https://tex.stackexchange.com/questions/329631/creating-new-captions-and-caption-counters
+\def\listofquadrosname{List of Frames}
+\def\quadrosname{Frame}
+
+% https://tex.stackexchange.com/questions/502367/how-to-add-babel-translations-to-cleveref-based-cross-references-to-my-custom-fl
+\crefname{quadro}{frame}{frames}
+\Crefname{quadro}{Frame}{Frames}
+
+\DeclareFloatingEnvironment[fileext=loq,placement={!hbtp},name=\quadrosname,within=chapter,listname=\listofquadrosname]{quadro}
+
+\@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{\renewcommand{\quadrosname}{Quadro}}}{}}{}
+\@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{\renewcommand{\listofquadrosname}{Lista de Quadros}}}{}}{}
+
+\@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{\crefname{quadro}{quadro}{quadros}}}{}}{}
+\@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{\Crefname{quadro}{Quadro}{Quadros}}}{}}{}
+
+% fix fig. being used instead of figure
+\@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{\crefname{figure}{figura}{figuras}}}{}}{}
+\@ifpackageloaded{babel}{\@ifpackagewith{babel}{english}{\addto\captionsenglish{\crefname{figure}{figure}{figures}}}{}}{}
+
+% https://tex.stackexchange.com/questions/479086/styling-and-spacing-around-float-caption-for-listing
+% https://tex.stackexchange.com/questions/97673/merge-items-in-list-of-floats
+% https://tex.stackexchange.com/questions/23313/how-can-i-reduce-padding-after-figure
+% https://tex.stackexchange.com/questions/515157/package-caption-warning-the-caption-type-was-already-set-to-quadro-on-input
+\AtBeginEnvironment{quadro}{
+  \captionsetup{skip=1mm}
+}
+
+% https://tex.stackexchange.com/questions/176418/remove-list-of-newfloat-from-toc
+\newcommand{\AdjustForMemoir}[1]{%
+  \csletcs{kept@listof#1}{listof#1}%
+  \csdef{listof#1}{%
+    \@ifstar
+     {\csappto{newfloat@listof#1@hook}{\append@star}%
+      \csuse{kept@listof#1}}%
+     {\csuse{kept@listof#1}}%
+  }
+}
+\def\append@star#1{#1*}
+\AdjustForMemoir{quadro}
+\newlistentry{quadro}{loq}{0}
+
+% https://tex.stackexchange.com/questions/514996/how-to-have-a-dynamic-cft-numwidth-i-e-accordingly-to-the-number-size
+\newlength\cftquadrooldnumwidth
+\setlength\cftquadrooldnumwidth{\cftquadronumwidth}
+
+% Calculate the size of the header
+% https://tex.stackexchange.com/questions/7453/what-is-the-use-of-percent-signs-at-the-end-of-lines
+\newcommand{\calculatelquadrosheader}{%
+    \renewcommand\cftquadropresnum{\quadrosname~}%
+
+    % https://tex.stackexchange.com/questions/52861/what-is-the-plain-tex-equivalent-of-settowidth
+    \newlength\cftquadroinitialnumwidth
+    \settowidth\cftquadroinitialnumwidth{\cftquadropresnum\cftquadroaftersnum ab}%
+    \setlength\cftquadronumwidth{\dimexpr\cftquadrooldnumwidth+\cftquadroinitialnumwidth}%
+    \renewcommand\cftquadroaftersnum{\hfill\textendash\hfill}%
+}
+
+% https://tex.stackexchange.com/questions/14135/how-to-automatically-add-text-immediately-after-begindocument
+\AtBeginDocument{\calculatelquadrosheader}
+
+% https://tex.stackexchange.com/questions/514996/how-to-have-a-dynamic-cft-numwidth-i-e-accordingly-to-the-number-size
+\newlength\cftfigureoldnumwidth
+\setlength\cftfigureoldnumwidth{\cftfigurenumwidth}
+
+% Calculate the size of the header
+% https://tex.stackexchange.com/questions/7453/what-is-the-use-of-percent-signs-at-the-end-of-lines
+% https://tex.stackexchange.com/questions/12865/list-of-figures-how-to-add-caption-label
+\newcommand{\calculatelfigureheader}{%
+    % https://tex.stackexchange.com/questions/52861/what-is-the-plain-tex-equivalent-of-settowidth
+    \newlength\cftfigureinitialnumwidth
+    \settowidth\cftfigureinitialnumwidth{\cftfigurepresnum\cftfigureaftersnum a}%
+    \setlength\cftfigurenumwidth{\dimexpr\cftfigureoldnumwidth+\cftfigureinitialnumwidth}%
+    \renewcommand\cftfigureaftersnum{\hfill\textendash\hfill}%
+}
+
+% https://tex.stackexchange.com/questions/14135/how-to-automatically-add-text-immediately-after-begindocument
+\AtBeginDocument{\calculatelfigureheader}
+
+% https://tex.stackexchange.com/questions/514996/how-to-have-a-dynamic-cft-numwidth-i-e-accordingly-to-the-number-size
+\newlength\cfttableoldnumwidth
+\setlength\cfttableoldnumwidth{\cfttablenumwidth}
+
+% Calculate the size of the header
+% https://tex.stackexchange.com/questions/7453/what-is-the-use-of-percent-signs-at-the-end-of-lines
+\newcommand{\calculateltableheader}{%
+    % https://tex.stackexchange.com/questions/52861/what-is-the-plain-tex-equivalent-of-settowidth
+    \newlength\cfttableinitialnumwidth
+    \settowidth\cfttableinitialnumwidth{\cfttablepresnum\cfttableaftersnum a}%
+    \setlength\cfttablenumwidth{\dimexpr\cfttableoldnumwidth+\cfttableinitialnumwidth}%
+    \renewcommand\cfttableaftersnum{\hfill\textendash\hfill}%
+}
+
+% https://tex.stackexchange.com/questions/14135/how-to-automatically-add-text-immediately-after-begindocument
+\AtBeginDocument{\calculateltableheader}
+
 % http://tex.stackexchange.com/questions/228936/setting-entries-of-list-of-listings-in-latex-package-listings
 % https://tex.stackexchange.com/questions/223079/you-cant-use-a-prefix-with-charfb-error-when-importing-csv-into-latex
 \@ifclassloaded{memoir}{%
@@ -1417,11 +1519,6 @@ therefore the \topsep patch must need to be updated accordingly}}
 % https://tex.stackexchange.com/questions/403651/while-loading-fancyvrb-siunitx-and-bigfoot-i-got-input-stack-size-5000-tex-st
 \xpatchcmd{\FN@allmarks}{266}{256}{}{}
 
-% https://tex.stackexchange.com/questions/62611/how-to-make-ref-references-include-the-word-figure
-% https://tex.stackexchange.com/questions/121865/nameref-how-to-display-section-name-and-its-number
-\usepackage[nameinlink]{cleveref}
-\newcommand*{\typeref}[1]{\hyperref[{#1}]{\Cref{#1}}} % One single link
-\newcommand*{\fullref}[1]{\hyperref[{#1}]{\Cref{#1}: \nameref{#1}}} % One single link
 
 
 
@@ -1828,100 +1925,6 @@ therefore the \topsep patch must need to be updated accordingly}}
 }
 
 
-% https://tex.stackexchange.com/questions/329631/creating-new-captions-and-caption-counters
-\def\listofquadrosname{List of Frames}
-\def\quadrosname{Frame}
-
-% https://tex.stackexchange.com/questions/502367/how-to-add-babel-translations-to-cleveref-based-cross-references-to-my-custom-fl
-\crefname{quadro}{frame}{frames}
-\Crefname{quadro}{Frame}{Frames}
-
-\DeclareFloatingEnvironment[fileext=loq,placement={!hbtp},name=\quadrosname,within=chapter,listname=\listofquadrosname]{quadro}
-
-\@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{\renewcommand{\quadrosname}{Quadro}}}{}}{}
-\@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{\renewcommand{\listofquadrosname}{Lista de Quadros}}}{}}{}
-
-\@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{\crefname{quadro}{quadro}{quadros}}}{}}{}
-\@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{\Crefname{quadro}{Quadro}{Quadros}}}{}}{}
-
-% fix fig. being used instead of figure
-\@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{\crefname{figure}{figura}{figuras}}}{}}{}
-\@ifpackageloaded{babel}{\@ifpackagewith{babel}{english}{\addto\captionsenglish{\crefname{figure}{figure}{figures}}}{}}{}
-
-% https://tex.stackexchange.com/questions/479086/styling-and-spacing-around-float-caption-for-listing
-% https://tex.stackexchange.com/questions/97673/merge-items-in-list-of-floats
-% https://tex.stackexchange.com/questions/23313/how-can-i-reduce-padding-after-figure
-% https://tex.stackexchange.com/questions/515157/package-caption-warning-the-caption-type-was-already-set-to-quadro-on-input
-\AtBeginEnvironment{quadro}{
-  \captionsetup{skip=1mm}
-}
-
-% https://tex.stackexchange.com/questions/176418/remove-list-of-newfloat-from-toc
-\newcommand{\AdjustForMemoir}[1]{%
-  \csletcs{kept@listof#1}{listof#1}%
-  \csdef{listof#1}{%
-    \@ifstar
-     {\csappto{newfloat@listof#1@hook}{\append@star}%
-      \csuse{kept@listof#1}}%
-     {\csuse{kept@listof#1}}%
-  }
-}
-\def\append@star#1{#1*}
-\AdjustForMemoir{quadro}
-\newlistentry{quadro}{loq}{0}
-
-% https://tex.stackexchange.com/questions/514996/how-to-have-a-dynamic-cft-numwidth-i-e-accordingly-to-the-number-size
-\newlength\cftquadrooldnumwidth
-\setlength\cftquadrooldnumwidth{\cftquadronumwidth}
-
-% Calculate the size of the header
-% https://tex.stackexchange.com/questions/7453/what-is-the-use-of-percent-signs-at-the-end-of-lines
-\newcommand{\calculatelquadrosheader}{%
-    \renewcommand\cftquadropresnum{\quadrosname~}%
-
-    % https://tex.stackexchange.com/questions/52861/what-is-the-plain-tex-equivalent-of-settowidth
-    \newlength\cftquadroinitialnumwidth
-    \settowidth\cftquadroinitialnumwidth{\cftquadropresnum\cftquadroaftersnum ab}%
-    \setlength\cftquadronumwidth{\dimexpr\cftquadrooldnumwidth+\cftquadroinitialnumwidth}%
-    \renewcommand\cftquadroaftersnum{\hfill\textendash\hfill}%
-}
-
-% https://tex.stackexchange.com/questions/14135/how-to-automatically-add-text-immediately-after-begindocument
-\AtBeginDocument{\calculatelquadrosheader}
-
-% https://tex.stackexchange.com/questions/514996/how-to-have-a-dynamic-cft-numwidth-i-e-accordingly-to-the-number-size
-\newlength\cftfigureoldnumwidth
-\setlength\cftfigureoldnumwidth{\cftfigurenumwidth}
-
-% Calculate the size of the header
-% https://tex.stackexchange.com/questions/7453/what-is-the-use-of-percent-signs-at-the-end-of-lines
-\newcommand{\calculatelfigureheader}{%
-    % https://tex.stackexchange.com/questions/52861/what-is-the-plain-tex-equivalent-of-settowidth
-    \newlength\cftfigureinitialnumwidth
-    \settowidth\cftfigureinitialnumwidth{\cftfigurepresnum\cftfigureaftersnum a}%
-    \setlength\cftfigurenumwidth{\dimexpr\cftfigureoldnumwidth+\cftfigureinitialnumwidth}%
-    \renewcommand\cftfigureaftersnum{\hfill\textendash\hfill}%
-}
-
-% https://tex.stackexchange.com/questions/14135/how-to-automatically-add-text-immediately-after-begindocument
-\AtBeginDocument{\calculatelfigureheader}
-
-% https://tex.stackexchange.com/questions/514996/how-to-have-a-dynamic-cft-numwidth-i-e-accordingly-to-the-number-size
-\newlength\cfttableoldnumwidth
-\setlength\cfttableoldnumwidth{\cfttablenumwidth}
-
-% Calculate the size of the header
-% https://tex.stackexchange.com/questions/7453/what-is-the-use-of-percent-signs-at-the-end-of-lines
-\newcommand{\calculateltableheader}{%
-    % https://tex.stackexchange.com/questions/52861/what-is-the-plain-tex-equivalent-of-settowidth
-    \newlength\cfttableinitialnumwidth
-    \settowidth\cfttableinitialnumwidth{\cfttablepresnum\cfttableaftersnum a}%
-    \setlength\cfttablenumwidth{\dimexpr\cfttableoldnumwidth+\cfttableinitialnumwidth}%
-    \renewcommand\cfttableaftersnum{\hfill\textendash\hfill}%
-}
-
-% https://tex.stackexchange.com/questions/14135/how-to-automatically-add-text-immediately-after-begindocument
-\AtBeginDocument{\calculateltableheader}
 
 
 
