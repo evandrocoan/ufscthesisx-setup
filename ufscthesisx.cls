@@ -1413,8 +1413,6 @@ therefore the \topsep patch must need to be updated accordingly}}
   \captionsetup[listing]{position=top,skip=0pt}
 
   % https://tex.stackexchange.com/questions/514835/how-to-replace-a-command-argument-as-2-with-something-else
-  \newcommand{\specialcodelistingcontentsline}[1]{\contentsline{lstlisting}}
-
   % https://tex.stackexchange.com/questions/514715/how-to-fix-minted-and-listings-hyphen-alignment-on-my-list-of-codes
   \newenvironment{code}{
     \captionsetup{type=listing}
