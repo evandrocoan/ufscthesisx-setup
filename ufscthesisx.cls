@@ -1210,92 +1210,83 @@ therefore the \topsep patch must need to be updated accordingly}}
   \captionsetup{skip=1mm}
 }
 
-% https://tex.stackexchange.com/questions/176418/remove-list-of-newfloat-from-toc
-\newcommand{\AdjustForMemoir}[1]{%
-  \csletcs{kept@listof#1}{listof#1}%
-  \csdef{listof#1}{%
-    \@ifstar
-     {\csappto{newfloat@listof#1@hook}{\append@star}%
-      \csuse{kept@listof#1}}%
-     {\csuse{kept@listof#1}}%
-  }
-}
-\def\append@star#1{#1*}
-\AdjustForMemoir{quadro}
-\newlistentry{quadro}{loq}{0}
-
-% https://tex.stackexchange.com/questions/514996/how-to-have-a-dynamic-cft-numwidth-i-e-accordingly-to-the-number-size
-\newlength\cftquadrooldnumwidth
-\setlength\cftquadrooldnumwidth{\cftquadronumwidth}
-
-% Calculate the size of the header
-% https://tex.stackexchange.com/questions/7453/what-is-the-use-of-percent-signs-at-the-end-of-lines
-\newcommand{\calculatelquadrosheader}{%
-    \renewcommand\cftquadropresnum{\quadrosname~}%
-
-    % https://tex.stackexchange.com/questions/52861/what-is-the-plain-tex-equivalent-of-settowidth
-    \newlength\cftquadroinitialnumwidth
-    \settowidth\cftquadroinitialnumwidth{\cftquadropresnum\cftquadroaftersnum ab}%
-    \setlength\cftquadronumwidth{\dimexpr\cftquadrooldnumwidth+\cftquadroinitialnumwidth}%
-    \renewcommand\cftquadroaftersnum{\hfill\textendash\hfill}%
-}
-
-% https://tex.stackexchange.com/questions/14135/how-to-automatically-add-text-immediately-after-begindocument
-\AtBeginDocument{\calculatelquadrosheader}
-
-% https://tex.stackexchange.com/questions/514996/how-to-have-a-dynamic-cft-numwidth-i-e-accordingly-to-the-number-size
-\newlength\cftfigureoldnumwidth
-\setlength\cftfigureoldnumwidth{\cftfigurenumwidth}
-
-% Calculate the size of the header
-% https://tex.stackexchange.com/questions/7453/what-is-the-use-of-percent-signs-at-the-end-of-lines
-% https://tex.stackexchange.com/questions/12865/list-of-figures-how-to-add-caption-label
-\newcommand{\calculatelfigureheader}{%
-    % https://tex.stackexchange.com/questions/52861/what-is-the-plain-tex-equivalent-of-settowidth
-    \newlength\cftfigureinitialnumwidth
-    \settowidth\cftfigureinitialnumwidth{\cftfigurepresnum\cftfigureaftersnum a}%
-    \setlength\cftfigurenumwidth{\dimexpr\cftfigureoldnumwidth+\cftfigureinitialnumwidth}%
-    \renewcommand\cftfigureaftersnum{\hfill\textendash\hfill}%
-}
-
-% https://tex.stackexchange.com/questions/14135/how-to-automatically-add-text-immediately-after-begindocument
-\AtBeginDocument{\calculatelfigureheader}
-
-% https://tex.stackexchange.com/questions/514996/how-to-have-a-dynamic-cft-numwidth-i-e-accordingly-to-the-number-size
-\newlength\cfttableoldnumwidth
-\setlength\cfttableoldnumwidth{\cfttablenumwidth}
-
-% Calculate the size of the header
-% https://tex.stackexchange.com/questions/7453/what-is-the-use-of-percent-signs-at-the-end-of-lines
-\newcommand{\calculateltableheader}{%
-    % https://tex.stackexchange.com/questions/52861/what-is-the-plain-tex-equivalent-of-settowidth
-    \newlength\cfttableinitialnumwidth
-    \settowidth\cfttableinitialnumwidth{\cfttablepresnum\cfttableaftersnum a}%
-    \setlength\cfttablenumwidth{\dimexpr\cfttableoldnumwidth+\cfttableinitialnumwidth}%
-    \renewcommand\cfttableaftersnum{\hfill\textendash\hfill}%
-}
-
-% https://tex.stackexchange.com/questions/14135/how-to-automatically-add-text-immediately-after-begindocument
-\AtBeginDocument{\calculateltableheader}
-
-% http://tex.stackexchange.com/questions/228936/setting-entries-of-list-of-listings-in-latex-package-listings
-% https://tex.stackexchange.com/questions/223079/you-cant-use-a-prefix-with-charfb-error-when-importing-csv-into-latex
 \@ifclassloaded{memoir}{%
+  % https://tex.stackexchange.com/questions/176418/remove-list-of-newfloat-from-toc
+  \newcommand{\AdjustForMemoir}[1]{%
+    \csletcs{kept@listof#1}{listof#1}%
+    \csdef{listof#1}{%
+      \@ifstar
+       {\csappto{newfloat@listof#1@hook}{\append@star}%
+        \csuse{kept@listof#1}}%
+       {\csuse{kept@listof#1}}%
+    }
+  }
+  \def\append@star#1{#1*}
+  \AdjustForMemoir{quadro}
+  \newlistentry{quadro}{loq}{0}
+
+  % https://tex.stackexchange.com/questions/514996/how-to-have-a-dynamic-cft-numwidth-i-e-accordingly-to-the-number-size
+  \newlength\cftquadrooldnumwidth
+  \setlength\cftquadrooldnumwidth{\cftquadronumwidth}
+
+  % Calculate the size of the header
+  % https://tex.stackexchange.com/questions/7453/what-is-the-use-of-percent-signs-at-the-end-of-lines
+  \newcommand{\calculatelquadrosheader}{%
+      \renewcommand\cftquadropresnum{\quadrosname~}%
+
+      % https://tex.stackexchange.com/questions/52861/what-is-the-plain-tex-equivalent-of-settowidth
+      \newlength\cftquadroinitialnumwidth
+      \settowidth\cftquadroinitialnumwidth{\cftquadropresnum\cftquadroaftersnum ab}%
+      \setlength\cftquadronumwidth{\dimexpr\cftquadrooldnumwidth+\cftquadroinitialnumwidth}%
+      \renewcommand\cftquadroaftersnum{\hfill\textendash\hfill}%
+  }
+
+  % https://tex.stackexchange.com/questions/14135/how-to-automatically-add-text-immediately-after-begindocument
+  \AtBeginDocument{\calculatelquadrosheader}
+
+  % https://tex.stackexchange.com/questions/514996/how-to-have-a-dynamic-cft-numwidth-i-e-accordingly-to-the-number-size
+  \newlength\cftfigureoldnumwidth
+  \setlength\cftfigureoldnumwidth{\cftfigurenumwidth}
+
+  % Calculate the size of the header
+  % https://tex.stackexchange.com/questions/7453/what-is-the-use-of-percent-signs-at-the-end-of-lines
+  % https://tex.stackexchange.com/questions/12865/list-of-figures-how-to-add-caption-label
+  \newcommand{\calculatelfigureheader}{%
+      % https://tex.stackexchange.com/questions/52861/what-is-the-plain-tex-equivalent-of-settowidth
+      \newlength\cftfigureinitialnumwidth
+      \settowidth\cftfigureinitialnumwidth{\cftfigurepresnum\cftfigureaftersnum a}%
+      \setlength\cftfigurenumwidth{\dimexpr\cftfigureoldnumwidth+\cftfigureinitialnumwidth}%
+      \renewcommand\cftfigureaftersnum{\hfill\textendash\hfill}%
+  }
+
+  % https://tex.stackexchange.com/questions/14135/how-to-automatically-add-text-immediately-after-begindocument
+  \AtBeginDocument{\calculatelfigureheader}
+
+  % https://tex.stackexchange.com/questions/514996/how-to-have-a-dynamic-cft-numwidth-i-e-accordingly-to-the-number-size
+  \newlength\cfttableoldnumwidth
+  \setlength\cfttableoldnumwidth{\cfttablenumwidth}
+
+  % Calculate the size of the header
+  % https://tex.stackexchange.com/questions/7453/what-is-the-use-of-percent-signs-at-the-end-of-lines
+  \newcommand{\calculateltableheader}{%
+      % https://tex.stackexchange.com/questions/52861/what-is-the-plain-tex-equivalent-of-settowidth
+      \newlength\cfttableinitialnumwidth
+      \settowidth\cfttableinitialnumwidth{\cfttablepresnum\cfttableaftersnum a}%
+      \setlength\cfttablenumwidth{\dimexpr\cfttableoldnumwidth+\cfttableinitialnumwidth}%
+      \renewcommand\cfttableaftersnum{\hfill\textendash\hfill}%
+  }
+
+  % https://tex.stackexchange.com/questions/14135/how-to-automatically-add-text-immediately-after-begindocument
+  \AtBeginDocument{\calculateltableheader}
+
+  % http://tex.stackexchange.com/questions/228936/setting-entries-of-list-of-listings-in-latex-package-listings
+  % https://tex.stackexchange.com/questions/223079/you-cant-use-a-prefix-with-charfb-error-when-importing-csv-into-latex
     % https://tex.stackexchange.com/questions/485830/why-latex-does-not-tell-me-which-command-is-undefined
     \@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{\renewcommand{\lstlistingname}{Código}}}{}}{}
     \@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{\renewcommand{\lstlistlistingname}{Lista de Códigos}}}{}}{}
 
     \@ifpackageloaded{babel}{\@ifpackagewith{babel}{english}{\addto\captionsenglish{\renewcommand{\lstlistingname}{Code}}}{}}{}
     \@ifpackageloaded{babel}{\@ifpackagewith{babel}{english}{\addto\captionsenglish{\renewcommand{\lstlistlistingname}{List of Codes}}}{}}{}
-
-    \@ifundefined{listlistingname}{ \newcommand{\listlistingname}{Listing of Codes} }{}
-    \@ifundefined{listingname}{ \newcommand{\listingname}{Codes} }{}
-
-    \@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{\renewcommand{\listlistingname}{Lista de Códigos}}}{}}{}
-    \@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{\renewcommand{\listingname}{Código}}}{}}{}
-
-    \@ifpackageloaded{babel}{\@ifpackagewith{babel}{english}{\addto\captionsenglish{\renewcommand{\listingname}{Code}}}{}}{}
-    \@ifpackageloaded{babel}{\@ifpackagewith{babel}{english}{\addto\captionsenglish{\renewcommand{\listlistingname}{List of Codes}}}{}}{}
 
     \@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{\crefname{listing}{código}{códigos}}}{}}{}
     \@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{\Crefname{listing}{Código}{Códigos}}}{}}{}
@@ -1320,7 +1311,7 @@ therefore the \topsep patch must need to be updated accordingly}}
         % https://tex.stackexchange.com/questions/52861/what-is-the-plain-tex-equivalent-of-settowidth
         \newlength\cftlstlistinginitialnumwidth
         \settowidth\cftlstlistinginitialnumwidth{\cftlstlistingpresnum\cftlstlistingaftersnum ab}%
-        \setlength\cftlstlistingnumwidth{\dimexpr\cftlstlistingoldnumwidth+\cftlstlistinginitialnumwidth}%
+        \setlength\cftlstlistingnumwidth{\dimexpr\cftlstlistingoldnumwidth+\cftlstlistinginitialnumwidth+2pt}%
         \renewcommand\cftlstlistingaftersnum{\hfill\textendash\hfill}%
     }
 
@@ -1410,28 +1401,19 @@ therefore the \topsep patch must need to be updated accordingly}}
   \renewcommand\theFancyVerbLine{\normalsize\color{gray}\arabic{FancyVerbLine}}
 
   % https://tex.stackexchange.com/questions/320185/adjust-vertical-spacing-between-caption-and-listing-in-koma-scrartcl
-  \captionsetup[listing]{position=top,skip=0pt}
-
   % https://tex.stackexchange.com/questions/514835/how-to-replace-a-command-argument-as-2-with-something-else
   % https://tex.stackexchange.com/questions/514715/how-to-fix-minted-and-listings-hyphen-alignment-on-my-list-of-codes
-  \newenvironment{code}{
-    \captionsetup{type=listing}
-  }{}
-
   % https://tex.stackexchange.com/questions/269491/mixing-minted-with-lstlisting
   % https://tex.stackexchange.com/questions/26220/control-spacing-around-table-caption
-  \AtBeginEnvironment{code}{\setcounter{listing}{\value{lstlisting}}
+  % https://tex.stackexchange.com/questions/515220/how-to-set-minted-listing-table-of-contents-numwidth/
+  % https://tex.stackexchange.com/questions/27645/customizing-the-list-of-listings-generated-by-lstlistoflistings
+  % https://tex.stackexchange.com/questions/228936/setting-entries-of-list-of-listings-in-latex-package-listings
+  \newenvironment{code}{
+    \captionsetup{type=lstlisting,skip=0pt,position=top}
     \setlength{\abovecaptionskip}{0pt}
     \setlength{\belowcaptionskip}{10pt}
     \setlength{\parskip}{0pt}
-    \captionsetup{skip=0pt}
-    % \vspace*{-1mm}
-  }
-  \AtEndEnvironment{code}{\stepcounter{lstlisting}}
-
-  % https://tex.stackexchange.com/questions/269491/mixing-minted-with-lstlisting
-  \AtBeginEnvironment{listing}{\setcounter{listing}{\value{lstlisting}}}
-  \AtEndEnvironment{listing}{\stepcounter{lstlisting}}
+  }{}
 
   % https://tex.stackexchange.com/questions/14166/red-box-drawn-around-question-mark-operator-in-minted-erlang-code
   \AtBeginEnvironment{code}{\renewcommand{\fcolorbox}[4][]{#4}}
