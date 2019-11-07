@@ -1431,17 +1431,22 @@ therefore the \topsep patch must need to be updated accordingly}}
 
 
 % ufscthesis start, https://github.com/UFSC/ufscthesisx/issues/19
+% https://tex.stackexchange.com/questions/163479/glossaries-conflict-with-memoir
+\let\printglossary\relax
+\let\theglossary\relax
+\let\endtheglossary\relax
+
 \RequirePackage[%
-subentrycounter,
-seeautonumberlist,
-nonumberlist,
-nogroupskip,
-nomain,
-shortcuts,   % criação de atalhos
-acronym,  % criação de acrônimos
-translate=babel, % Faz o papel de \providetranslation
-nopostdot  % Não é colocado ponto ao final da entrada
-]{glossaries}
+  subentrycounter,
+  seeautonumberlist,
+  nonumberlist,
+  nogroupskip,
+  nomain,
+  shortcuts,   % criação de atalhos
+  acronym,  % criação de acrônimos
+  translate=babel, % Faz o papel de \providetranslation
+  nopostdot  % Não é colocado ponto ao final da entrada
+  ]{glossaries}
 
 % Só dá entrada na lista. Ainda não funciona com o limarka
 % Retira o espaço do pacote glossaries
