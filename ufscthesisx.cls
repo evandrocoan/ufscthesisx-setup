@@ -1429,6 +1429,91 @@ therefore the \topsep patch must need to be updated accordingly}}
 \let\ordinal\relax
 \usepackage{datetime}
 
+
+% ufscthesis start, https://github.com/UFSC/ufscthesisx/issues/19
+\RequirePackage[%
+subentrycounter,
+seeautonumberlist,
+nonumberlist,
+nogroupskip,
+nomain,
+shortcuts,   % criação de atalhos
+acronym,  % criação de acrônimos
+translate=babel, % Faz o papel de \providetranslation
+nopostdot  % Não é colocado ponto ao final da entrada
+]{glossaries}
+
+% Só dá entrada na lista. Ainda não funciona com o limarka
+% Retira o espaço do pacote glossaries
+\renewcommand{\glossarypreamble}{\vspace{-0.2cm}}
+
+\providecommand{\imprimirnivel}{}
+\newcommand{\nivel}[1]{\renewcommand{\imprimirnivel}{#1}}
+
+% Criação de estilo
+\newglossarystyle{mylong1}{% modificado de https://tex.stackexchange.com/a/166209/151962
+  \setglossarystyle{long}%
+  \renewenvironment{theglossary}%
+  {\begin{longtable}[l]{@{}p{\dimexpr 3.0cm-\tabcolsep}p{0.78\hsize}}}% <-- change the value here
+    {\end{longtable}}%
+}
+
+% Só um pequeno récuo em relação ao primeiro
+\newglossarystyle{mylong2}{% modificado de https://tex.stackexchange.com/a/166209/151962
+  \setglossarystyle{long}%
+  \renewenvironment{theglossary}%
+  {\begin{longtable}[l]{@{}p{\dimexpr 2.0cm-\tabcolsep}p{0.86\hsize}}}% <-- change the value here
+    {\end{longtable}}%
+}
+
+% Só dá entrada na lista. Ainda não funciona com o limarka
+\newcommand{\siglalista}[2]{\newacronym{#1}{#1}{#2}}
+
+\newglossary{simbolos}{simbolos}{sbl}{simbolos}
+
+% Só dá entrada na lista. Ainda não funciona com o limarka
+\newcommand{\simbololista}[3]{\newglossaryentry{#1}{%
+    type=simbolos,
+    name=#2,
+    description=#3}}
+
+% imrpime lista de siglas ordenado alfabeticamente
+\newcommand{\imprimirlistadesiglas}{%
+  \pdfbookmark[0]{\listadesiglasname}{acn}
+  \printnoidxglossary[
+  style=mylong1,
+  type=acronym,
+  sort=letter,
+  title={\listadesiglasname\vspace{-0.2cm}}
+  ]
+  \cleardoublepage
+}
+
+% imprime lista de simbolos na ordem em que aparece no texto
+\newcommand{\imprimirlistadesimbolos}{%
+  \pdfbookmark[0]{\listadesimbolosname}{sbl}
+  \printnoidxglossary[
+  style=mylong2,
+  type=simbolos,
+  sort=use,
+  title={\listadesimbolosname}
+  ]
+  \cleardoublepage
+}
+
+% imprime glossário
+\newcommand{\imprimirglossario}{
+  \cleardoublepage
+  \pdfbookmark[0]{\glossaryname}{glo}
+  \printnoidxglossary[
+  type=main,
+  sort=use,
+  title={\glossaryname}
+  ]
+}
+% ufscthesis end, https://github.com/UFSC/ufscthesisx/issues/19
+
+
 % Package csquotes Warning: Load 'inputenc' before 'csquotes'
 % Package biblatex Warning: 'babel/polyglossia' detected but 'csquotes' missing
 % https://tex.stackexchange.com/questions/229638/package-biblatex-warning-babel-polyglossia-detected-but-csquotes-missing
