@@ -1391,7 +1391,7 @@ therefore the \topsep patch must need to be updated accordingly}}
   % https://tex.stackexchange.com/questions/57353/how-to-get-caption-above-listing-with-minted
   % https://tex.stackexchange.com/questions/339931/latex-minted-package-using-custom-output-directory-build
   % https://tex.stackexchange.com/questions/223079/you-cant-use-a-prefix-with-charfb-error-when-importing-csv-into-latex
-  \usepackage[newfloat,chapter,outputdir=setup/cache]{minted}
+  \usepackage[newfloat,chapter,outputdir=latexcache]{minted}
 
   % https://tex.stackexchange.com/questions/35546/minted-setstretch-and-font-size
   % https://tex.stackexchange.com/questions/484788/how-to-change-overall-font-size-of-minted

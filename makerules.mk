@@ -130,7 +130,7 @@ endif
 THESIS_OUTPUT_NAME := main
 
 # This is the directory where the temporary files are going to be
-CACHE_DIRECTORY := setup/cache
+CACHE_DIRECTORY := latexcache
 THESIS_MAIN_FILE_PATH := ${CACHE_DIRECTORY}/${THESIS_MAIN_FILE}.pdf
 
 # Find all files ending with `main.tex`
@@ -318,6 +318,7 @@ setup_envinronment: pre_setup_envinronment
 	readarray -td' ' DIRECTORIES_TO_CREATE <<<"$(shell "${FIND_EXEC}" \
 			-not -path "./**.git**" \
 			-not -path "./pictures**" -type d \
+			-not -path "./${CACHE_DIRECTORY}**" -type d \
 			-not -path "./setup**" -type d) "; \
 	unset 'DIRECTORIES_TO_CREATE[-1]'; \
 	declare -p DIRECTORIES_TO_CREATE $(if ${ENABLE_DEBUG_MODE},,> /dev/null); \
@@ -585,7 +586,7 @@ printf '\nThe current directory is:\n'; pwd; \
 if [[ "w--delete" == "w$(findstring --delete,${UFSCTHESISX_RSYNC_ARGUMENTS})" ]]; \
 	then \
 		printf '\nRemoving cache directory...\n'; \
-		rm -rfv setup/cache; \
+		rm -rfv "${CACHE_DIRECTORY}"; \
 	fi; \
 printf '\nRunning the command: make ${rules}\n'; \
 make ${rules};
@@ -654,7 +655,7 @@ remote: pre_setup_envinronment
 	printf '\nRunning the command which will copy back the generated PDF...\n';
 	-passh -p "${UFSCTHESISX_REMOTE_PASSWORD}" \
 		scp -o StrictHostKeyChecking=no \
-		"${UFSCTHESISX_REMOTE_ADDRESS}:${UFSCTHESISX_ROOT_DIRECTORY}/${UFSCTHESISX_MAINTEX_DIRECTORY}/setup/cache/main.log" \
+		"${UFSCTHESISX_REMOTE_ADDRESS}:${UFSCTHESISX_ROOT_DIRECTORY}/${UFSCTHESISX_MAINTEX_DIRECTORY}/${CACHE_DIRECTORY}/main.log" \
 		"${CURRENT_DIR}/" || printf '\nNo log file to copy back!\n';
 	-passh -p "${UFSCTHESISX_REMOTE_PASSWORD}" \
 		scp -o StrictHostKeyChecking=no \
