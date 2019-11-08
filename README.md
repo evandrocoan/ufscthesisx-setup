@@ -171,6 +171,7 @@ Copyright (c) 2012-2014 by abnTeX2 group at http://abntex2.googlecode.com/
 Copyright (c) 2014-2015 Mateus Dubiela Oliveira
 Copyright (c) 2015-2016 Adriano Ruseler
 Copyright (c) 2017-2018 Evandro Coan, Luiz Rafael dos Santos
+Copyright (c) 2019-2019 Alisson Lopes Furlani
 
 É concedida permissão, gratuitamente, a qualquer pessoa que obtenha uma cópia deste modelo e
 software e arquivos de documentação associados (o "Software"), para ter estes arquivos com os
