@@ -577,7 +577,7 @@
 %
 % How to disable paragraphs inside my environment with \let\par\relax?
 % https://tex.stackexchange.com/questions/388369/how-to-disable-paragraphs-inside-my-environment-with-let-par-relax
-\xapptocmd{\resumo}{\setlength{\parindent}{0pt}\let\parOriginal\par\let\par\relax}{}{}
+\xapptocmd{\resumo}{\setlength{\parindent}{0pt}\SingleSpacing\let\parOriginal\par\let\par\relax}{}{}
 \xpretocmd{\endresumo}{\endgraf}{}{}
 
 % \imprimirpalavraschave{Palavras-chaves}{latex. abntex. editoração de texto.}
@@ -730,7 +730,6 @@
 
                 \SingleSpacing
                 {\ufsccaptionsize\imprimirpreambulo}
-                \medskip
 
                 {
                     \ufsccaptionsize\textbf{\imprimirorientadorRotulo:}~\imprimirorientador\par
