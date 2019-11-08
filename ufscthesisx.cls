@@ -147,30 +147,9 @@
 % https://en.wikibooks.org/wiki/LaTeX/Creating_Packages
 % https://tex.stackexchange.com/questions/61487/processoptions-and-processkeyvaloptions
 % https://tex.stackexchange.com/questions/12933/new-options-and-loaded-class-options-bug
-\newboolean{ufscthesisxdefaultfontsizeoption}
-\setboolean{ufscthesisxdefaultfontsizeoption}{false}
-
-\DeclareOption{12pt}{
-  \setboolean{ufscthesisxdefaultfontsizeoption}{true}
-}
-
-\DeclareOption{12.0pt}{
-  \setboolean{ufscthesisxdefaultfontsizeoption}{true}
-}
-
-\DeclareOption{12.00pt}{
-  \setboolean{ufscthesisxdefaultfontsizeoption}{true}
-}
-
-
 % Now we'll execute any options passed in
 \ProcessOptions\relax
 \LoadClass{setup/abntex2}
-
-\ifthenelse{\boolean{ufscthesisxdefaultfontsizeoption}}
-{\message{^^J^^Jufscthesisx notice: using font size 12pt^^J^^J}}
-{\message{^^J^^Jufscthesisx notice: NOT using the font size 12pt^^J^^J}}
-
 
 
 
@@ -214,11 +193,6 @@
 % How to make section name uppercase in ToC?
 % https://tex.stackexchange.com/questions/156916/how-to-make-section-name-uppercase-in-toc
 \RequirePackage{textcase}
-
-% Always use it as should improve full justification
-% https://tex.stackexchange.com/questions/10377/texttt-overfull-hbox-problem
-% https://tex.stackexchange.com/questions/66052/should-i-load-microtype-with-pdflatex
-\RequirePackage{microtype}
 
 % https://tex.stackexchange.com/questions/482886/how-to-add-babel-captions-to-newfloat-package-environments
 \RequirePackage{newfloat}
@@ -328,20 +302,19 @@
 % Tamanho da fonte padrão do 'ABNTEX'
 % https://tex.stackexchange.com/questions/460835/set-font-size-and-line-spacing
 % Set the default font size as 12pt with 1.5cm spacing between lines, 12/2 = 6, 12+6 = 18, i.e., one half spacing
-\ifthenelse{\boolean{ufscthesisxdefaultfontsizeoption}}{\renewcommand{\normalsize}{\fontsize{12.0pt}{18.0pt}}}{}
+% \renewcommand{\normalsize}{\fontsize{12pt}{16pt}\selectfont}
+% \renewcommand{\normalsize}{\fontsize{12.0pt}{18.0pt}\selectfont}
 
 % Caption package and Memoir
 % https://groups.google.com/forum/#!topic/comp.text.tex/RzpI2ATMev0
 % https://tex.stackexchange.com/questions/18931/memoir-class-with-subcaption-and-hyperref-packages
-\ifthenelse{\boolean{ufscthesisxdefaultfontsizeoption}}{
-  \DeclareCaptionFont{small}{\fontsize{10pt}{12pt}\selectfont}
-  \renewcommand{\footnotesize}{\fontsize{10pt}{12pt}\selectfont}
-}{}
+\DeclareCaptionFont{small}{\fontsize{10pt}{12pt}\selectfont}
+\renewcommand{\footnotesize}{\fontsize{10pt}{12pt}\selectfont}
 
 % Set caption font size in memoir
 % https://tex.stackexchange.com/questions/58943/set-caption-font-size-in-memoir
 % https://tex.stackexchange.com/questions/103566/controlling-the-spacing-between-lines-with-fontsize-selectfont
-\newcommand{\ufsccaptionsize}{\ifthenelse{\boolean{ufscthesisxdefaultfontsizeoption}}{\fontsize{10pt}{12pt}\selectfont}{\normalfont}}
+\newcommand{\ufsccaptionsize}{\fontsize{10pt}{12pt}\selectfont}
 
 % https://latex.org/forum/viewtopic.php?t=22437
 % https://tex.stackexchange.com/questions/346411/how-does-footnotesep-work-anyway
@@ -373,51 +346,28 @@
 % https://tex.stackexchange.com/questions/123528/changing-font-size-in-an-example-environment
 \expandafter\def\expandafter\epigrafe\expandafter{\epigrafe\ufsccaptionsize}
 
-% Fonte padrão utilizada no texto
-% http://tug.org/fonts/
-% The three default family font variables and the \familydefault variable should not be confused with their respective switch:
-% http://www.forkosh.com/pstex/latexcommands.htm
-% variable value activated by
-\renewcommand{\familydefault}{cmr}
-
-%\encodingdefault   OT1 \normalfont, \textnormal{}
-%\familydefault \rmdefault  \normalfont, \textnormal{}
-%\rmdefault cmr \rmfamily, \textrm{}
-%\ttdefault cmtt    \ttfamily, \texttt{}
-%\sfdefault cmss    \sffamily, \textsf{}
-%\seriesdefault m   \normalfont, \textnormal{}
-%\mddefault m   \mdseries, \textmd{}
-%\bfdefault bx  \bfseries, \textbf{}
-%\shapedefault  n   \normalfont, \textnormal{}
-%\updefault n   \upshape, \textup{}
-%\itdefault it  \itshape, \textit{}
-%\scdefault sc  \scshape, \textsc{}
-%\sldefault sl  \slshape, \textsl{}
-
 % Selects a roman (i.e., serifed) font family
-\renewcommand{\rmdefault}{cmr}
+% \renewcommand{\rmdefault}{cmr}
+\renewcommand{\familydefault}{\sfdefault}
 
 % Fontes padroes de part, chapter, section, subsection e subsubsection
-\ifthenelse{\boolean{ufscthesisxdefaultfontsizeoption}}{\renewcommand{\ABNTEXfontereduzida}{\fontsize{10pt}{12pt}}}{}
+\renewcommand{\ABNTEXfontereduzida}{\fontsize{10pt}{12pt}\selectfont}
 
-\renewcommand{\ABNTEXchapterfont}{\usefont{T1}{cmr}{bx}{n}}
-\ifthenelse{\boolean{ufscthesisxdefaultfontsizeoption}}{\renewcommand{\ABNTEXchapterfontsize}{\fontsize{12.0pt}{12.0pt}}}{}
+\renewcommand{\ABNTEXchapterfont}{\sffamily\fontseries{bx}\fontshape{n}\selectfont}
+\renewcommand{\ABNTEXchapterfontsize}{\normalsize\selectfont}
+\renewcommand{\ABNTEXpartfont}{\sffamily\fontseries{bx}\fontshape{n}\selectfont}
+\renewcommand{\ABNTEXpartfontsize}{\Huge\selectfont}
+\renewcommand{\ABNTEXsectionfont}{\sffamily\fontseries{m}\fontshape{n}\selectfont}
+\renewcommand{\ABNTEXsectionfontsize}{\normalsize\selectfont}
+\renewcommand{\ABNTEXsubsectionfont}{\sffamily\fontseries{b}\fontshape{n}\selectfont}
+\renewcommand{\ABNTEXsubsectionfontsize}{\normalsize\selectfont}
+\renewcommand{\ABNTEXsubsubsectionfont}{\sffamily\fontseries{m}\fontshape{n}\selectfont}
+\renewcommand{\ABNTEXsubsubsectionfontsize}{\normalsize\selectfont}
+\renewcommand{\ABNTEXsubsubsubsectionfont}{\sffamily\fontseries{m}\fontshape{it}\selectfont}
+\renewcommand{\ABNTEXsubsubsubsectionfontsize}{\normalsize\selectfont}
 
-\renewcommand{\ABNTEXpartfont}{\usefont{T1}{cmr}{bx}{n}}
-\ifthenelse{\boolean{ufscthesisxdefaultfontsizeoption}}{\renewcommand{\ABNTEXpartfontsize}{\fontsize{15pt}{18pt}}}{}
-
-\renewcommand{\ABNTEXsectionfont}{\usefont{T1}{cmr}{m}{n}}
-\ifthenelse{\boolean{ufscthesisxdefaultfontsizeoption}}{\renewcommand{\ABNTEXsectionfontsize}{\fontsize{12.0pt}{14.0pt}}}{}
-
-\renewcommand{\ABNTEXsubsectionfont}{\usefont{T1}{cmr}{b}{n}}
-\ifthenelse{\boolean{ufscthesisxdefaultfontsizeoption}}{\renewcommand{\ABNTEXsubsectionfontsize}{\fontsize{12.0pt}{14.0pt}}}{}
-
-\renewcommand{\ABNTEXsubsubsectionfont}{\usefont{T1}{cmr}{m}{n}}
-\ifthenelse{\boolean{ufscthesisxdefaultfontsizeoption}}{\renewcommand{\ABNTEXsubsubsectionfontsize}{\fontsize{12.0pt}{14.0pt}}}{}
-
-\renewcommand{\ABNTEXsubsubsubsectionfont}{\usefont{T1}{cmr}{m}{it}}
-\ifthenelse{\boolean{ufscthesisxdefaultfontsizeoption}}{\renewcommand{\ABNTEXsubsubsubsectionfontsize}{\fontsize{12.0pt}{14.0pt}}}{}
-
+% Tamanho da fonte para a epígrafe UFSC
+\expandafter\def\expandafter\epigrafe\expandafter{\epigrafe\ABNTEXfontereduzida}
 
 % Comando que simula a finalizacao de uma parte no bookmark e
 % adiciona espaco de \part no sumario
@@ -540,41 +490,6 @@
 }
 
 
-% Caption package and Memoir
-% https://groups.google.com/forum/#!topic/comp.text.tex/RzpI2ATMev0
-% https://tex.stackexchange.com/questions/18931/memoir-class-with-subcaption-and-hyperref-packages
-%
-% \captionsetup[table]{
-%   %  name=Tabela,
-%   %  listformat=empty,
-%   %  justification=justified,
-%   %  labelsep=colon,
-%   %   position=above,
-%   %   skip=\onelineskip,
-%   %  width=\linewidth,
-%   labelfont={normalsize},
-%   textfont={small},
-%   font={normalsize}
-% }
-
-% Caption package and Memoir
-% https://groups.google.com/forum/#!topic/comp.text.tex/RzpI2ATMev0
-% https://tex.stackexchange.com/questions/18931/memoir-class-with-subcaption-and-hyperref-packages
-%
-% \captionsetup[figure]{
-%   %  name=Tabela,
-%   %  listformat=empty,
-%   %  justification=justified,
-%   %  labelsep=colon,
-%   %   position=above,
-%   %   skip=\onelineskip,
-%   %  width=\linewidth,
-%   labelfont={normalsize},
-%   textfont={small},
-%   font={normalsize}
-% }
-
-
 % Espaçamento depois do título
 \setlength{\afterchapskip}{0.38cm}
 
@@ -583,6 +498,9 @@
 
 % O tamanho do parágrafo é dado por
 \setlength{\parindent}{1.0cm}
+
+% Recuo citação
+\setlength{\ABNTEXcitacaorecuo}{3cm} %4, mas abntex2 está somando 1cm
 
 % Comando para inverter sobrenome e nome
 \newcommand{\ufscthesisx@inverter}[1]
@@ -749,19 +667,19 @@
         \center
         {%
             % https://en.wikibooks.org/wiki/LaTeX/Floats,_Figures_and_Captions
-            \includegraphics[height=2.54cm,width=1.84cm]{setup/UFSC_sigla_fundo_claro.png}
+            \includegraphics[width=1.84cm,keepaspectratio]{setup/UFSC_sigla_fundo_claro.png}
 
             % https://tex.stackexchange.com/questions/103566/controlling-the-spacing-between-lines-with-fontsize-selectfont
-            {\ABNTEXchapterfont\ufsccaptionsize\DoubleSpacing
-              \par\MakeTextUppercase{\imprimirinstituicao}
-              \par\MakeTextUppercase{\imprimircampus}
-              \par\MakeTextUppercase{\imprimirprograma}
+            {\OnehalfSpacing
+                \MakeTextUppercase{\imprimirinstituicao}\par
+                \MakeTextUppercase{\imprimircampus}\par
+                \MakeTextUppercase{\imprimirprograma}\par
             }
         }
 
         \vfill
 
-        {\ufsccaptionsize\imprimirautor}
+        {\imprimirautor}
 
         \vfill
         {%
@@ -772,13 +690,10 @@
         \vfill
 
         {%
-            \ufsccaptionsize
-            \imprimirlocal
-
-            \imprimirano
+            \imprimirlocal\par
+            \imprimirano\par
         }
         \vspace*{1cm}
-
     \end{capa}
 }
 % ---
@@ -797,7 +712,7 @@
 \renewcommand{\folhaderostocontent}
 {%
     \begin{center}
-        {\ABNTEXchapterfont\ufsccaptionsize\imprimirautor}
+        {\imprimirautor}
 
         \vspace*{\fill}\vspace*{\fill}
         \begin{center}
@@ -810,12 +725,12 @@
 
         \abntex@ifnotempty{\imprimirpreambulo}
         {%
-            \hspace{.45\textwidth}
-            \begin{minipage}{5,5cm}
+            \hspace{\textwidth}
+            \begin{adjustwidth*}{8cm}{}%8.5
 
                 \SingleSpacing
                 {\ufsccaptionsize\imprimirpreambulo}
-                \bigskip
+                \medskip
 
                 {
                     \ufsccaptionsize\textbf{\imprimirorientadorRotulo:}~\imprimirorientador\par
@@ -825,17 +740,13 @@
                     }
                 }
 
-            \end{minipage}
-            \vspace*{\fill}
+            \end{adjustwidth*}
         }
 
         \vspace*{\fill}
-
         {%
-            \ufsccaptionsize
-            \imprimirlocal
-
-            \imprimirano
+            \imprimirlocal\par
+            \imprimirano\par
         }
 
     \end{center}
@@ -850,16 +761,6 @@
     \pdfstringdefDisableCommands{\let\uppercase\relax}
 }{}
 
-
-% Patch the `abntex2` citacao environment removing the extra space from its top
-% https://tex.stackexchange.com/questions/300340/topsep-itemsep-partopsep-and-parsep-what-does-each-of-them-mean-and-wha
-\xpatchcmd{\citacao}
-{\list{}}
-{\list{}{\topsep=0pt}}
-{}
-{\PackageWarning{ufscthesisx}{Citation \topsep is not patched. The 'citacao' environment must be
-patched with 'topsep=0pt' but it failed. This is probably due an update on the main class 'abnTeX2',
-therefore the \topsep patch must need to be updated accordingly}}
 
 % Backward compatibility with `abntex2cite` package `\citeonline` command with the new `biblatex` package
 % https://tex.stackexchange.com/questions/655/what-is-the-difference-between-def-and-newcommand
@@ -1186,6 +1087,7 @@ therefore the \topsep patch must need to be updated accordingly}}
 \def\listofquadrosname{List of Frames}
 \def\quadrosname{Frame}
 
+% https://github.com/abntex/abntex2/issues/176
 % https://tex.stackexchange.com/questions/502367/how-to-add-babel-translations-to-cleveref-based-cross-references-to-my-custom-fl
 \crefname{quadro}{frame}{frames}
 \Crefname{quadro}{Frame}{Frames}
@@ -1202,13 +1104,50 @@ therefore the \topsep patch must need to be updated accordingly}}
 \@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{\crefname{figure}{figura}{figuras}}}{}}{}
 \@ifpackageloaded{babel}{\@ifpackagewith{babel}{english}{\addto\captionsenglish{\crefname{figure}{figure}{figures}}}{}}{}
 
+% Caption package and Memoir
+% https://groups.google.com/forum/#!topic/comp.text.tex/RzpI2ATMev0
+% https://tex.stackexchange.com/questions/18931/memoir-class-with-subcaption-and-hyperref-packages
+%
+% \captionsetup[table]{
+%   %  name=Tabela,
+%   %  listformat=empty,
+%   %  justification=justified,
+%   %  labelsep=colon,
+%   %   position=above,
+%   %   skip=\onelineskip,
+%   %  width=\linewidth,
+%   labelfont={normalsize},
+%   textfont={small},
+%   font={normalsize}
+% }
+
+% Caption package and Memoir
+% https://groups.google.com/forum/#!topic/comp.text.tex/RzpI2ATMev0
+% https://tex.stackexchange.com/questions/18931/memoir-class-with-subcaption-and-hyperref-packages
+%
+% \captionsetup[figure]{
+%   %  name=Tabela,
+%   %  listformat=empty,
+%   %  justification=justified,
+%   %  labelsep=colon,
+%   %   position=above,
+%   %   skip=\onelineskip,
+%   %  width=\linewidth,
+%   labelfont={normalsize},
+%   textfont={small},
+%   font={normalsize}
+% }
+
 % https://tex.stackexchange.com/questions/479086/styling-and-spacing-around-float-caption-for-listing
 % https://tex.stackexchange.com/questions/97673/merge-items-in-list-of-floats
 % https://tex.stackexchange.com/questions/23313/how-can-i-reduce-padding-after-figure
 % https://tex.stackexchange.com/questions/515157/package-caption-warning-the-caption-type-was-already-set-to-quadro-on-input
 \AtBeginEnvironment{quadro}{
-  \captionsetup{skip=1mm}
+  \captionsetup{skip=5pt,belowskip=0pt}
 }
+
+% https://tex.stackexchange.com/questions/26220/control-spacing-around-table-caption
+\captionsetup[figure]{belowskip=5pt,aboveskip=5pt}
 
 \@ifclassloaded{memoir}{%
   % https://tex.stackexchange.com/questions/176418/remove-list-of-newfloat-from-toc
@@ -1431,6 +1370,31 @@ therefore the \topsep patch must need to be updated accordingly}}
 
 
 % ufscthesis start, https://github.com/UFSC/ufscthesisx/issues/19
+\RequirePackage{helvet}
+
+% Permite tamanhos arbitrários para fontes Computer Modern (math warning)
+\RequirePackage{fix-cm}
+
+% Package xkeyval Error: <key> undefined in families `blx@lbx'.
+% https://github.com/plk/biblatex/issues/628
+\NewBibliographyString{sineloco}
+\NewBibliographyString{sinenomine}
+\NewBibliographyString{andothers}
+\NewBibliographyString{in}
+
+\DefineBibliographyStrings{brazil}{%
+  sineloco     = {\mkbibemph{S\adddot l\adddot}},
+  sinenomine   = {\mkbibemph{s\adddot n\adddot}},
+  andothers    = {\mkbibemph{et\addabbrvspace al\adddot}},
+  in           = {\mkbibemph{In:}}
+}
+
+% ---
+% Posiciona figuras e tabelas no topo da página quando adicionadas sozinhas
+% em um página em branco. Ver https://github.com/abntex/abntex2/issues/170
+% ---
+\setlength{\@fptop}{5pt} % Set distance from top of page to first float
+
 % https://tex.stackexchange.com/questions/163479/glossaries-conflict-with-memoir
 \let\printglossary\relax
 \let\theglossary\relax
@@ -1561,7 +1525,7 @@ therefore the \topsep patch must need to be updated accordingly}}
 % Always use it as should improve full justification
 % https://tex.stackexchange.com/questions/10377/texttt-overfull-hbox-problem
 % https://tex.stackexchange.com/questions/66052/should-i-load-microtype-with-pdflatex
-\usepackage{microtype}
+\usepackage[factor=1100,stretch=10,shrink=10]{microtype}
 
 % https://tex.stackexchange.com/questions/482886/how-to-add-babel-captions-to-newfloat-package-environments
 \usepackage{newfloat}

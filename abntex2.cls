@@ -142,12 +142,17 @@
      \if@minipage
        \@setminipage
      \fi
+     % https://tex.stackexchange.com/questions/23313/how-can-i-reduce-padding-after-figure
+     % \setlength{\parskip}{10pt}
+     % \setlength{\abovecaptionskip}{10pt}
+     \setlength{\belowcaptionskip}{4pt}
      \ABNTEXfontereduzida
-     %\configureseparator
      \captiondelim{\ABNTEXcaptionfontedelim}
+     % \captionsetup{labelsep=colon}
      \@makecaption{\ABNTEXfontereduzida #1}{\ignorespaces\ABNTEXfontereduzida #2}\par
   \endgroup}
 
+ %
 % Define o comando \notas que respeita as configurações de caption do memoir ou do caption
 \newcommand{\nota}[2][\notaname]{\fonte[#1]{#2}}
 
@@ -999,13 +1004,17 @@
 }{% else
   \setlength{\ABNTEXcitacaorecuo}{4cm}
 }
+
+% Patch the `abntex2` citacao environment removing the extra space from its top
+% https://tex.stackexchange.com/questions/300340/topsep-itemsep-partopsep-and-parsep-what-does-each-of-them-mean-and-wha
+% https://tex.stackexchange.com/questions/82859/redefine-environment-to-be-a-synonym-for-another
 \newenvironment*{citacao}[1][default]{%
-   \list{}%
-   \ABNTEXfontereduzida%
+   \list{}{\topsep=0pt}%
    \addtolength{\leftskip}{\ABNTEXcitacaorecuo}%
    \item[]%
    \begin{SingleSpace}%
    \ifthenelse{\not\equal{#1}{default}}{\itshape\selectlanguage{#1}}{}%
+   \ABNTEXfontereduzida%
  }{%
    \end{SingleSpace}%
    \endlist}%
