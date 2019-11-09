@@ -1371,6 +1371,19 @@
 % ufscthesis start, https://github.com/UFSC/ufscthesisx/issues/19
 \RequirePackage{helvet}
 
+% https://tex.stackexchange.com/questions/28019/continuous-numbering-of-figures-and-tables
+% https://tex.stackexchange.com/questions/28333/continuous-v-per-chapter-section-numbering-of-figures-tables-and-other-docume
+\usepackage{chngcntr}
+\counterwithout{figure}{chapter}
+\counterwithout{table}{chapter}
+\counterwithout{quadro}{chapter}
+\counterwithout{equation}{chapter}
+
+% https://tex.stackexchange.com/questions/45338/chngcntr-counterwithout-not-working
+% https://tex.stackexchange.com/questions/316230/number-listings-the-same-way-as-figures-and-tables
+\AtBeginDocument{\counterwithout{listing}{chapter}}
+\AtBeginDocument{\counterwithout{lstlisting}{chapter}}
+
 % Permite tamanhos arbitrários para fontes Computer Modern (math warning)
 \RequirePackage{fix-cm}
 
@@ -2586,7 +2599,6 @@
     \renewcommand{\tableautorefname}{Tabela}
     \renewcommand{\figureautorefname}{Figura}
     \renewcommand{\chapterautorefname}{Capítulo}
-    \renewcommand{\equationautorefname}{Equação}
 }}{}}{}
 
 \@ifpackageloaded{babel}{\@ifpackagewith{babel}{english}{\addto\captionsenglish{%
@@ -2604,7 +2616,25 @@
     \renewcommand{\tableautorefname}{Table}
     \renewcommand{\figureautorefname}{Figure}
     \renewcommand{\chapterautorefname}{Chapter}
-    \renewcommand{\equationautorefname}{Equation}
+}}{}}{}
+
+% Muda equação para 'Equação (n)'
+% https://tex.stackexchange.com/questions/153471/autoref-does-not-expand-abbreviation-automatically-at-beginning-of-line
+% https://tex.stackexchange.com/questions/153496/combining-autoref-and-eqref
+% https://tex.stackexchange.com/questions/62308/rename-sections-with-ngerman
+% https://tex.stackexchange.com/questions/4925/custom-equations-names
+% https://tex.stackexchange.com/questions/173970/add-equation-name-besides-equation-number-so-that-eqref-inserts-only-the-numbe
+% https://tex.stackexchange.com/questions/128050/add-equation-name-underneath-equation-number
+\@ifpackageloaded{babel}{\@ifpackagewith{babel}{english}{\addto\captionsenglish{%
+  \def\equationautorefname~#1\null{%
+    Equation~(#1)\null
+  }
+}}{}}{}
+
+\@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{%
+  \def\equationautorefname~#1\null{%
+    Equação~(#1)\null
+  }
 }}{}}{}
 
 
