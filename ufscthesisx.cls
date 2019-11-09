@@ -74,16 +74,16 @@
 \RequirePackage{scrlfile}
 \AfterClass{memoir}
 {
-    \RequirePackage{float}
+  \RequirePackage{float}
 }
 
 % The class `abntex2` loads the package `enumitem`, but `paralist` must be loaded before it
 % https://tex.stackexchange.com/questions/162799/compilation-error-when-including-enumitem-and-paralist-packages
 \AfterClass{memoir}
 {
-    % How to make horizontal lists?
-    % https://tex.stackexchange.com/questions/146306/how-to-make-horizontal-lists
-    \RequirePackage{paralist}
+  % How to make horizontal lists?
+  % https://tex.stackexchange.com/questions/146306/how-to-make-horizontal-lists
+  \RequirePackage{paralist}
 }
 
 % https://tex.stackexchange.com/questions/6529/newline-linebreak-in-message
@@ -93,22 +93,22 @@
 % https://tex.stackexchange.com/questions/55478/how-to-print-out-to-log-without-affecting-anything-else-lua-print-equiv
 % https://tex.stackexchange.com/questions/483570/how-to-detect-whether-passoptionstopackage-was-already-called
 \ifcsname opt@biblatex.sty\endcsname
-    \message{Have options been passed for biblatex? YES!^^J}
+  \message{Have options been passed for biblatex? YES!^^J}
 \else
-    \message{Have options been passed for biblatex? NO!^^J}
-    \PassOptionsToPackage{style=abnt,repeatfields=true,backend=biber,backref=true}{biblatex}
+  \message{Have options been passed for biblatex? NO!^^J}
+  \PassOptionsToPackage{style=abnt,repeatfields=true,backend=biber,backref=true}{biblatex}
 \fi
 
 \AfterClass{memoir}
 {
-    \RequirePackage{biblatex}
+  \RequirePackage{biblatex}
 }
 
 % Package longtable must be put before hyperref and arydshln, hyperref after arydshln generates an error
 % http://ctan.sharelatex.com/tex-archive/macros/latex/contrib/hyperref/README.pdf
 \AfterClass{memoir}
 {
-    \RequirePackage{longtable}
+  \RequirePackage{longtable}
 }
 
 % https://tex.stackexchange.com/questions/391993/how-to-silence-memoir-class-warning-against-the-use-of-caption-package
@@ -141,7 +141,7 @@
 %
 % Repassa todos os parâmetros a classe abntex2,
 \DeclareOption*{%
-    \PassOptionsToClass{\CurrentOption}{setup/abntex2}%
+  \PassOptionsToClass{\CurrentOption}{setup/abntex2}%
 }
 
 % https://en.wikibooks.org/wiki/LaTeX/Creating_Packages
@@ -252,12 +252,12 @@
 \providecommand{\listaassuntos}{}
 \providecommand{\imprimirassuntos}
 {%
-    \setcounter{ufscthesisx@assuntos}{1}
-    \@for\assunto:={\listaassuntos}\do
-    {%
-        \arabic{ufscthesisx@assuntos}.\assunto. %
-        \addtocounter{ufscthesisx@assuntos}{1}
-    }
+  \setcounter{ufscthesisx@assuntos}{1}
+  \@for\assunto:={\listaassuntos}\do
+  {%
+    \arabic{ufscthesisx@assuntos}.\assunto. %
+    \addtocounter{ufscthesisx@assuntos}{1}
+  }
 }
 \newcommand{\assuntos}[1]{\renewcommand{\listaassuntos}{#1}}
 
@@ -373,9 +373,9 @@
 % adiciona espaco de \part no sumario
 \renewcommand{\phantompart}
 {%
-    \bookmarksetup{startatroot}%
-    \phantomsection%
-    \addtocontents{toc}{\vspace{0em}}
+  \bookmarksetup{startatroot}%
+  \phantomsection%
+  \addtocontents{toc}{\vspace{0em}}
 }
 
 % TOC Spacing in Memoir
@@ -389,14 +389,14 @@
 \let\oldcontentsline\contentsline
 \def\contentsline#1#2{%
   \expandafter\ifx\csname l@#1\endcsname\l@section
-    \expandafter\@firstoftwo
+  \expandafter\@firstoftwo
   \else
-    \expandafter\@secondoftwo
+  \expandafter\@secondoftwo
   \fi
   {%
-    \oldcontentsline{#1}{\MakeTextUppercase{#2}}%
+  \oldcontentsline{#1}{\MakeTextUppercase{#2}}%
   }{%
-    \oldcontentsline{#1}{#2}%
+  \oldcontentsline{#1}{#2}%
   }%
 }
 
@@ -434,29 +434,29 @@
 \setlength{\cftnumberboxnumberwidth}{2em}
 \renewcommand{\tocprintchapter}
 {%
-    \addtocontents{toc}{\cftsetindents{chapter}{0em}{\cftlastnumwidth}}
+  \addtocontents{toc}{\cftsetindents{chapter}{0em}{\cftlastnumwidth}}
 }
 %
 \renewcommand{\tocinnonumchapter}
 {%
-    \addtocontents{toc}{\cftsetindents{chapter}{\cftlastnumwidth}{\cftnumberboxnumberwidth}}%
-    \cftinserthook{toc}{A}
+  \addtocontents{toc}{\cftsetindents{chapter}{\cftlastnumwidth}{\cftnumberboxnumberwidth}}%
+  \cftinserthook{toc}{A}
 }
 \renewcommand{\tocprintchapternonum}
 {%
-    \addtocontents{toc}{\cftsetindents{chapter}{\cftlastnumwidth}{\cftnumberboxnumberwidth}}
+  \addtocontents{toc}{\cftsetindents{chapter}{\cftlastnumwidth}{\cftnumberboxnumberwidth}}
 }
 %
 \renewcommand{\tocpartapendices}
 {%
-    \addtocontents{toc}{\cftsetindents{chapter}{\cftlastnumwidth}{\cftnumberboxnumberwidth}}
-    \cftinserthook{toc}{A}
+  \addtocontents{toc}{\cftsetindents{chapter}{\cftlastnumwidth}{\cftnumberboxnumberwidth}}
+  \cftinserthook{toc}{A}
 }
 %
 \renewcommand{\tocpartanexos}
 {%
-    \addtocontents{toc}{\cftsetindents{chapter}{\cftlastnumwidth}{\cftnumberboxnumberwidth}}
-    \cftinserthook{toc}{A}
+  \addtocontents{toc}{\cftsetindents{chapter}{\cftlastnumwidth}{\cftnumberboxnumberwidth}}
+  \cftinserthook{toc}{A}
 }
 
 \renewcommand{\cftpartfont}{\ABNTEXpartfont}
@@ -480,13 +480,13 @@
 % Ajusta entrada Referencias
 \renewcommand{\bibsection}
 {%
-    \chapter*{\bibname}
-    \bibmark
-    \ifnobibintoc\else
-    \phantomsection
-    \addcontentsline{toc}{chapter}{\uppercase{\bibname}}
-    \fi
-    \prebibhook
+  \chapter*{\bibname}
+  \bibmark
+  \ifnobibintoc\else
+  \phantomsection
+  \addcontentsline{toc}{chapter}{\uppercase{\bibname}}
+  \fi
+  \prebibhook
 }
 
 
@@ -505,41 +505,41 @@
 % Comando para inverter sobrenome e nome
 \newcommand{\ufscthesisx@inverter}[1]
 {%
-    \StrBehind{#1}{{}},
-    \StrBefore{#1}{{}}
+  \StrBehind{#1}{{}},
+  \StrBefore{#1}{{}}
 }
 
 % Comandos auxiliares
 % https://tex.stackexchange.com/questions/514592/how-can-i-see-the-line-spacing-between-lines
 \newcommand{\showfont}
 {%
-    (\foreignlanguage{english}
-    {%
-        encoding: \f@encoding{},
-        family: \f@family{},
-        series: \f@series{},
-        shape: \f@shape{},
-        size: \f@size{},
-        baseline: \f@baselineskip{},
-        linespread: \f@linespread{},
-        linespacing: \the\baselineskip{}%
-    })%
+  (\foreignlanguage{english}
+  {%
+    encoding: \f@encoding{},
+    family: \f@family{},
+    series: \f@series{},
+    shape: \f@shape{},
+    size: \f@size{},
+    baseline: \f@baselineskip{},
+    linespread: \f@linespread{},
+    linespacing: \the\baselineskip{}%
+  })%
 }
 
 % Comandos auxiliares
 \newcommand{\justshowfont}
 {%
-    (\foreignlanguage{english}
-    {%
-        \f@encoding{},
-        \f@family{},
-        \f@series{},
-        \f@shape{},
-        \f@size{},
-        \f@baselineskip{},%
-        \f@linespread{},
-        \the\baselineskip{}%
-    })%
+  (\foreignlanguage{english}
+  {%
+    \f@encoding{},
+    \f@family{},
+    \f@series{},
+    \f@shape{},
+    \f@size{},
+    \f@baselineskip{},%
+    \f@linespread{},
+    \the\baselineskip{}%
+  })%
 }
 
 %Numeração dos floats por capítulo
@@ -557,14 +557,14 @@
 
 \renewenvironment{resumo}[1][\resumoname]
 {%
-    % Fixed double bookmark entries as `\pretextualchapter` bellow is already calling `\PRIVATEbookmarkthis`
-    % \PRIVATEbookmarkthis{#1}
-    % \renewcommand{\abstractnamefont}{\chaptitlefont}
-    % \renewcommand{\abstractname}{\ABNTEXchapterupperifneeded{#1}}
-    \pretextualchapter{#1}
+  % Fixed double bookmark entries as `\pretextualchapter` bellow is already calling `\PRIVATEbookmarkthis`
+  % \PRIVATEbookmarkthis{#1}
+  % \renewcommand{\abstractnamefont}{\chaptitlefont}
+  % \renewcommand{\abstractname}{\ABNTEXchapterupperifneeded{#1}}
+  \pretextualchapter{#1}
 }
 {%
-    \PRIVATEclearpageifneeded
+  \PRIVATEclearpageifneeded
 }
 
 % Fix the resumo environment, which does not accept paragraphs on ufscthesisx
@@ -582,7 +582,7 @@
 
 % \imprimirpalavraschave{Palavras-chaves}{latex. abntex. editoração de texto.}
 \newcommand{\imprimirpalavraschave}[2]{%
-    \@ifundefined{parOriginal}{}{\parOriginal}\vspace{\onelineskip}\textbf{#1}: #2
+  \@ifundefined{parOriginal}{}{\parOriginal}\vspace{\onelineskip}\textbf{#1}: #2
 }
 
 % Create a list of things like (\usepackage{paralist})
@@ -598,23 +598,23 @@
 % https://tex.stackexchange.com/questions/65780/macro-defining-macro
 % https://tex.stackexchange.com/questions/20456/removing-a-backslash-when-passing-arguments-to-newcommand
 \newcommand{\palavraschaveufsc}[2]{%
-    \@ifundefined{#1}{%
-        \message{^^JNotice palavraschaveufsc: #1 is undefined with '#2'^^J}
-        \expandafter\newcommand\csname#1\endcsname{}
-    }{\message{^^JNotice palavraschaveufsc: #1 is defined with '#2'^^J}}
-    {\expandafter\g@addto@macro\csname#1\endcsname{\item #2. }}
+  \@ifundefined{#1}{%
+    \message{^^JNotice palavraschaveufsc: #1 is undefined with '#2'^^J}
+    \expandafter\newcommand\csname#1\endcsname{}
+  }{\message{^^JNotice palavraschaveufsc: #1 is defined with '#2'^^J}}
+  {\expandafter\g@addto@macro\csname#1\endcsname{\item #2. }}
 
-    \@ifundefined{#1comvirgula}{%
-        \message{^^JNotice palavraschaveufsc: #1 is undefined with '#2'^^J}
-        \expandafter\newcommand\csname#1comvirgula\endcsname{}
-    }{\message{^^JNotice palavraschaveufsc: #1 is defined with '#2'^^J}}
-    {\expandafter\g@addto@macro\csname#1comvirgula\endcsname{\item #2, }}
+  \@ifundefined{#1comvirgula}{%
+    \message{^^JNotice palavraschaveufsc: #1 is undefined with '#2'^^J}
+    \expandafter\newcommand\csname#1comvirgula\endcsname{}
+  }{\message{^^JNotice palavraschaveufsc: #1 is defined with '#2'^^J}}
+  {\expandafter\g@addto@macro\csname#1comvirgula\endcsname{\item #2, }}
 
-    \@ifundefined{#1semitem}{%
-        \message{^^JNotice palavraschaveufsc: #1 is undefined with '#2'^^J}
-        \expandafter\newcommand\csname#1semitem\endcsname{}
-    }{\message{^^JNotice palavraschaveufsc: #1 is defined with '#2'^^J}}
-    {\expandafter\g@addto@macro\csname#1semitem\endcsname{#2. }}
+  \@ifundefined{#1semitem}{%
+    \message{^^JNotice palavraschaveufsc: #1 is undefined with '#2'^^J}
+    \expandafter\newcommand\csname#1semitem\endcsname{}
+  }{\message{^^JNotice palavraschaveufsc: #1 is defined with '#2'^^J}}
+  {\expandafter\g@addto@macro\csname#1semitem\endcsname{#2. }}
 }
 
 % ------------------------------------------------------------------------
@@ -631,15 +631,15 @@
 % Delete his to restore the ABNT default behavior.
 \renewcommand{\textual}
 {%
-    % Estilo original do Abntex2
-    \pagestyle{abntheadings}
+  % Estilo original do Abntex2
+  \pagestyle{abntheadings}
 
-    % Remove a numeração das páginas no início dos capítulos.
-    % ABNT default value `{chapter}{abntchapfirst}`
-    \aliaspagestyle{chapter}{empty}
+  % Remove a numeração das páginas no início dos capítulos.
+  % ABNT default value `{chapter}{abntchapfirst}`
+  \aliaspagestyle{chapter}{empty}
 
-    \nouppercaseheads
-    \bookmarksetup{startatroot}
+  \nouppercaseheads
+  \bookmarksetup{startatroot}
 }
 
 
@@ -652,9 +652,9 @@
 % Imprime uma pagina de divisao no estilo parte
 \renewcommand{\partpage}
 {%
-    % \phantomsection
-    % \addcontentsline{toc}{part}{\appendixtocname}
-    \appendixpage*
+  % \phantomsection
+  % \addcontentsline{toc}{part}{\appendixtocname}
+  \appendixpage*
 }
 
 
@@ -662,39 +662,39 @@
 % Impressão da Capa
 \renewcommand{\imprimircapa}
 {%
-    \begin{capa}%
+  \begin{capa}%
 
-        \center
-        {%
-            % https://en.wikibooks.org/wiki/LaTeX/Floats,_Figures_and_Captions
-            \includegraphics[width=1.84cm,keepaspectratio]{setup/UFSC_sigla_fundo_claro.png}
+    \center
+    {%
+      % https://en.wikibooks.org/wiki/LaTeX/Floats,_Figures_and_Captions
+      \includegraphics[width=1.84cm,keepaspectratio]{setup/UFSC_sigla_fundo_claro.png}
 
-            % https://tex.stackexchange.com/questions/103566/controlling-the-spacing-between-lines-with-fontsize-selectfont
-            {\OnehalfSpacing
-                \MakeTextUppercase{\imprimirinstituicao}\par
-                \MakeTextUppercase{\imprimircampus}\par
-                \MakeTextUppercase{\imprimirprograma}\par
-            }
-        }
+      % https://tex.stackexchange.com/questions/103566/controlling-the-spacing-between-lines-with-fontsize-selectfont
+      {\OnehalfSpacing
+        \MakeTextUppercase{\imprimirinstituicao}\par
+        \MakeTextUppercase{\imprimircampus}\par
+        \MakeTextUppercase{\imprimirprograma}\par
+      }
+    }
 
-        \vfill
+    \vfill
 
-        {\imprimirautor}
+    {\imprimirautor}
 
-        \vfill
-        {%
-        \center
-            {\ABNTEXchapterfont\MakeUppercase{\imprimirtitulo}}%
-            \ifnotempty{\imprimirsubtitulo}{{\ABNTEXchapterfont:} \par \imprimirsubtitulo}
-        }
-        \vfill
+    \vfill
+    {%
+    \center
+      {\ABNTEXchapterfont\MakeUppercase{\imprimirtitulo}}%
+      \ifnotempty{\imprimirsubtitulo}{{\ABNTEXchapterfont:} \par \imprimirsubtitulo}
+    }
+    \vfill
 
-        {%
-            \imprimirlocal\par
-            \imprimirano\par
-        }
-        \vspace*{1cm}
-    \end{capa}
+    {%
+      \imprimirlocal\par
+      \imprimirano\par
+    }
+    \vspace*{1cm}
+  \end{capa}
 }
 % ---
 
@@ -711,53 +711,53 @@
 % https://tex.stackexchange.com/questions/135134/how-to-add-an-empty-line-between-paragraphs
 \renewcommand{\folhaderostocontent}
 {%
+  \begin{center}
+    {\imprimirautor}
+
+    \vspace*{\fill}\vspace*{\fill}
     \begin{center}
-        {\imprimirautor}
 
-        \vspace*{\fill}\vspace*{\fill}
-        \begin{center}
-
-            {\ABNTEXchapterfont\MakeUppercase{\imprimirtitulo}}
-            \abntex@ifnotempty{\imprimirsubtitulo}{{\ABNTEXchapterfont\!:} \\ \imprimirsubtitulo}
-
-        \end{center}
-        \vspace*{\fill}
-
-        \abntex@ifnotempty{\imprimirpreambulo}
-        {%
-            \hspace{\textwidth}
-            \begin{adjustwidth*}{8cm}{}%8.5
-
-                \SingleSpacing
-                {\ufsccaptionsize\imprimirpreambulo}
-
-                {
-                    \ufsccaptionsize\textbf{\imprimirorientadorRotulo:}~\imprimirorientador\par
-                    \abntex@ifnotempty{\imprimircoorientador}
-                    {
-                        {\textbf{\imprimircoorientadorRotulo:}~\imprimircoorientador}%
-                    }
-                }
-
-            \end{adjustwidth*}
-        }
-
-        \vspace*{\fill}
-        {%
-            \imprimirlocal\par
-            \imprimirano\par
-        }
+      {\ABNTEXchapterfont\MakeUppercase{\imprimirtitulo}}
+      \abntex@ifnotempty{\imprimirsubtitulo}{{\ABNTEXchapterfont\!:} \\ \imprimirsubtitulo}
 
     \end{center}
+    \vspace*{\fill}
+
+    \abntex@ifnotempty{\imprimirpreambulo}
+    {%
+      \hspace{\textwidth}
+      \begin{adjustwidth*}{8cm}{}%8.5
+
+        \SingleSpacing
+        {\ufsccaptionsize\imprimirpreambulo}
+
+        {
+          \ufsccaptionsize\textbf{\imprimirorientadorRotulo:}~\imprimirorientador\par
+          \abntex@ifnotempty{\imprimircoorientador}
+          {
+            {\textbf{\imprimircoorientadorRotulo:}~\imprimircoorientador}%
+          }
+        }
+
+      \end{adjustwidth*}
+    }
+
+    \vspace*{\fill}
+    {%
+      \imprimirlocal\par
+      \imprimirano\par
+    }
+
+  \end{center}
 }
 
 % If document class is equal to something then do not use package
 % https://tex.stackexchange.com/questions/46223/if-document-class-is-equal-to-something-then-do-not-use-package
 \@ifclassloaded{setup/abntex2}
 {
-    % Package hyperref Warning: Token not allowed in a PDF string?
-    % https://tex.stackexchange.com/questions/384885/package-hyperref-warning-token-not-allowed-in-a-pdf-string
-    \pdfstringdefDisableCommands{\let\uppercase\relax}
+  % Package hyperref Warning: Token not allowed in a PDF string?
+  % https://tex.stackexchange.com/questions/384885/package-hyperref-warning-token-not-allowed-in-a-pdf-string
+  \pdfstringdefDisableCommands{\let\uppercase\relax}
 }{}
 
 
@@ -771,16 +771,16 @@
    \boolfalse{pagetracker}%
    \usebibmacro{prenote}}
   {\ifciteindex
-     {\indexnames{labelname}%
-      \indexfield{indextitle}}
-     {}%
-     \printfield{labeltitle}%
-     \setunit{\addcomma\space}%
-     \printtext[bibhyperref]{%
-       \printnames{labelname}%
-       \space%
-       (\printfield{year})%
-       }%
+   {\indexnames{labelname}%
+    \indexfield{indextitle}}
+   {}%
+   \printfield{labeltitle}%
+   \setunit{\addcomma\space}%
+   \printtext[bibhyperref]{%
+     \printnames{labelname}%
+     \space%
+     (\printfield{year})%
+     }%
   }
   {\multicitedelim}
   {\usebibmacro{postnote}}
@@ -1151,13 +1151,13 @@
 \@ifclassloaded{memoir}{%
   % https://tex.stackexchange.com/questions/176418/remove-list-of-newfloat-from-toc
   \newcommand{\AdjustForMemoir}[1]{%
-    \csletcs{kept@listof#1}{listof#1}%
-    \csdef{listof#1}{%
-      \@ifstar
-       {\csappto{newfloat@listof#1@hook}{\append@star}%
-        \csuse{kept@listof#1}}%
-       {\csuse{kept@listof#1}}%
-    }
+  \csletcs{kept@listof#1}{listof#1}%
+  \csdef{listof#1}{%
+    \@ifstar
+     {\csappto{newfloat@listof#1@hook}{\append@star}%
+    \csuse{kept@listof#1}}%
+     {\csuse{kept@listof#1}}%
+  }
   }
   \def\append@star#1{#1*}
   \AdjustForMemoir{quadro}
@@ -1170,13 +1170,13 @@
   % Calculate the size of the header
   % https://tex.stackexchange.com/questions/7453/what-is-the-use-of-percent-signs-at-the-end-of-lines
   \newcommand{\calculatelquadrosheader}{%
-      \renewcommand\cftquadropresnum{\quadrosname~}%
+    \renewcommand\cftquadropresnum{\quadrosname~}%
 
-      % https://tex.stackexchange.com/questions/52861/what-is-the-plain-tex-equivalent-of-settowidth
-      \newlength\cftquadroinitialnumwidth
-      \settowidth\cftquadroinitialnumwidth{\cftquadropresnum\cftquadroaftersnum ab}%
-      \setlength\cftquadronumwidth{\dimexpr\cftquadrooldnumwidth+\cftquadroinitialnumwidth}%
-      \renewcommand\cftquadroaftersnum{\hfill\textendash\hfill}%
+    % https://tex.stackexchange.com/questions/52861/what-is-the-plain-tex-equivalent-of-settowidth
+    \newlength\cftquadroinitialnumwidth
+    \settowidth\cftquadroinitialnumwidth{\cftquadropresnum\cftquadroaftersnum ab}%
+    \setlength\cftquadronumwidth{\dimexpr\cftquadrooldnumwidth+\cftquadroinitialnumwidth}%
+    \renewcommand\cftquadroaftersnum{\hfill\textendash\hfill}%
   }
 
   % https://tex.stackexchange.com/questions/14135/how-to-automatically-add-text-immediately-after-begindocument
@@ -1190,11 +1190,11 @@
   % https://tex.stackexchange.com/questions/7453/what-is-the-use-of-percent-signs-at-the-end-of-lines
   % https://tex.stackexchange.com/questions/12865/list-of-figures-how-to-add-caption-label
   \newcommand{\calculatelfigureheader}{%
-      % https://tex.stackexchange.com/questions/52861/what-is-the-plain-tex-equivalent-of-settowidth
-      \newlength\cftfigureinitialnumwidth
-      \settowidth\cftfigureinitialnumwidth{\cftfigurepresnum\cftfigureaftersnum a}%
-      \setlength\cftfigurenumwidth{\dimexpr\cftfigureoldnumwidth+\cftfigureinitialnumwidth}%
-      \renewcommand\cftfigureaftersnum{\hfill\textendash\hfill}%
+    % https://tex.stackexchange.com/questions/52861/what-is-the-plain-tex-equivalent-of-settowidth
+    \newlength\cftfigureinitialnumwidth
+    \settowidth\cftfigureinitialnumwidth{\cftfigurepresnum\cftfigureaftersnum a}%
+    \setlength\cftfigurenumwidth{\dimexpr\cftfigureoldnumwidth+\cftfigureinitialnumwidth}%
+    \renewcommand\cftfigureaftersnum{\hfill\textendash\hfill}%
   }
 
   % https://tex.stackexchange.com/questions/14135/how-to-automatically-add-text-immediately-after-begindocument
@@ -1207,11 +1207,11 @@
   % Calculate the size of the header
   % https://tex.stackexchange.com/questions/7453/what-is-the-use-of-percent-signs-at-the-end-of-lines
   \newcommand{\calculateltableheader}{%
-      % https://tex.stackexchange.com/questions/52861/what-is-the-plain-tex-equivalent-of-settowidth
-      \newlength\cfttableinitialnumwidth
-      \settowidth\cfttableinitialnumwidth{\cfttablepresnum\cfttableaftersnum a}%
-      \setlength\cfttablenumwidth{\dimexpr\cfttableoldnumwidth+\cfttableinitialnumwidth}%
-      \renewcommand\cfttableaftersnum{\hfill\textendash\hfill}%
+    % https://tex.stackexchange.com/questions/52861/what-is-the-plain-tex-equivalent-of-settowidth
+    \newlength\cfttableinitialnumwidth
+    \settowidth\cfttableinitialnumwidth{\cfttablepresnum\cfttableaftersnum a}%
+    \setlength\cfttablenumwidth{\dimexpr\cfttableoldnumwidth+\cfttableinitialnumwidth}%
+    \renewcommand\cfttableaftersnum{\hfill\textendash\hfill}%
   }
 
   % https://tex.stackexchange.com/questions/14135/how-to-automatically-add-text-immediately-after-begindocument
@@ -1219,42 +1219,42 @@
 
   % http://tex.stackexchange.com/questions/228936/setting-entries-of-list-of-listings-in-latex-package-listings
   % https://tex.stackexchange.com/questions/223079/you-cant-use-a-prefix-with-charfb-error-when-importing-csv-into-latex
-    % https://tex.stackexchange.com/questions/485830/why-latex-does-not-tell-me-which-command-is-undefined
-    \@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{\renewcommand{\lstlistingname}{Código}}}{}}{}
-    \@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{\renewcommand{\lstlistlistingname}{Lista de Códigos}}}{}}{}
+  % https://tex.stackexchange.com/questions/485830/why-latex-does-not-tell-me-which-command-is-undefined
+  \@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{\renewcommand{\lstlistingname}{Código}}}{}}{}
+  \@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{\renewcommand{\lstlistlistingname}{Lista de Códigos}}}{}}{}
 
-    \@ifpackageloaded{babel}{\@ifpackagewith{babel}{english}{\addto\captionsenglish{\renewcommand{\lstlistingname}{Code}}}{}}{}
-    \@ifpackageloaded{babel}{\@ifpackagewith{babel}{english}{\addto\captionsenglish{\renewcommand{\lstlistlistingname}{List of Codes}}}{}}{}
+  \@ifpackageloaded{babel}{\@ifpackagewith{babel}{english}{\addto\captionsenglish{\renewcommand{\lstlistingname}{Code}}}{}}{}
+  \@ifpackageloaded{babel}{\@ifpackagewith{babel}{english}{\addto\captionsenglish{\renewcommand{\lstlistlistingname}{List of Codes}}}{}}{}
 
-    \@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{\crefname{listing}{código}{códigos}}}{}}{}
-    \@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{\Crefname{listing}{Código}{Códigos}}}{}}{}
+  \@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{\crefname{listing}{código}{códigos}}}{}}{}
+  \@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{\Crefname{listing}{Código}{Códigos}}}{}}{}
 
-    \begingroup
-        \let\newcounter\@gobble\let\setcounter\@gobbletwo
-        \globaldefs\@ne \let\c@loldepth\@ne
-        \newlistof{listings}{lol}{\lstlistlistingname}
-        \newlistof{lstlistoflistings}{lol}{\lstlistlistingname}
-        \newlistentry{lstlisting}{lol}{0}
-    \endgroup
+  \begingroup
+    \let\newcounter\@gobble\let\setcounter\@gobbletwo
+    \globaldefs\@ne \let\c@loldepth\@ne
+    \newlistof{listings}{lol}{\lstlistlistingname}
+    \newlistof{lstlistoflistings}{lol}{\lstlistlistingname}
+    \newlistentry{lstlisting}{lol}{0}
+  \endgroup
 
-    % https://tex.stackexchange.com/questions/388411/why-the-empty-space-size-is-increasing-each-call
-    \newlength\cftlstlistingoldnumwidth
-    \setlength\cftlstlistingoldnumwidth{\cftlstlistingnumwidth}
+  % https://tex.stackexchange.com/questions/388411/why-the-empty-space-size-is-increasing-each-call
+  \newlength\cftlstlistingoldnumwidth
+  \setlength\cftlstlistingoldnumwidth{\cftlstlistingnumwidth}
 
-    % Calculate the size of the header
-    % https://tex.stackexchange.com/questions/7453/what-is-the-use-of-percent-signs-at-the-end-of-lines
-    \newcommand{\calculatelstlistingsheader}{%
-        \renewcommand\cftlstlistingpresnum{\lstlistingname~}%
+  % Calculate the size of the header
+  % https://tex.stackexchange.com/questions/7453/what-is-the-use-of-percent-signs-at-the-end-of-lines
+  \newcommand{\calculatelstlistingsheader}{%
+    \renewcommand\cftlstlistingpresnum{\lstlistingname~}%
 
-        % https://tex.stackexchange.com/questions/52861/what-is-the-plain-tex-equivalent-of-settowidth
-        \newlength\cftlstlistinginitialnumwidth
-        \settowidth\cftlstlistinginitialnumwidth{\cftlstlistingpresnum\cftlstlistingaftersnum ab}%
-        \setlength\cftlstlistingnumwidth{\dimexpr\cftlstlistingoldnumwidth+\cftlstlistinginitialnumwidth+2pt}%
-        \renewcommand\cftlstlistingaftersnum{\hfill\textendash\hfill}%
-    }
+    % https://tex.stackexchange.com/questions/52861/what-is-the-plain-tex-equivalent-of-settowidth
+    \newlength\cftlstlistinginitialnumwidth
+    \settowidth\cftlstlistinginitialnumwidth{\cftlstlistingpresnum\cftlstlistingaftersnum ab}%
+    \setlength\cftlstlistingnumwidth{\dimexpr\cftlstlistingoldnumwidth+\cftlstlistinginitialnumwidth+2pt}%
+    \renewcommand\cftlstlistingaftersnum{\hfill\textendash\hfill}%
+  }
 
-    % https://tex.stackexchange.com/questions/14135/how-to-automatically-add-text-immediately-after-begindocument
-    \AtBeginDocument{\calculatelstlistingsheader}
+  % https://tex.stackexchange.com/questions/14135/how-to-automatically-add-text-immediately-after-begindocument
+  \AtBeginDocument{\calculatelstlistingsheader}
 }{}
 
 % https://tex.stackexchange.com/questions/380799/warning-when-adding-package-minted
@@ -1265,16 +1265,16 @@
 
 \ifwindows
   \providecommand{\DeleteFile}[2][]{%
-    \ifthenelse{\equal{#1}{}}%
-      {\IfFileExists{#2}{\ShellEscape{del #2}}{}}%
-      {\IfFileExists{#1/#2}{%
-        \StrSubstitute{#1}{/}{\@backslashchar}[\mintedwindir]
-        \ShellEscape{del \mintedwindir\@backslashchar #2}}{}}}
+  \ifthenelse{\equal{#1}{}}%
+    {\IfFileExists{#2}{\ShellEscape{del #2}}{}}%
+    {\IfFileExists{#1/#2}{%
+    \StrSubstitute{#1}{/}{\@backslashchar}[\mintedwindir]
+    \ShellEscape{del \mintedwindir\@backslashchar #2}}{}}}
 \else
   \providecommand{\DeleteFile}[2][]{%
-    \ifthenelse{\equal{#1}{}}%
-      {\IfFileExists{#2}{\ShellEscape{rm #2}}{}}%
-      {\IfFileExists{#1/#2}{\ShellEscape{rm #1/#2}}{}}}
+  \ifthenelse{\equal{#1}{}}%
+    {\IfFileExists{#2}{\ShellEscape{rm #2}}{}}%
+    {\IfFileExists{#1/#2}{\ShellEscape{rm #1/#2}}{}}}
 \fi
 
 \newboolean{AppMotherFuckerExists}
@@ -1282,28 +1282,28 @@
 
 \newcommand{\TestAppMotherfuckerExists}[1]{
   \ifwindows
-    \DeleteFile{\mintedjobname.aex}
-    \ShellEscape{@echo off
-      for \string^\@percentchar i in (#1.exe #1.bat #1.cmd)
-      do set > \mintedjobname.aex <nul: /p
-      x=\string^\@percentchar \string~$PATH:i>> \mintedjobname.aex}
-    %$ <- balance syntax highlighting
-    \immediate\openin\mintedappexistsfile\mintedjobname.aex
-    \expandafter\def\expandafter\@tmp@cr\expandafter{\the\endlinechar}
-    \endlinechar=-1\relax
-    \readline\mintedappexistsfile to \mintedapppathifexists
-    \endlinechar=\@tmp@cr
-    \ifthenelse{\equal{\mintedapppathifexists}{}}
-     {\AppMotherFuckerExistsfalse}
-     {\AppMotherFuckerExiststrue}
-    \immediate\closein\mintedappexistsfile
-    \DeleteFile{\mintedjobname.aex}
+  \DeleteFile{\mintedjobname.aex}
+  \ShellEscape{@echo off
+    for \string^\@percentchar i in (#1.exe #1.bat #1.cmd)
+    do set > \mintedjobname.aex <nul: /p
+    x=\string^\@percentchar \string~$PATH:i>> \mintedjobname.aex}
+  %$ <- balance syntax highlighting
+  \immediate\openin\mintedappexistsfile\mintedjobname.aex
+  \expandafter\def\expandafter\@tmp@cr\expandafter{\the\endlinechar}
+  \endlinechar=-1\relax
+  \readline\mintedappexistsfile to \mintedapppathifexists
+  \endlinechar=\@tmp@cr
+  \ifthenelse{\equal{\mintedapppathifexists}{}}
+   {\AppMotherFuckerExistsfalse}
+   {\AppMotherFuckerExiststrue}
+  \immediate\closein\mintedappexistsfile
+  \DeleteFile{\mintedjobname.aex}
   \else
-    \ShellEscape{which #1 > /dev/null 2>&1 && touch \mintedjobname.aex}
-    \IfFileExists{\mintedjobname.aex}
-      {\AppMotherFuckerExiststrue
-        \DeleteFile{\mintedjobname.aex}}
-      {\AppMotherFuckerExistsfalse}
+  \ShellEscape{which #1 > /dev/null 2>&1 && touch \mintedjobname.aex}
+  \IfFileExists{\mintedjobname.aex}
+    {\AppMotherFuckerExiststrue
+    \DeleteFile{\mintedjobname.aex}}
+    {\AppMotherFuckerExistsfalse}
   \fi
 }
 
@@ -1313,17 +1313,17 @@
   % https://tex.stackexchange.com/questions/110292/testing-for-a-documentclass-option
   % https://tex.stackexchange.com/questions/514711/package-minted-warning-unexpected-value-for-option-chapterminted-is-ignored
   \@ifclasswith{setup/ufscthesisx}{chapter=TITLE}{
-    \begingroup
-    \def\x#1chapter=TITLE,#2\@nil{%
-      \endgroup\def\@classoptionslist{#1#2}%
-    }\expandafter\x\@classoptionslist\@nil
+  \begingroup
+  \def\x#1chapter=TITLE,#2\@nil{%
+    \endgroup\def\@classoptionslist{#1#2}%
+  }\expandafter\x\@classoptionslist\@nil
   }{}
 
   \@ifclasswith{setup/ufscthesisx}{section=TITLE}{
-    \begingroup
-    \def\x#1section=TITLE,#2\@nil{%
-      \endgroup\def\@classoptionslist{#1#2}%
-    }\expandafter\x\@classoptionslist\@nil
+  \begingroup
+  \def\x#1section=TITLE,#2\@nil{%
+    \endgroup\def\@classoptionslist{#1#2}%
+  }\expandafter\x\@classoptionslist\@nil
   }
 
   % https://tex.stackexchange.com/questions/57353/how-to-get-caption-above-listing-with-minted
@@ -1347,10 +1347,10 @@
   % https://tex.stackexchange.com/questions/27645/customizing-the-list-of-listings-generated-by-lstlistoflistings
   % https://tex.stackexchange.com/questions/228936/setting-entries-of-list-of-listings-in-latex-package-listings
   \newenvironment{code}{
-    \captionsetup{type=lstlisting,skip=0pt,position=top}
-    \setlength{\abovecaptionskip}{0pt}
-    \setlength{\belowcaptionskip}{10pt}
-    \setlength{\parskip}{0pt}
+  \captionsetup{type=lstlisting,skip=0pt,position=top}
+  \setlength{\abovecaptionskip}{0pt}
+  \setlength{\belowcaptionskip}{10pt}
+  \setlength{\parskip}{0pt}
   }{}
 
   % https://tex.stackexchange.com/questions/14166/red-box-drawn-around-question-mark-operator-in-minted-erlang-code
@@ -1436,7 +1436,7 @@
   \setglossarystyle{long}%
   \renewenvironment{theglossary}%
   {\begin{longtable}[l]{@{}p{\dimexpr 3.0cm-\tabcolsep}p{0.78\hsize}}}% <-- change the value here
-    {\end{longtable}}%
+  {\end{longtable}}%
 }
 
 % Só um pequeno récuo em relação ao primeiro
@@ -1444,7 +1444,7 @@
   \setglossarystyle{long}%
   \renewenvironment{theglossary}%
   {\begin{longtable}[l]{@{}p{\dimexpr 2.0cm-\tabcolsep}p{0.86\hsize}}}% <-- change the value here
-    {\end{longtable}}%
+  {\end{longtable}}%
 }
 
 % Só dá entrada na lista. Ainda não funciona com o limarka
@@ -1454,9 +1454,9 @@
 
 % Só dá entrada na lista. Ainda não funciona com o limarka
 \newcommand{\simbololista}[3]{\newglossaryentry{#1}{%
-    type=simbolos,
-    name=#2,
-    description=#3}}
+  type=simbolos,
+  name=#2,
+  description=#3}}
 
 % imrpime lista de siglas ordenado alfabeticamente
 \newcommand{\imprimirlistadesiglas}{%
@@ -1617,7 +1617,7 @@
 \def\HyPsd@LetUnexpandableSpace#1{%
   \if\noexpand~\noexpand#1%
   \else
-    \expandafter\@firstofone
+  \expandafter\@firstofone
   \fi{\expandafter\futurelet\expandafter#1\expandafter\@gobble\space\relax}}
 
 
@@ -1627,16 +1627,16 @@
 \newbox\linebox \newbox\snapbox
 \def\eatlines
 {%
-    \setbox\linebox\lastbox % check the last line
-    \ifvoid\linebox
-    \else % if it’s not empty
-        \unskip\unpenalty % take whatever is
-        {\eatlines} % above it;
-        \setbox\snapbox\hbox{\unhcopy\linebox}
-        \ifdim\wd\snapbox<.98\wd\linebox
-            \box\snapbox % take the one or the other,
-        \else \box\linebox \fi
-    \fi
+  \setbox\linebox\lastbox % check the last line
+  \ifvoid\linebox
+  \else % if it’s not empty
+    \unskip\unpenalty % take whatever is
+    {\eatlines} % above it;
+    \setbox\snapbox\hbox{\unhcopy\linebox}
+    \ifdim\wd\snapbox<.98\wd\linebox
+      \box\snapbox % take the one or the other,
+    \else \box\linebox \fi
+  \fi
 }
 
 
@@ -1645,8 +1645,8 @@
 % https://tex.stackexchange.com/questions/365818/how-could-the-everypar-justification-statement-be-used
 \everypar=
 {%
-    \setbox0=\lastbox \par%
-    \vbox\bgroup \everypar={}\def\par{\endgraf\eatlines\egroup}%
+  \setbox0=\lastbox \par%
+  \vbox\bgroup \everypar={}\def\par{\endgraf\eatlines\egroup}%
 }
 
 % Creates a new environment which can be used as:
@@ -1660,9 +1660,9 @@
 % https://tex.stackexchange.com/questions/62333/push-long-words-in-a-new-line
 \newenvironment{foo}
 {%
-    \par%
-    \hyphenpenalty=10000%
-    \exhyphenpenalty=10000%
+  \par%
+  \hyphenpenalty=10000%
+  \exhyphenpenalty=10000%
 }
 {\par}
 
@@ -1674,15 +1674,15 @@
 % https://tex.stackexchange.com/questions/69824/how-to-break-long-urls-using-common-hyphenation-but
 \def\addurlspace#1
 {%
-    \ifx\relax#1%
-    \else%
-    \ifx/#1\space\fi%
-    \ifx.#1\space\fi%
-    #1%
-    \ifx/#1\space\fi%
-    \ifx.#1\space\fi%
-    \expandafter\addurlspace%
-    \fi%
+  \ifx\relax#1%
+  \else%
+  \ifx/#1\space\fi%
+  \ifx.#1\space\fi%
+  #1%
+  \ifx/#1\space\fi%
+  \ifx.#1\space\fi%
+  \expandafter\addurlspace%
+  \fi%
 }
 
 \@namedef{OT1-zwidthchar}{255}
@@ -1690,33 +1690,33 @@
 
 \def\brkurl#1
 {%
-    \edef\savedhchar{\the\hyphenchar\font}%
-    \global\setbox1\hbox{}%
-    \setbox0=\vbox
+  \edef\savedhchar{\the\hyphenchar\font}%
+  \global\setbox1\hbox{}%
+  \setbox0=\vbox
+  {%
+    \hsize=2pt\rightskip=0pt plus 1fill%
+    \hfuzz\maxdimen%
+    \tracinglostchars0%
+    \overfullrule0pt%
+    \hyphenchar\font=\csname \f@encoding-zwidthchar\endcsname%
+    \noindent \hskip0pt \addurlspace #1\relax%
+    \par%
+    \loop%
+    \setbox4 \lastbox%
+    \ifvoid4 \else%
+    \global\setbox1\hbox%
     {%
-        \hsize=2pt\rightskip=0pt plus 1fill%
-        \hfuzz\maxdimen%
-        \tracinglostchars0%
-        \overfullrule0pt%
-        \hyphenchar\font=\csname \f@encoding-zwidthchar\endcsname%
-        \noindent \hskip0pt \addurlspace #1\relax%
-        \par%
-        \loop%
-        \setbox4 \lastbox%
-        \ifvoid4 \else%
-        \global\setbox1\hbox%
-        {%
-            \unhbox4\unskip\unskip\discretionary{\hbox{\rlap{$\leftarrow$}}}{}{}\unhbox1%
-        }%
-        \unskip%
-        \unskip%
-        \unpenalty%
-        \unskip%
-        \repeat%
+      \unhbox4\unskip\unskip\discretionary{\hbox{\rlap{$\leftarrow$}}}{}{}\unhbox1%
     }%
-    \unhbox1%
-    \hyphenchar\font\savedhchar%
-    \relax%
+    \unskip%
+    \unskip%
+    \unpenalty%
+    \unskip%
+    \repeat%
+  }%
+  \unhbox1%
+  \hyphenchar\font\savedhchar%
+  \relax%
 }
 
 
@@ -1728,12 +1728,12 @@
 \definecolor{shadecolor}{RGB}{219, 229, 241}
 \newtcolorbox{bluebox}
 {%
-    colback=shadecolor,
-    grow to right by=8mm,
-    grow to left by=8mm,
-    boxrule=0pt,
-    boxsep=0pt,
-    unbreakable,
+  colback=shadecolor,
+  grow to right by=8mm,
+  grow to left by=8mm,
+  boxrule=0pt,
+  boxsep=0pt,
+  unbreakable,
 }
 
 
@@ -1764,7 +1764,7 @@
 \newcolumntype{^}{>{\currentrowstyle}}
 \newcommand{\rowstyle}[1]
 {%
-    \gdef\currentrowstyle{#1}#1\ignorespaces
+  \gdef\currentrowstyle{#1}#1\ignorespaces
 }
 
 
@@ -1778,72 +1778,72 @@
 \RequirePackage{amssymb}
 \RequirePackage{hyperref}
 \newcommand{\goToSummaryText}{{%
-    \small\mdseries
-    \hyperlink{summary}{\textcolor{ultramarine}{$\leftleftarrows$}}
-    {$|$}
-    \Acrobatmenu{GoBack}{\textcolor{ultramarine}{$\leftarrow$}}
+  \small\mdseries
+  \hyperlink{summary}{\textcolor{ultramarine}{$\leftleftarrows$}}
+  {$|$}
+  \Acrobatmenu{GoBack}{\textcolor{ultramarine}{$\leftarrow$}}
 }}
 
 \newif\ifismemoirloaded\ismemoirloadedfalse
 \newif\ifisabntexloaded\isabntexloadedfalse
 \@ifclassloaded{memoir}{%
-    \ismemoirloadedtrue%
+  \ismemoirloadedtrue%
 }{}
 \@ifclassloaded{setup/abntex2}{%
-    \isabntexloadedtrue%
+  \isabntexloadedtrue%
 }{}
 
 \newcommand{\addGoToSummary}
 {%
-    \@ifundefined{printparttitle}{\message{printparttitle patch for addGoToSummary could NOT
-                be applied because there is no printparttitle command available!^^J}}{%
-        \let\oldAddGoToprintparttitle\printparttitle
-        \xapptocmd{\printparttitle}{~\protect\goToSummaryText}{}{}
-    }
-    \@ifundefined{Sectionformat}{\message{Sectionformat patch for addGoToSummary could NOT
-                be applied because there is no Sectionformat command available!^^J}}{%
-        \let\oldAddGoToSectionformat\Sectionformat
-        \xapptocmd{\Sectionformat}{~\protect\goToSummaryText}{}{}
-    }
+  \@ifundefined{printparttitle}{\message{printparttitle patch for addGoToSummary could NOT
+        be applied because there is no printparttitle command available!^^J}}{%
+    \let\oldAddGoToprintparttitle\printparttitle
+    \xapptocmd{\printparttitle}{~\protect\goToSummaryText}{}{}
+  }
+  \@ifundefined{Sectionformat}{\message{Sectionformat patch for addGoToSummary could NOT
+        be applied because there is no Sectionformat command available!^^J}}{%
+    \let\oldAddGoToSectionformat\Sectionformat
+    \xapptocmd{\Sectionformat}{~\protect\goToSummaryText}{}{}
+  }
 
-    \ifismemoirloaded
-        \ifisabntexloaded
-            \let\oldAddGoToABNTEXchapterupperifneeded\ABNTEXchapterupperifneeded
-            \xapptocmd{\ABNTEXchapterupperifneeded}{~\protect\goToSummaryText}{}{}
-        \else
-            \let\oldAddGoToprintchaptertitle\printchaptertitle
-            \xapptocmd{\printchaptertitle}{~\protect\goToSummaryText}{}{}
-        \fi
+  \ifismemoirloaded
+    \ifisabntexloaded
+      \let\oldAddGoToABNTEXchapterupperifneeded\ABNTEXchapterupperifneeded
+      \xapptocmd{\ABNTEXchapterupperifneeded}{~\protect\goToSummaryText}{}{}
     \else
-        \@ifundefined{Chapterformat}{\message{Chapterformat patch for addGoToSummary could NOT
-                    be applied because there is no Chapterformat command available!^^J}}{%
-            \let\oldAddGoToChapterformat\Chapterformat
-            \xapptocmd{\Chapterformat}{~\protect\goToSummaryText}{}{}
-        }
+      \let\oldAddGoToprintchaptertitle\printchaptertitle
+      \xapptocmd{\printchaptertitle}{~\protect\goToSummaryText}{}{}
     \fi
+  \else
+    \@ifundefined{Chapterformat}{\message{Chapterformat patch for addGoToSummary could NOT
+          be applied because there is no Chapterformat command available!^^J}}{%
+      \let\oldAddGoToChapterformat\Chapterformat
+      \xapptocmd{\Chapterformat}{~\protect\goToSummaryText}{}{}
+    }
+  \fi
 }
 
 \newcommand{\removeGoToSummary}
 {%
-    \@ifundefined{oldAddGoToprintparttitle}{}{\let\printparttitle\oldAddGoToprintparttitle}
-    \@ifundefined{oldAddGoToSectionformat}{}{\let\Sectionformat\oldAddGoToSectionformat}
+  \@ifundefined{oldAddGoToprintparttitle}{}{\let\printparttitle\oldAddGoToprintparttitle}
+  \@ifundefined{oldAddGoToSectionformat}{}{\let\Sectionformat\oldAddGoToSectionformat}
 
-    \ifismemoirloaded
-        \ifisabntexloaded
-            \@ifundefined{oldAddGoToABNTEXchapterupperifneeded}{}{\let\ABNTEXchapterupperifneeded\oldAddGoToABNTEXchapterupperifneeded}
-        \else
-            \@ifundefined{oldAddGoToprintchaptertitle}{}{\let\printchaptertitle\oldAddGoToprintchaptertitle}
-        \fi
+  \ifismemoirloaded
+    \ifisabntexloaded
+      \@ifundefined{oldAddGoToABNTEXchapterupperifneeded}{}{\let\ABNTEXchapterupperifneeded\oldAddGoToABNTEXchapterupperifneeded}
     \else
-        \@ifundefined{oldAddGoToChapterformat}{}{\let\Chapterformat\oldAddGoToChapterformat}
+      \@ifundefined{oldAddGoToprintchaptertitle}{}{\let\printchaptertitle\oldAddGoToprintchaptertitle}
     \fi
+  \else
+    \@ifundefined{oldAddGoToChapterformat}{}{\let\Chapterformat\oldAddGoToChapterformat}
+  \fi
 }
 
 \let\oldAddGoTotableofcontents\tableofcontents
 % Insert internal document link
 \renewcommand{\tableofcontents}{%
-    \hypertarget{summary}%
-    \oldAddGoTotableofcontents%
+  \hypertarget{summary}%
+  \oldAddGoTotableofcontents%
 }
 
 
@@ -1890,8 +1890,8 @@
 % https://tex.stackexchange.com/questions/71162/reset-section-numbering-between-unnumbered-chapters
 \newcommand{\addtotextpreliminarycontent}[1]
 {%
-    \refstepcounter{textpreliminarycounter}%
-    \addcontentsline{tpc}{textpreliminarycounter}{\protect\numberline{\thetextpreliminarycounter}#1}\par%
+  \refstepcounter{textpreliminarycounter}%
+  \addcontentsline{tpc}{textpreliminarycounter}{\protect\numberline{\thetextpreliminarycounter}#1}\par%
 }
 
 
@@ -1903,14 +1903,14 @@
 
 \newcommand{\addlabelstoallincludedpages}[1]
 {%
-    \refstepcounter{includepdfpage}%
-    \stepcounter{currentpagecounter}%
-    \label{#1.\thecurrentpagecounter}%
+  \refstepcounter{includepdfpage}%
+  \stepcounter{currentpagecounter}%
+  \label{#1.\thecurrentpagecounter}%
 }
 \newcommand{\modifiedincludepdf}[4]
 {%
-    \setcounter{currentpagecounter}{0}%
-    \includepdf[pages=#1,pagecommand=\addlabelstoallincludedpages{#2},scale=#4]{#3}%
+  \setcounter{currentpagecounter}{0}%
+  \includepdf[pages=#1,pagecommand=\addlabelstoallincludedpages{#2},scale=#4]{#3}%
 }
 
 
@@ -1929,18 +1929,18 @@
 \LetLtxMacro\origttfamily\ttfamily
 \DeclareRobustCommand*{\ttfamily}
 {%
-    \origttfamily
-    \hyphenchar\font=`\-\relax
-    \fontdimen3\font=.25em\relax
-    \fontdimen4\font=.13em\relax
-    \fontdimen7\font=.167em\relax
+  \origttfamily
+  \hyphenchar\font=`\-\relax
+  \fontdimen3\font=.25em\relax
+  \fontdimen4\font=.13em\relax
+  \fontdimen7\font=.167em\relax
 }
 
 \DeclareRobustCommand\vttfamily
 {%
-    \not@math@alphabet\vttfamily\relax
-    \fontfamily{cmvtt}% cmvtt (Computer Modern) or lmvtt (Latin Modern)
-    \selectfont
+  \not@math@alphabet\vttfamily\relax
+  \fontfamily{cmvtt}% cmvtt (Computer Modern) or lmvtt (Latin Modern)
+  \selectfont
 }
 \DeclareTextFontCommand{\textvtt}{\vttfamily}
 
@@ -1951,23 +1951,23 @@
 \newcommand{\includeonlyfilelist}[0]{}
 \newcommand{\addtoincludeonly}[1]
 {%
-    \StrLen{\includeonlyfilelist}[\includeonlyfilelistlen]
+  \StrLen{\includeonlyfilelist}[\includeonlyfilelistlen]
 
-    % How to concatenate strings into a single command?
-    % https://tex.stackexchange.com/questions/74707/how-to-concatenate-strings-into-a
-    \ifnum\includeonlyfilelistlen>0
-        \g@addto@macro\includeonlyfilelist{,#1}
-    \else
-        \g@addto@macro\includeonlyfilelist{#1}
-    \fi
+  % How to concatenate strings into a single command?
+  % https://tex.stackexchange.com/questions/74707/how-to-concatenate-strings-into-a
+  \ifnum\includeonlyfilelistlen>0
+    \g@addto@macro\includeonlyfilelist{,#1}
+  \else
+    \g@addto@macro\includeonlyfilelist{#1}
+  \fi
 }
 \newcommand{\doincludeonly}[0]
 {%
-    \StrLen{\includeonlyfilelist}[\includeonlyfilelistlen]
-    \ifnum\includeonlyfilelistlen>0
-        \includeonly{\includeonlyfilelist}
-    \else
-    \fi
+  \StrLen{\includeonlyfilelist}[\includeonlyfilelistlen]
+  \ifnum\includeonlyfilelistlen>0
+    \includeonly{\includeonlyfilelist}
+  \else
+  \fi
 }
 
 
@@ -2029,37 +2029,37 @@
 
 \@ifpackageloaded{url}
 {
-    % Bad formatting using URLs in bibtex
-    % https://tex.stackexchange.com/questions/22888/bad-formatting-using-urls-in-bibtex
-    \usepackage{etoolbox}
+  % Bad formatting using URLs in bibtex
+  % https://tex.stackexchange.com/questions/22888/bad-formatting-using-urls-in-bibtex
+  \usepackage{etoolbox}
 
-    % How to avoid overfull error with url package?
-    % See also the `\usepackage{url}` declarationon the file `basic.tex`.
-    % Set this to 2mu or 3mu if URL start troubling again.
-    % https://tex.stackexchange.com/questions/261776/how-to-avoid-overfull-error-with-url-package
-    \Urlmuskip=0mu plus 1mu
+  % How to avoid overfull error with url package?
+  % See also the `\usepackage{url}` declarationon the file `basic.tex`.
+  % Set this to 2mu or 3mu if URL start troubling again.
+  % https://tex.stackexchange.com/questions/261776/how-to-avoid-overfull-error-with-url-package
+  \Urlmuskip=0mu plus 1mu
 
-    % How to fix URL overfull & underfull on emumeration?
-    % https://tex.stackexchange.com/questions/366803/how-to-fix-url-overfull-underfull-on-emumeration
-    %
-    % Forcing linebreaks in \url
-    % https://tex.stackexchange.com/questions/3033/forcing-linebreaks-in-url/10401
-    \g@addto@macro{\UrlBreaks}{\UrlOrds}
+  % How to fix URL overfull & underfull on emumeration?
+  % https://tex.stackexchange.com/questions/366803/how-to-fix-url-overfull-underfull-on-emumeration
+  %
+  % Forcing linebreaks in \url
+  % https://tex.stackexchange.com/questions/3033/forcing-linebreaks-in-url/10401
+  \g@addto@macro{\UrlBreaks}{\UrlOrds}
 
-    % How to fix this url bad box for stackoverflow link?
-    % https://tex.stackexchange.com/questions/384427/how-to-fix-this-url-bad-box-for-stackoverflow-link
-    \g@addto@macro{\UrlBreaks}
-    {%
-        \do\a\do\b\do\c\do\d\do\e\do\f\do\g%
-        \do\h\do\i\do\j\do\k\do\l\do\m\do\n%
-        \do\o\do\p\do\q\do\r\do\s\do\t\do\u%
-        \do\v\do\w\do\x\do\y\do\z%
-        \do\A\do\B\do\C\do\D\do\E\do\F\do\G%
-        \do\H\do\I\do\J\do\K\do\L\do\M\do\N%
-        \do\O\do\P\do\Q\do\R\do\S\do\T\do\U%
-        \do\V\do\W\do\X\do\Y\do\Z%
-        \do\/\do\_\do\-%
-    }
+  % How to fix this url bad box for stackoverflow link?
+  % https://tex.stackexchange.com/questions/384427/how-to-fix-this-url-bad-box-for-stackoverflow-link
+  \g@addto@macro{\UrlBreaks}
+  {%
+    \do\a\do\b\do\c\do\d\do\e\do\f\do\g%
+    \do\h\do\i\do\j\do\k\do\l\do\m\do\n%
+    \do\o\do\p\do\q\do\r\do\s\do\t\do\u%
+    \do\v\do\w\do\x\do\y\do\z%
+    \do\A\do\B\do\C\do\D\do\E\do\F\do\G%
+    \do\H\do\I\do\J\do\K\do\L\do\M\do\N%
+    \do\O\do\P\do\Q\do\R\do\S\do\T\do\U%
+    \do\V\do\W\do\X\do\Y\do\Z%
+    \do\/\do\_\do\-%
+  }
 }{}
 
 
@@ -2137,9 +2137,9 @@
   morestring=[b]',
   morestring=[b]",
   literate = {---}{{\ProcessThreeDashes}}3
-             {>}{{\textcolor{red}\textgreater}}1
-             {|}{{\textcolor{red}\textbar}}1
-             {\ -\ }{{\mdseries\ -\ }}3,
+       {>}{{\textcolor{red}\textgreater}}1
+       {|}{{\textcolor{red}\textbar}}1
+       {\ -\ }{{\mdseries\ -\ }}3,
   inputencoding=utf8, % http://stackoverflow.com/questions/1116266/listings-in-latex-with-utf-8-or-at-least-german-umlauts
   extendedchars=true, % https://tex.stackexchange.com/questions/24528/having-problems-with-listings-and-utf-8-can-it-be-fixed
   literate=%
@@ -2269,35 +2269,35 @@
 }
 
 \lstdefinestyle{ufscthesisx_style}{
-    aboveskip=3mm,
-    belowskip=3mm,
-    backgroundcolor=\color{white},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}
-    basicstyle={\small\fontfamily{zi4}\selectfont},    % the size of the fonts that are used for the code
-    breakatwhitespace=true,          % sets if automatic breaks should only happen at whitespace
-    breaklines=true,                 % sets automatic line breaking
-    captionpos=t,                    % sets the caption-position to bottom
-    commentstyle=\color{mygreen},    % comment style
-    columns=flexible,
-    deletekeywords={...},            % if you want to delete keywords from the given language
-    escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
-    extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
-    frame=tb,                        % adds a frame around the code
-    keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
-    keywordstyle=\color{blue},       % keyword style
-    language=Matlab,                 % the language of the code
-    morekeywords={*,...},            % if you want to add more keywords to the set
-    numbers=none,                    % where to put the line-numbers; possible values are (none, left, right)
-    numbersep=5pt,                   % how far the line-numbers are from the code
-    numberstyle=\tiny\color{mygray}, % the style that is used for the line-numbers
-    rulecolor=\color{black},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
-    showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
-    showstringspaces=false,          % underline spaces within strings only
-    showtabs=false,                  % show tabs within strings adding particular underscores
-    stepnumber=2,                    % the step between two line-numbers. If it's 1, each line will be numbered
-    stringstyle=\color{mymauve},     % string literal style
-    tabsize=3,                       % sets default tabsize to 3 spaces
-    texcl=true,                      % Permite o uso de acentuação no código
-    title=\lstname                   % show the filename of files included with \lstinputlisting; also try caption instead of title
+  aboveskip=3mm,
+  belowskip=3mm,
+  backgroundcolor=\color{white},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}
+  basicstyle={\small\fontfamily{zi4}\selectfont},    % the size of the fonts that are used for the code
+  breakatwhitespace=true,          % sets if automatic breaks should only happen at whitespace
+  breaklines=true,                 % sets automatic line breaking
+  captionpos=t,                    % sets the caption-position to bottom
+  commentstyle=\color{mygreen},    % comment style
+  columns=flexible,
+  deletekeywords={...},            % if you want to delete keywords from the given language
+  escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+  extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+  frame=tb,                        % adds a frame around the code
+  keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+  keywordstyle=\color{blue},       % keyword style
+  language=Matlab,                 % the language of the code
+  morekeywords={*,...},            % if you want to add more keywords to the set
+  numbers=none,                    % where to put the line-numbers; possible values are (none, left, right)
+  numbersep=5pt,                   % how far the line-numbers are from the code
+  numberstyle=\tiny\color{mygray}, % the style that is used for the line-numbers
+  rulecolor=\color{black},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
+  showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+  showstringspaces=false,          % underline spaces within strings only
+  showtabs=false,                  % show tabs within strings adding particular underscores
+  stepnumber=2,                    % the step between two line-numbers. If it's 1, each line will be numbered
+  stringstyle=\color{mymauve},     % string literal style
+  tabsize=3,                       % sets default tabsize to 3 spaces
+  texcl=true,                      % Permite o uso de acentuação no código
+  title=\lstname                   % show the filename of files included with \lstinputlisting; also try caption instead of title
 }
 
 % https://tex.stackexchange.com/questions/83882/how-to-highlight-python-syntax-in-latex-listings-lstinputlistings-command
@@ -2388,186 +2388,186 @@
 
 % https://tex.stackexchange.com/questions/99500/listings-code-style-for-html5-css-html-javascript
 \lstdefinestyle{HTML5}{
-        language=html,
-        sensitive=true,
-        alsoletter={<>=-},
-        otherkeywords={
-        % HTML tags
-        <, </, >,
-        </a, <a, </a>,
-        </abbr, <abbr, </abbr>,
-        </address, <address, </address>,
-        </area, <area, </area>,
-        </area, <area, </area>,
-        </article, <article, </article>,
-        </aside, <aside, </aside>,
-        </audio, <audio, </audio>,
-        </audio, <audio, </audio>,
-        </b, <b, </b>,
-        </base, <base, </base>,
-        </bdi, <bdi, </bdi>,
-        </bdo, <bdo, </bdo>,
-        </blockquote, <blockquote, </blockquote>,
-        </body, <body, </body>,
-        </br, <br, </br>,
-        </button, <button, </button>,
-        </canvas, <canvas, </canvas>,
-        </caption, <caption, </caption>,
-        </cite, <cite, </cite>,
-        </code, <code, </code>,
-        </col, <col, </col>,
-        </colgroup, <colgroup, </colgroup>,
-        </data, <data, </data>,
-        </datalist, <datalist, </datalist>,
-        </dd, <dd, </dd>,
-        </del, <del, </del>,
-        </details, <details, </details>,
-        </dfn, <dfn, </dfn>,
-        </div, <div, </div>,
-        </dl, <dl, </dl>,
-        </dt, <dt, </dt>,
-        </em, <em, </em>,
-        </embed, <embed, </embed>,
-        </fieldset, <fieldset, </fieldset>,
-        </figcaption, <figcaption, </figcaption>,
-        </figure, <figure, </figure>,
-        </footer, <footer, </footer>,
-        </form, <form, </form>,
-        </h1, <h1, </h1>,
-        </h2, <h2, </h2>,
-        </h3, <h3, </h3>,
-        </h4, <h4, </h4>,
-        </h5, <h5, </h5>,
-        </h6, <h6, </h6>,
-        </head, <head, </head>,
-        </header, <header, </header>,
-        </hr, <hr, </hr>,
-        </html, <html, </html>,
-        </i, <i, </i>,
-        </iframe, <iframe, </iframe>,
-        </img, <img, </img>,
-        </input, <input, </input>,
-        </ins, <ins, </ins>,
-        </kbd, <kbd, </kbd>,
-        </keygen, <keygen, </keygen>,
-        </label, <label, </label>,
-        </legend, <legend, </legend>,
-        </li, <li, </li>,
-        </link, <link, </link>,
-        </main, <main, </main>,
-        </map, <map, </map>,
-        </mark, <mark, </mark>,
-        </math, <math, </math>,
-        </menu, <menu, </menu>,
-        </menuitem, <menuitem, </menuitem>,
-        </meta, <meta, </meta>,
-        </meter, <meter, </meter>,
-        </nav, <nav, </nav>,
-        </noscript, <noscript, </noscript>,
-        </object, <object, </object>,
-        </ol, <ol, </ol>,
-        </optgroup, <optgroup, </optgroup>,
-        </option, <option, </option>,
-        </output, <output, </output>,
-        </p, <p, </p>,
-        </param, <param, </param>,
-        </pre, <pre, </pre>,
-        </progress, <progress, </progress>,
-        </q, <q, </q>,
-        </rp, <rp, </rp>,
-        </rt, <rt, </rt>,
-        </ruby, <ruby, </ruby>,
-        </s, <s, </s>,
-        </samp, <samp, </samp>,
-        </script, <script, </script>,
-        </section, <section, </section>,
-        </select, <select, </select>,
-        </small, <small, </small>,
-        </source, <source, </source>,
-        </span, <span, </span>,
-        </strong, <strong, </strong>,
-        </style, <style, </style>,
-        </summary, <summary, </summary>,
-        </sup, <sup, </sup>,
-        </svg, <svg, </svg>,
-        </table, <table, </table>,
-        </tbody, <tbody, </tbody>,
-        </td, <td, </td>,
-        </template, <template, </template>,
-        </textarea, <textarea, </textarea>,
-        </tfoot, <tfoot, </tfoot>,
-        </th, <th, </th>,
-        </thead, <thead, </thead>,
-        </time, <time, </time>,
-        </title, <title, </title>,
-        </tr, <tr, </tr>,
-        </track, <track, </track>,
-        </u, <u, </u>,
-        </ul, <ul, </ul>,
-        </var, <var, </var>,
-        </video, <video, </video>,
-        </wbr, <wbr, </wbr>,
-        />, <!
-        },
-        ndkeywords={
-        % General
-        =,
-        % HTML attributes
-        accept=, accept-charset=, accesskey=, action=, align=, alt=, async=, autocomplete=, autofocus=, autoplay=, autosave=, bgcolor=, border=, buffered=, challenge=, charset=, checked=, cite=, class=, code=, codebase=, color=, cols=, colspan=, content=, contenteditable=, contextmenu=, controls=, coords=, data=, datetime=, default=, defer=, dir=, dirname=, disabled=, download=, draggable=, dropzone=, enctype=, for=, form=, formaction=, headers=, height=, hidden=, high=, href=, hreflang=, http-equiv=, icon=, id=, ismap=, itemprop=, keytype=, kind=, label=, lang=, language=, list=, loop=, low=, manifest=, max=, maxlength=, media=, method=, min=, multiple=, name=, novalidate=, open=, optimum=, pattern=, ping=, placeholder=, poster=, preload=, pubdate=, radiogroup=, readonly=, rel=, required=, reversed=, rows=, rowspan=, sandbox=, scope=, scoped=, seamless=, selected=, shape=, size=, sizes=, span=, spellcheck=, src=, srcdoc=, srclang=, start=, step=, style=, summary=, tabindex=, target=, title=, type=, usemap=, value=, width=, wrap=,
-        % CSS properties
-        accelerator:,azimuth:,background:,background-attachment:,
-        background-color:,background-image:,background-position:,
-        background-position-x:,background-position-y:,background-repeat:,
-        behavior:,border:,border-bottom:,border-bottom-color:,
-        border-bottom-style:,border-bottom-width:,border-collapse:,
-        border-color:,border-left:,border-left-color:,border-left-style:,
-        border-left-width:,border-right:,border-right-color:,
-        border-right-style:,border-right-width:,border-spacing:,
-        border-style:,border-top:,border-top-color:,border-top-style:,
-        border-top-width:,border-width:,bottom:,caption-side:,clear:,
-        clip:,color:,content:,counter-increment:,counter-reset:,cue:,
-        cue-after:,cue-before:,cursor:,direction:,display:,elevation:,
-        empty-cells:,filter:,float:,font:,font-family:,font-size:,
-        font-size-adjust:,font-stretch:,font-style:,font-variant:,
-        font-weight:,height:,ime-mode:,include-source:,
-        layer-background-color:,layer-background-image:,layout-flow:,
-        layout-grid:,layout-grid-char:,layout-grid-char-spacing:,
-        layout-grid-line:,layout-grid-mode:,layout-grid-type:,left:,
-        letter-spacing:,line-break:,line-height:,list-style:,
-        list-style-image:,list-style-position:,list-style-type:,margin:,
-        margin-bottom:,margin-left:,margin-right:,margin-top:,
-        marker-offset:,marks:,max-height:,max-width:,min-height:,
-        min-width:,transition-duration:,transition-property:,
-        transition-timing-function:,transform:,
-        -moz-transform:,-moz-binding:,-moz-border-radius:,
-        -moz-border-radius-topleft:,-moz-border-radius-topright:,
-        -moz-border-radius-bottomright:,-moz-border-radius-bottomleft:,
-        -moz-border-top-colors:,-moz-border-right-colors:,
-        -moz-border-bottom-colors:,-moz-border-left-colors:,-moz-opacity:,
-        -moz-outline:,-moz-outline-color:,-moz-outline-style:,
-        -moz-outline-width:,-moz-user-focus:,-moz-user-input:,
-        -moz-user-modify:,-moz-user-select:,orphans:,outline:,
-        outline-color:,outline-style:,outline-width:,overflow:,
-        overflow-X:,overflow-Y:,padding:,padding-bottom:,padding-left:,
-        padding-right:,padding-top:,page:,page-break-after:,
-        page-break-before:,page-break-inside:,pause:,pause-after:,
-        pause-before:,pitch:,pitch-range:,play-during:,position:,quotes:,
-        -replace:,richness:,right:,ruby-align:,ruby-overhang:,
-        ruby-position:,-set-link-source:,size:,speak:,speak-header:,
-        speak-numeral:,speak-punctuation:,speech-rate:,stress:,
-        scrollbar-arrow-color:,scrollbar-base-color:,
-        scrollbar-dark-shadow-color:,scrollbar-face-color:,
-        scrollbar-highlight-color:,scrollbar-shadow-color:,
-        scrollbar-3d-light-color:,scrollbar-track-color:,table-layout:,
-        text-align:,text-align-last:,text-decoration:,text-indent:,
-        text-justify:,text-overflow:,text-shadow:,text-transform:,
-        text-autospace:,text-kashida-space:,text-underline-position:,top:,
-        unicode-bidi:,-use-link-source:,vertical-align:,visibility:,
-        voice-family:,volume:,white-space:,widows:,width:,word-break:,
-        word-spacing:,word-wrap:,writing-mode:,z-index:,zoom:
-        },
-        morecomment=[s]{<!--}{-->},
-        tag=[s]
+    language=html,
+    sensitive=true,
+    alsoletter={<>=-},
+    otherkeywords={
+    % HTML tags
+    <, </, >,
+    </a, <a, </a>,
+    </abbr, <abbr, </abbr>,
+    </address, <address, </address>,
+    </area, <area, </area>,
+    </area, <area, </area>,
+    </article, <article, </article>,
+    </aside, <aside, </aside>,
+    </audio, <audio, </audio>,
+    </audio, <audio, </audio>,
+    </b, <b, </b>,
+    </base, <base, </base>,
+    </bdi, <bdi, </bdi>,
+    </bdo, <bdo, </bdo>,
+    </blockquote, <blockquote, </blockquote>,
+    </body, <body, </body>,
+    </br, <br, </br>,
+    </button, <button, </button>,
+    </canvas, <canvas, </canvas>,
+    </caption, <caption, </caption>,
+    </cite, <cite, </cite>,
+    </code, <code, </code>,
+    </col, <col, </col>,
+    </colgroup, <colgroup, </colgroup>,
+    </data, <data, </data>,
+    </datalist, <datalist, </datalist>,
+    </dd, <dd, </dd>,
+    </del, <del, </del>,
+    </details, <details, </details>,
+    </dfn, <dfn, </dfn>,
+    </div, <div, </div>,
+    </dl, <dl, </dl>,
+    </dt, <dt, </dt>,
+    </em, <em, </em>,
+    </embed, <embed, </embed>,
+    </fieldset, <fieldset, </fieldset>,
+    </figcaption, <figcaption, </figcaption>,
+    </figure, <figure, </figure>,
+    </footer, <footer, </footer>,
+    </form, <form, </form>,
+    </h1, <h1, </h1>,
+    </h2, <h2, </h2>,
+    </h3, <h3, </h3>,
+    </h4, <h4, </h4>,
+    </h5, <h5, </h5>,
+    </h6, <h6, </h6>,
+    </head, <head, </head>,
+    </header, <header, </header>,
+    </hr, <hr, </hr>,
+    </html, <html, </html>,
+    </i, <i, </i>,
+    </iframe, <iframe, </iframe>,
+    </img, <img, </img>,
+    </input, <input, </input>,
+    </ins, <ins, </ins>,
+    </kbd, <kbd, </kbd>,
+    </keygen, <keygen, </keygen>,
+    </label, <label, </label>,
+    </legend, <legend, </legend>,
+    </li, <li, </li>,
+    </link, <link, </link>,
+    </main, <main, </main>,
+    </map, <map, </map>,
+    </mark, <mark, </mark>,
+    </math, <math, </math>,
+    </menu, <menu, </menu>,
+    </menuitem, <menuitem, </menuitem>,
+    </meta, <meta, </meta>,
+    </meter, <meter, </meter>,
+    </nav, <nav, </nav>,
+    </noscript, <noscript, </noscript>,
+    </object, <object, </object>,
+    </ol, <ol, </ol>,
+    </optgroup, <optgroup, </optgroup>,
+    </option, <option, </option>,
+    </output, <output, </output>,
+    </p, <p, </p>,
+    </param, <param, </param>,
+    </pre, <pre, </pre>,
+    </progress, <progress, </progress>,
+    </q, <q, </q>,
+    </rp, <rp, </rp>,
+    </rt, <rt, </rt>,
+    </ruby, <ruby, </ruby>,
+    </s, <s, </s>,
+    </samp, <samp, </samp>,
+    </script, <script, </script>,
+    </section, <section, </section>,
+    </select, <select, </select>,
+    </small, <small, </small>,
+    </source, <source, </source>,
+    </span, <span, </span>,
+    </strong, <strong, </strong>,
+    </style, <style, </style>,
+    </summary, <summary, </summary>,
+    </sup, <sup, </sup>,
+    </svg, <svg, </svg>,
+    </table, <table, </table>,
+    </tbody, <tbody, </tbody>,
+    </td, <td, </td>,
+    </template, <template, </template>,
+    </textarea, <textarea, </textarea>,
+    </tfoot, <tfoot, </tfoot>,
+    </th, <th, </th>,
+    </thead, <thead, </thead>,
+    </time, <time, </time>,
+    </title, <title, </title>,
+    </tr, <tr, </tr>,
+    </track, <track, </track>,
+    </u, <u, </u>,
+    </ul, <ul, </ul>,
+    </var, <var, </var>,
+    </video, <video, </video>,
+    </wbr, <wbr, </wbr>,
+    />, <!
+    },
+    ndkeywords={
+    % General
+    =,
+    % HTML attributes
+    accept=, accept-charset=, accesskey=, action=, align=, alt=, async=, autocomplete=, autofocus=, autoplay=, autosave=, bgcolor=, border=, buffered=, challenge=, charset=, checked=, cite=, class=, code=, codebase=, color=, cols=, colspan=, content=, contenteditable=, contextmenu=, controls=, coords=, data=, datetime=, default=, defer=, dir=, dirname=, disabled=, download=, draggable=, dropzone=, enctype=, for=, form=, formaction=, headers=, height=, hidden=, high=, href=, hreflang=, http-equiv=, icon=, id=, ismap=, itemprop=, keytype=, kind=, label=, lang=, language=, list=, loop=, low=, manifest=, max=, maxlength=, media=, method=, min=, multiple=, name=, novalidate=, open=, optimum=, pattern=, ping=, placeholder=, poster=, preload=, pubdate=, radiogroup=, readonly=, rel=, required=, reversed=, rows=, rowspan=, sandbox=, scope=, scoped=, seamless=, selected=, shape=, size=, sizes=, span=, spellcheck=, src=, srcdoc=, srclang=, start=, step=, style=, summary=, tabindex=, target=, title=, type=, usemap=, value=, width=, wrap=,
+    % CSS properties
+    accelerator:,azimuth:,background:,background-attachment:,
+    background-color:,background-image:,background-position:,
+    background-position-x:,background-position-y:,background-repeat:,
+    behavior:,border:,border-bottom:,border-bottom-color:,
+    border-bottom-style:,border-bottom-width:,border-collapse:,
+    border-color:,border-left:,border-left-color:,border-left-style:,
+    border-left-width:,border-right:,border-right-color:,
+    border-right-style:,border-right-width:,border-spacing:,
+    border-style:,border-top:,border-top-color:,border-top-style:,
+    border-top-width:,border-width:,bottom:,caption-side:,clear:,
+    clip:,color:,content:,counter-increment:,counter-reset:,cue:,
+    cue-after:,cue-before:,cursor:,direction:,display:,elevation:,
+    empty-cells:,filter:,float:,font:,font-family:,font-size:,
+    font-size-adjust:,font-stretch:,font-style:,font-variant:,
+    font-weight:,height:,ime-mode:,include-source:,
+    layer-background-color:,layer-background-image:,layout-flow:,
+    layout-grid:,layout-grid-char:,layout-grid-char-spacing:,
+    layout-grid-line:,layout-grid-mode:,layout-grid-type:,left:,
+    letter-spacing:,line-break:,line-height:,list-style:,
+    list-style-image:,list-style-position:,list-style-type:,margin:,
+    margin-bottom:,margin-left:,margin-right:,margin-top:,
+    marker-offset:,marks:,max-height:,max-width:,min-height:,
+    min-width:,transition-duration:,transition-property:,
+    transition-timing-function:,transform:,
+    -moz-transform:,-moz-binding:,-moz-border-radius:,
+    -moz-border-radius-topleft:,-moz-border-radius-topright:,
+    -moz-border-radius-bottomright:,-moz-border-radius-bottomleft:,
+    -moz-border-top-colors:,-moz-border-right-colors:,
+    -moz-border-bottom-colors:,-moz-border-left-colors:,-moz-opacity:,
+    -moz-outline:,-moz-outline-color:,-moz-outline-style:,
+    -moz-outline-width:,-moz-user-focus:,-moz-user-input:,
+    -moz-user-modify:,-moz-user-select:,orphans:,outline:,
+    outline-color:,outline-style:,outline-width:,overflow:,
+    overflow-X:,overflow-Y:,padding:,padding-bottom:,padding-left:,
+    padding-right:,padding-top:,page:,page-break-after:,
+    page-break-before:,page-break-inside:,pause:,pause-after:,
+    pause-before:,pitch:,pitch-range:,play-during:,position:,quotes:,
+    -replace:,richness:,right:,ruby-align:,ruby-overhang:,
+    ruby-position:,-set-link-source:,size:,speak:,speak-header:,
+    speak-numeral:,speak-punctuation:,speech-rate:,stress:,
+    scrollbar-arrow-color:,scrollbar-base-color:,
+    scrollbar-dark-shadow-color:,scrollbar-face-color:,
+    scrollbar-highlight-color:,scrollbar-shadow-color:,
+    scrollbar-3d-light-color:,scrollbar-track-color:,table-layout:,
+    text-align:,text-align-last:,text-decoration:,text-indent:,
+    text-justify:,text-overflow:,text-shadow:,text-transform:,
+    text-autospace:,text-kashida-space:,text-underline-position:,top:,
+    unicode-bidi:,-use-link-source:,vertical-align:,visibility:,
+    voice-family:,volume:,white-space:,widows:,width:,word-break:,
+    word-spacing:,word-wrap:,writing-mode:,z-index:,zoom:
+    },
+    morecomment=[s]{<!--}{-->},
+    tag=[s]
 }
 
 
@@ -2585,37 +2585,37 @@
 % https://tex.stackexchange.com/questions/482886/how-to-add-babel-captions-to-newfloat-package-environments
 % https://tex.stackexchange.com/questions/482523/how-to-override-command-on-my-preamble-after-its-redefinition-by-my-class-with
 \@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{%
-    \renewcommand{\orientadorname}{Orientador}
-    \renewcommand{\coorientadorname}{Coorientador}
-    \renewcommand{\quadrosname}{Quadro}
-    \renewcommand{\folhadeaprovacaoname}{Folha de Aprovação}
-    \renewcommand{\folhaderostoname}{Folha de Rosto}
-    \renewcommand{\listfigurename}{Lista de Ilustrações}
-    \renewcommand{\listtablename}{Lista de Tabelas}
-    \renewcommand{\listofquadrosname}{Lista de Quadros}
-    \renewcommand{\listfigurename}{Lista de Figuras}
-    \renewcommand{\listadesiglasname}{Lista de Abreviaturas e Siglas}
-    \renewcommand{\listadesimbolosname}{Lista de Símbolos}
-    \renewcommand{\tableautorefname}{Tabela}
-    \renewcommand{\figureautorefname}{Figura}
-    \renewcommand{\chapterautorefname}{Capítulo}
+  \renewcommand{\orientadorname}{Orientador}
+  \renewcommand{\coorientadorname}{Coorientador}
+  \renewcommand{\quadrosname}{Quadro}
+  \renewcommand{\folhadeaprovacaoname}{Folha de Aprovação}
+  \renewcommand{\folhaderostoname}{Folha de Rosto}
+  \renewcommand{\listfigurename}{Lista de Ilustrações}
+  \renewcommand{\listtablename}{Lista de Tabelas}
+  \renewcommand{\listofquadrosname}{Lista de Quadros}
+  \renewcommand{\listfigurename}{Lista de Figuras}
+  \renewcommand{\listadesiglasname}{Lista de Abreviaturas e Siglas}
+  \renewcommand{\listadesimbolosname}{Lista de Símbolos}
+  \renewcommand{\tableautorefname}{Tabela}
+  \renewcommand{\figureautorefname}{Figura}
+  \renewcommand{\chapterautorefname}{Capítulo}
 }}{}}{}
 
 \@ifpackageloaded{babel}{\@ifpackagewith{babel}{english}{\addto\captionsenglish{%
-    \renewcommand{\covername}{Cover}
-    \renewcommand{\orientadorname}{Supervisor}
-    \renewcommand{\coorientadorname}{Co\hyp{}supervisor}
-    \renewcommand{\folhadeaprovacaoname}{Approval}
-    \renewcommand{\folhaderostoname}{Title Page}
-    \renewcommand{\errataname}{Errata Sheet}
-    \renewcommand{\listfigurename}{List of Illustrations}
-    \renewcommand{\listtablename}{List of Tables}
-    \renewcommand{\listfigurename}{List of Figures}
-    \renewcommand{\listadesiglasname}{List of Abbreviations and Acronyms}
-    \renewcommand{\listadesimbolosname}{List of Symbols}
-    \renewcommand{\tableautorefname}{Table}
-    \renewcommand{\figureautorefname}{Figure}
-    \renewcommand{\chapterautorefname}{Chapter}
+  \renewcommand{\covername}{Cover}
+  \renewcommand{\orientadorname}{Supervisor}
+  \renewcommand{\coorientadorname}{Co\hyp{}supervisor}
+  \renewcommand{\folhadeaprovacaoname}{Approval}
+  \renewcommand{\folhaderostoname}{Title Page}
+  \renewcommand{\errataname}{Errata Sheet}
+  \renewcommand{\listfigurename}{List of Illustrations}
+  \renewcommand{\listtablename}{List of Tables}
+  \renewcommand{\listfigurename}{List of Figures}
+  \renewcommand{\listadesiglasname}{List of Abbreviations and Acronyms}
+  \renewcommand{\listadesimbolosname}{List of Symbols}
+  \renewcommand{\tableautorefname}{Table}
+  \renewcommand{\figureautorefname}{Figure}
+  \renewcommand{\chapterautorefname}{Chapter}
 }}{}}{}
 
 % Muda equação para 'Equação (n)'
@@ -2627,13 +2627,13 @@
 % https://tex.stackexchange.com/questions/128050/add-equation-name-underneath-equation-number
 \@ifpackageloaded{babel}{\@ifpackagewith{babel}{english}{\addto\captionsenglish{%
   \def\equationautorefname~#1\null{%
-    Equation~(#1)\null
+  Equation~(#1)\null
   }
 }}{}}{}
 
 \@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{%
   \def\equationautorefname~#1\null{%
-    Equação~(#1)\null
+  Equação~(#1)\null
   }
 }}{}}{}
 
