@@ -148,7 +148,8 @@
      \setlength{\belowcaptionskip}{4pt}
      \ABNTEXfontereduzida
      \captiondelim{\ABNTEXcaptionfontedelim}
-     % \captionsetup{labelsep=colon}
+     % https://tex.stackexchange.com/questions/515460/misplaced-noalign-captionsetup-noalign-when-using-captionsetup-inside-mem
+     \caption@setlabelseparator{colon}%
      \@makecaption{\ABNTEXfontereduzida #1}{\ignorespaces\ABNTEXfontereduzida #2}\par
   \endgroup}
 
