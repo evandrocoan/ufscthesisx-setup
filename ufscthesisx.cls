@@ -1258,11 +1258,14 @@
 }{}
 
 % https://tex.stackexchange.com/questions/234398/list-of-figures-and-tables-when-there-are-no-figures-or-tables
-\newcommand{\whenlistisnotempty}[2]{
-  \setbox0\vbox{#1}%
-  \typeout{The height of the list is '\the\ht0'}%
+% https://tex.stackexchange.com/questions/515759/why-pdfbookmark-keeps-adding-to-the-pdf-bookmarks-while-addcontentslinetoc-d
+% https://tex.stackexchange.com/questions/515815/how-to-stop-newsavebox-giving-me-bad-boxes-warnings-or-how-to-use-better-names
+% https://tex.stackexchange.com/questions/515811/how-memoir-prints-the-titles-of-the-content-pages
+\newcommand{\whenlistisnotempty}[3]{
+  \setbox0\vbox{#2}%
+  \typeout{The height of the list '#1' is '\the\ht0'}%
   \ifdim\ht0>35pt%
-    #2%
+    #3%
     \unvbox0%
   \fi%
 }
