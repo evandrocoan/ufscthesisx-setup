@@ -1785,6 +1785,10 @@
 % https://tex.stackexchange.com/questions/485857/why-xapptocmd-is-reducing-the-vertical-space-between-partname-and-parttile
 \definecolor{ultramarine}{RGB}{0,32,96}
 \RequirePackage{xpatch}
+
+% https://tex.stackexchange.com/questions/113147/patching-arguments-inside-a-macro
+\tracingpatches
+
 \RequirePackage{amssymb}
 \RequirePackage{hyperref}
 \newcommand{\goToSummaryText}{{%
