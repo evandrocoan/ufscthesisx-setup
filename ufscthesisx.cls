@@ -1076,14 +1076,92 @@
 % https://tex.stackexchange.com/questions/388489/custom-list-throw-latex-error-command-mycustomfiction-already-defined
 \usepackage{morewrites}
 
+% https://tex.stackexchange.com/questions/505351/how-to-nameref-multiple-labels-simultaneously
+% http://mirror.las.iastate.edu/tex-archive/macros/latex/contrib/l3kernel/expl3.pdf
+\ExplSyntaxOn
+
+% #1: variant (cref, Cref, crefs or Crefs)
+% #2: reference name (label)
+\cs_new_protected:Npn \user_name_cref:nn #1#2
+  { \use:c { name #1 } {#2} }
+
+\cs_generate_variant:Nn \user_name_cref:nn { xV }
+
+% #1: boolean expression (true: disable hyperlink)
+% #2: reference name (label)
+\cs_new_protected:Npn \user_name_ref:nn #1#2
+  { \bool_if:nTF {#1} { \nameref* } { \nameref } {#2} }
+
+\cs_generate_variant:Nn \user_name_ref:nn { nV }
+
+\seq_new:N \l__user_name_refs_tmpa_seq
+\seq_new:N \l__user_name_refs_tmpb_seq
+\int_new:N \l__user_name_refs_nbrefs_int
+\tl_new:N \l__user_name_refs_firstref_tl
+
+% #1: boolean expression (true: start with capitalized letter, as in \Cref)
+% #2: boolean expression (true: disable hyperlinks)
+% #3: comma list of refs
+\cs_new_protected:Npn \user_name_refs:nnn #1#2#3
+  {
+    \seq_set_from_clist:Nn \l__user_name_refs_tmpa_seq {#3}
+    \int_set:Nn \l__user_name_refs_nbrefs_int
+                { \seq_count:N \l__user_name_refs_tmpa_seq }
+    \seq_get_left:NN \l__user_name_refs_tmpa_seq \l__user_name_refs_firstref_tl
+
+    % % (section, Section, sections or Sections) or (theorem, Theorem, ...) or...
+    % \user_name_cref:xV
+    %   { \bool_if:nTF {#1} { C } { c }
+    %     ref
+    %    \int_compare:nNnTF { \l__user_name_refs_nbrefs_int } > { 1 } { s } { } }
+    %  \l__user_name_refs_firstref_tl
+    % \nobreakspace
+
+    % Now print the references.
+    \seq_clear:N \l__user_name_refs_tmpb_seq
+    \seq_map_inline:Nn \l__user_name_refs_tmpa_seq
+      {
+        \seq_put_right:Nn \l__user_name_refs_tmpb_seq
+                          { \user_name_ref:nn {#2} {##1} }
+      }
+    \seq_use:Nnnn \l__user_name_refs_tmpb_seq { \crefpairconjunction }
+                  { \crefmiddleconjunction } { \creflastconjunction }
+  }
+
+\cs_generate_variant:Nn \user_name_refs:nnn { nx }
+
+\cs_new_protected:Npn \__user_name_refs:Nnn #1#2#3
+  {
+    \user_name_refs:nxn {#1}
+      { \IfBooleanTF {#2} { \c_true_bool } { \c_false_bool } }
+      {#3}
+  }
+
+% “Start in lower case” variant.
+% With star: disable hyperlinks.
+% #2: comma list of refs
+\NewDocumentCommand \namerefs { s m }
+  {
+    \__user_name_refs:Nnn \c_false_bool {#1} {#2}
+  }
+
+% “Start in upper case” variant.
+% With star: disable hyperlinks.
+% #2: comma list of refs
+\NewDocumentCommand \Namerefs { s m }
+  {
+    \__user_name_refs:Nnn \c_true_bool {#1} {#2}
+  }
+
+\ExplSyntaxOff
+
 % https://tex.stackexchange.com/questions/62611/how-to-make-ref-references-include-the-word-figure
 % https://tex.stackexchange.com/questions/121865/nameref-how-to-display-section-name-and-its-number
-% https://tex.stackexchange.com/questions/505351/how-to-nameref-multiple-labels-simultaneously
 % https://tex.stackexchange.com/questions/95663/several-nameref-and-page-margins
 % https://tex.stackexchange.com/questions/515864/how-can-i-make-hyperref-stop-thinking-there-are-undefined-references
 \usepackage[nameinlink]{cleveref}
 \newcommand*{\typeref}[1]{\Cref{#1}}
-\newcommand*{\fullref}[1]{\Cref{#1}: \nameref{#1}}
+\newcommand*{\fullref}[1]{\Cref{#1}: \Namerefs{#1}}
 
 % https://tex.stackexchange.com/questions/329631/creating-new-captions-and-caption-counters
 \def\listofquadrosname{List of Frames}
