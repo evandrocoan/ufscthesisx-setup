@@ -1078,9 +1078,12 @@
 
 % https://tex.stackexchange.com/questions/62611/how-to-make-ref-references-include-the-word-figure
 % https://tex.stackexchange.com/questions/121865/nameref-how-to-display-section-name-and-its-number
+% https://tex.stackexchange.com/questions/505351/how-to-nameref-multiple-labels-simultaneously
+% https://tex.stackexchange.com/questions/95663/several-nameref-and-page-margins
+% https://tex.stackexchange.com/questions/515864/how-can-i-make-hyperref-stop-thinking-there-are-undefined-references
 \usepackage[nameinlink]{cleveref}
-\newcommand*{\typeref}[1]{\hyperref[{#1}]{\Cref{#1}}} % One single link
-\newcommand*{\fullref}[1]{\hyperref[{#1}]{\Cref{#1}: \nameref{#1}}} % One single link
+\newcommand*{\typeref}[1]{\Cref{#1}}
+\newcommand*{\fullref}[1]{\Cref{#1}: \nameref{#1}}
 
 % https://tex.stackexchange.com/questions/329631/creating-new-captions-and-caption-counters
 \def\listofquadrosname{List of Frames}
