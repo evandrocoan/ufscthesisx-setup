@@ -2616,6 +2616,11 @@
   \renewcommand{\tableautorefname}{Tabela}
   \renewcommand{\figureautorefname}{Figura}
   \renewcommand{\chapterautorefname}{Capítulo}
+  \renewcommand{\pageautorefname}{Página}
+  \renewcommand{\sectionautorefname}{Seção}
+  \renewcommand{\subsectionautorefname}{Subseção}
+  \renewcommand{\subsubsectionautorefname}{Subsubseção}
+  \renewcommand{\paragraphautorefname}{Parágrafo}
 }}{}}{}
 
 \@ifpackageloaded{babel}{\@ifpackagewith{babel}{english}{\addto\captionsenglish{%
@@ -2633,6 +2638,11 @@
   \renewcommand{\tableautorefname}{Table}
   \renewcommand{\figureautorefname}{Figure}
   \renewcommand{\chapterautorefname}{Chapter}
+  \renewcommand{\pageautorefname}{Page}
+  \renewcommand{\sectionautorefname}{Section}
+  \renewcommand{\subsectionautorefname}{Subsection}
+  \renewcommand{\subsubsectionautorefname}{Subsubsection}
+  \renewcommand{\paragraphautorefname}{Paragraph}
 }}{}}{}
 
 % Muda equação para 'Equação (n)'
