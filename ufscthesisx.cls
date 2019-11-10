@@ -1257,6 +1257,16 @@
   \AtBeginDocument{\calculatelstlistingsheader}
 }{}
 
+% https://tex.stackexchange.com/questions/234398/list-of-figures-and-tables-when-there-are-no-figures-or-tables
+\newcommand{\whenlistisnotempty}[2]{
+  \setbox0\vbox{#1}%
+  \typeout{The height of the list is '\the\ht0'}%
+  \ifdim\ht0>35pt%
+    #2%
+    \unvbox0%
+  \fi%
+}
+
 % https://tex.stackexchange.com/questions/380799/warning-when-adding-package-minted
 \StrSubstitute{\jobname}{ }{_}[\mintedjobname]
 \StrSubstitute{\mintedjobname}{*}{_}[\mintedjobname]
