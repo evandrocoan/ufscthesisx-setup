@@ -1010,7 +1010,8 @@
 % https://tex.stackexchange.com/questions/300340/topsep-itemsep-partopsep-and-parsep-what-does-each-of-them-mean-and-wha
 % https://tex.stackexchange.com/questions/82859/redefine-environment-to-be-a-synonym-for-another
 \newenvironment*{citacao}[1][default]{%
-   \list{}{}%
+   % https://tex.stackexchange.com/questions/300340/topsep-itemsep-partopsep-and-parsep-what-does-each-of-them-mean-and-wha
+   \list{}{\topsep=4pt}%
    \addtolength{\leftskip}{\ABNTEXcitacaorecuo}%
    \item[]%
    \begin{SingleSpace}%
