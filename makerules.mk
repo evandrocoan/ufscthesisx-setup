@@ -80,7 +80,7 @@ ifeq (${UFSCTHESISX_MAINTEX_DIRECTORY},)
 endif
 
 ifeq (${UFSCTHESISX_ROOT_DIRECTORY},)
-	UFSCTHESISX_ROOT_DIRECTORY := ~/LatexBuild
+	UFSCTHESISX_ROOT_DIRECTORY := LatexBuild
 endif
 
 ifeq (${UFSCTHESISX_REMOTE_PASSWORD},)
@@ -599,7 +599,7 @@ endef
 ##       You can define the following parameters:
 ##       4. args - arguments to pass to the rsync program, see 'rsync --help'
 ##       3. rules - the rules/arguments to pass to the remote invocation of make
-##       5. UFSCTHESISX_ROOT_DIRECTORY  - the directory to put the files, defaults to '~/LatexBuild'
+##       5. UFSCTHESISX_ROOT_DIRECTORY  - the directory to put the files, defaults to 'LatexBuild'
 ##       1. UFSCTHESISX_REMOTE_PASSWORD - the remote machine SHH password, defaults to 'admin123'
 ##       2. UFSCTHESISX_REMOTE_ADDRESS  - the remote machine 'user@ipaddress', defaults to 'linux@192.168.0.222'
 ##
@@ -607,15 +607,15 @@ endef
 ##       make remote rules="latex debug=1" &&
 ##              debug=1 &&
 ##              args="--delete"
-##              UFSCTHESISX_ROOT_DIRECTORY=~/Downloads/Thesis &&
-##              UFSCTHESISX_REMOTE_ADDRESS=linux@192.168.0.222 &&
-##              UFSCTHESISX_REMOTE_PASSWORD=123 &&
+##              UFSCTHESISX_ROOT_DIRECTORY="Downloads/Thesis" &&
+##              UFSCTHESISX_REMOTE_ADDRESS="linux@192.168.0.222" &&
+##              UFSCTHESISX_REMOTE_PASSWORD="123" &&
 ##
 ##     Example usage for Windows:
 ##       set "rules=latex debug=1" &&
 ##              set "debug=1" &&
 ##              set "args=--delete" &&
-##              set "UFSCTHESISX_ROOT_DIRECTORY=~/Downloads/Thesis" &&
+##              set "UFSCTHESISX_ROOT_DIRECTORY=Downloads/Thesis" &&
 ##              set "UFSCTHESISX_REMOTE_ADDRESS=linux@192.168.0.222" &&
 ##              set "UFSCTHESISX_REMOTE_PASSWORD=123" &&
 ##              make remote
