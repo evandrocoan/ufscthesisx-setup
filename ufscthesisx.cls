@@ -907,9 +907,6 @@
 % https://tex.stackexchange.com/questions/164298/starting-a-paragraph-with-a-big-letter
 \usepackage{lettrine}
 
-% Required for including pictures, resizebox
-\usepackage{graphicx}
-
 % Allows in-line images such as the example fish picture
 \usepackage{wrapfig}
 
@@ -980,6 +977,7 @@
 \usepackage[utf8]{inputenc}
 
 \usepackage{graphicx}
+
 \usepackage{pdfpages}
 \usepackage{rotating}
 
@@ -1478,6 +1476,9 @@
 \let\ordinal\relax
 \usepackage{datetime}
 
+% % 'export' allows adjustbox keys in \includegraphics
+% https://tex.stackexchange.com/questions/86350/includegraphics-maximum-width
+\usepackage[export]{adjustbox}
 
 % ufscthesis start, https://github.com/UFSC/ufscthesisx/issues/19
 \RequirePackage{helvet}
