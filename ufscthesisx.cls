@@ -1569,7 +1569,7 @@
   name=#2,
   description=#3}}
 
-% imrpime lista de siglas ordenado alfabeticamente
+% imprime lista de siglas ordenado alfabeticamente
 \newcommand{\imprimirlistadesiglas}{%
   \pdfbookmark[0]{\listadesiglasname}{acn}
   \printnoidxglossary[
