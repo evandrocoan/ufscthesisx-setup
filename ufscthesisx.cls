@@ -1561,15 +1561,18 @@
 % Só dá entrada na lista. Ainda não funciona com o limarka
 \newcommand{\siglalista}[2]{\newacronym{#1}{#1}{#2}}
 
+% https://tex.stackexchange.com/questions/426010/printnoidxglossaries-vs-printglossaries
 \newglossary{simbolos}{simbolos}{sbl}{simbolos}
 
 % Só dá entrada na lista. Ainda não funciona com o limarka
+% https://tex.stackexchange.com/questions/426010/printnoidxglossaries-vs-printglossaries
 \newcommand{\simbololista}[3]{\newglossaryentry{#1}{%
   type=simbolos,
   name=#2,
   description=#3}}
 
 % imprime lista de siglas ordenado alfabeticamente
+% https://tex.stackexchange.com/questions/426010/printnoidxglossaries-vs-printglossaries
 \newcommand{\imprimirlistadesiglas}{%
   \pdfbookmark[0]{\listadesiglasname}{acn}
   \printnoidxglossary[
@@ -1582,6 +1585,7 @@
 }
 
 % imprime lista de simbolos na ordem em que aparece no texto
+% https://tex.stackexchange.com/questions/426010/printnoidxglossaries-vs-printglossaries
 \newcommand{\imprimirlistadesimbolos}{%
   \pdfbookmark[0]{\listadesimbolosname}{sbl}
   \printnoidxglossary[
@@ -1594,6 +1598,7 @@
 }
 
 % imprime glossário
+% https://tex.stackexchange.com/questions/426010/printnoidxglossaries-vs-printglossaries
 \newcommand{\imprimirglossario}{
   \cleardoublepage
   \pdfbookmark[0]{\glossaryname}{glo}
