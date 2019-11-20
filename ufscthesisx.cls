@@ -348,6 +348,7 @@
 
 % Selects a roman (i.e., serifed) font family
 % \renewcommand{\rmdefault}{cmr}
+% https://tex.stackexchange.com/questions/517223/renewcommand-familydefault-sfdefault-is-causing-%e2%86%92-to-throw-package-textcomp
 \renewcommand{\familydefault}{\sfdefault}
 
 % Fontes padroes de part, chapter, section, subsection e subsubsection
