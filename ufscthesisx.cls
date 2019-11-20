@@ -952,7 +952,8 @@
 %
 % `LaTeX Error: Option clash for package textcomp` with the package `mathcomp`, it need to be loaded before it.
 % https://tex.stackexchange.com/questions/343546/how-do-you-resolve-the-error-in-latex-option-clash-for-package-inputenc-usepa
-\usepackage[full]{textcomp}
+% https://tex.stackexchange.com/questions/517223/setting-familydefault-as-sfdefault-is-causing-the-arrow-character-%e2%86%92-to-throw-p
+\usepackage[full,warn]{textcomp}
 \usepackage{mathcomp}
 
 % Número da última página
