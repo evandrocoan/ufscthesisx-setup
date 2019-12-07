@@ -1176,7 +1176,8 @@
 % https://tex.stackexchange.com/questions/121865/nameref-how-to-display-section-name-and-its-number
 % https://tex.stackexchange.com/questions/95663/several-nameref-and-page-margins
 % https://tex.stackexchange.com/questions/515864/how-can-i-make-hyperref-stop-thinking-there-are-undefined-references
-\usepackage[nameinlink,capitalise]{cleveref}
+% https://tex.stackexchange.com/questions/519577/cleveref-capitalise-option-not-working-with-babel-translations
+\usepackage[nameinlink,capitalise,noabbrev]{cleveref}
 \newcommand*{\typeref}[1]{\Cref{#1}}
 \newcommand*{\fullref}[1]{\Cref{#1}: \nameRefs{#1}}
 
