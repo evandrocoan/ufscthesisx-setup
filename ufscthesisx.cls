@@ -1184,22 +1184,27 @@
 \def\listofquadrosname{List of Frames}
 \def\quadrosname{Frame}
 
-% https://github.com/abntex/abntex2/issues/176
-% https://tex.stackexchange.com/questions/502367/how-to-add-babel-translations-to-cleveref-based-cross-references-to-my-custom-fl
-\crefname{quadro}{frame}{frames}
-\Crefname{quadro}{Frame}{Frames}
-
 \DeclareFloatingEnvironment[fileext=loq,placement={!hbtp},name=\quadrosname,within=chapter,listname=\listofquadrosname]{quadro}
 
 \@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{\renewcommand{\quadrosname}{Quadro}}}{}}{}
 \@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{\renewcommand{\listofquadrosname}{Lista de Quadros}}}{}}{}
 
+% Create cleveref names for quadro environment captions
+% https://github.com/abntex/abntex2/issues/176
+% https://tex.stackexchange.com/questions/502367/how-to-add-babel-translations-to-cleveref-based-cross-references-to-my-custom-fl
+% https://tex.stackexchange.com/questions/430498/here-is-another-example-where-cleveref-does-not-capitalize-when-it-should
+\crefname{quadro}{frame}{frames}
+\Crefname{quadro}{Frame}{Frames}
 \@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{\crefname{quadro}{quadro}{quadros}}}{}}{}
 \@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{\Crefname{quadro}{Quadro}{Quadros}}}{}}{}
 
 % fix fig. being used instead of figure
-\@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{\crefname{figure}{figura}{figuras}}}{}}{}
+% https://tex.stackexchange.com/questions/519577/cleveref-capitalise-option-not-working-with-babel-translations
+\@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{\crefname{figure}{Figura}{Figuras}}}{}}{}
+\@ifpackageloaded{babel}{\@ifpackagewith{babel}{brazil}{\addto\captionsbrazil{\Crefname{figure}{Figura}{Figuras}}}{}}{}
+
 \@ifpackageloaded{babel}{\@ifpackagewith{babel}{english}{\addto\captionsenglish{\crefname{figure}{figure}{figures}}}{}}{}
+\@ifpackageloaded{babel}{\@ifpackagewith{babel}{english}{\addto\captionsenglish{\Crefname{figure}{Figure}{Figures}}}{}}{}
 
 % Caption package and Memoir
 % https://groups.google.com/forum/#!topic/comp.text.tex/RzpI2ATMev0
