@@ -1593,7 +1593,7 @@
   \cleardoublepage
 }
 
-% imprime lista de simbolos na ordem em que aparece no texto
+% imprime lista de símbolos na ordem em que aparece no texto
 % https://tex.stackexchange.com/questions/426010/printnoidxglossaries-vs-printglossaries
 \newcommand{\imprimirlistadesimbolos}{%
   \pdfbookmark[0]{\listadesimbolosname}{sbl}
