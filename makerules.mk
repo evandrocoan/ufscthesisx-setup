@@ -528,7 +528,7 @@ initial_file_names = [
 	os.path.join("setup", "ufscthesisx.cls"),
 	os.path.join("setup", "UFSC_sigla_fundo_claro.png"),
 	os.path.join("setup", "ufscthesisx.sublime-project"),
-	os.path.join("setup", "scripts", "timer_calculator.sh"),
+	os.path.join("setup", "timer_calculator.sh"),
 ]
 
 for direcory_name, dirs, files in os.walk(CURRENT_DIRECTORY, followlinks=True):
