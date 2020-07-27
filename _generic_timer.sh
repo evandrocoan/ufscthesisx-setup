@@ -1,11 +1,11 @@
 #!/bin/bash
 #
-# timer_calculator.sh
+# _generic_timer.sh
 # Copyright (c) 2019 Evandro Coan
 #
+# Version: 1.0.0
 # Always ensure you are using the latest version by checking:
-# https://github.com/evandrocoan/shell_scripts/blob/master/timer_calculator.sh
-# wget https://raw.githubusercontent.com/evandrocoan/shell_scripts/master/timer_calculator.sh
+# wget https://raw.githubusercontent.com/evandrocoan/MyLinuxSettings/tree/master/.local/bin/_generic_timer.sh
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -183,4 +183,3 @@ testIsFloatNumber15() { isFloatNumber ;       assertEquals 1 $?; }
 if [[ "${1}" == "runTests" ]]; then
     runTests;
 fi
-
