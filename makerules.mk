@@ -547,7 +547,8 @@ for filename in initial_file_names:
 	filepath = os.path.join( CURRENT_DIRECTORY, filename )
 	file_names.append( filepath )
 
-zipfilepath = os.path.join( CURRENT_DIRECTORY, version + ".zip" )
+versionname = version if version.endswith( ".zip" ) else version + ".zip"
+zipfilepath = os.path.join( CURRENT_DIRECTORY, versionname )
 zipfileobject = zipfile.ZipFile(zipfilepath, mode="w")
 zipfilepathreduced = os.path.dirname( os.path.dirname( zipfilepath ) )
 
