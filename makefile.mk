@@ -58,8 +58,14 @@ define DEFAULTTARGET :=
 	$(eval current_dir := $(shell pwd)) echo ${current_dir} > /dev/null
 	printf '\nCalling setup/makerules.mk "%s" %s\n' "${MAKECMDGOALS}" "${MAKEFLAGS}";
 
-	make -f setup/makerules.mk ${MAKECMDGOALS}
-	showTheElapsedSeconds "${current_dir}";
+	if make -f setup/makerules.mk ${MAKECMDGOALS};
+	then :
+		showTheElapsedSeconds "${current_dir}";
+	else
+	    exitcode="$$?"
+		showTheElapsedSeconds "${current_dir}";
+	    exit "$${exitcode}";
+	fi;
 endef
 
 %:
