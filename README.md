@@ -6,6 +6,11 @@ O modelo disponibilizado pela Biblioteca Universitária da UFSC em 2015,
 utiliza a `abntex` versão `0.8.2`, considerada muito antiga,
 portanto tratou-se de buscar a criação deste novo modelo que utiliza a classe `abntex2` versão `1.9.6`.
 
+Esse projeto não está vinculado a nenhum órgão da UFSC.
+
+Qualquer problema com a utilização ou com o modelo em si,
+basta criar um issue aqui no GitHub no nosso issue tracker: [issues](../../issues)
+
 
 ### Utilizando `git`
 
