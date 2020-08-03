@@ -507,6 +507,7 @@ import os
 import zipfile
 
 version = "${version}"
+version_prefix = "${version_prefix}".strip()
 if not version:
 	print( "Error: You need pass the release version. For example: make release version=1.1", end="@NEWNEWLINE@" )
 	exit(1)
@@ -553,13 +554,18 @@ for filename in initial_file_names:
 	file_names.add( filepath )
 
 versionname = version if version.endswith( ".zip" ) else version + ".zip"
+versiondirectory = version_prefix
+
 zipfilepath = os.path.join( CURRENT_DIRECTORY, versionname )
 zipfileobject = zipfile.ZipFile(zipfilepath, mode="w")
-zipfilepathreduced = os.path.dirname( os.path.dirname( zipfilepath ) )
+zipfilepathreduced = os.path.dirname( zipfilepath )
+
+if not version_prefix:
+	zipfilepathreduced = os.path.dirname( zipfilepathreduced )
 
 try:
 	for filename in file_names:
-		relative_filename = filename.replace( zipfilepathreduced, "" )
+		relative_filename = filename.replace( zipfilepathreduced, versiondirectory )
 		print( relative_filename, end="@NEWNEWLINE@" )
 		zipfileobject.write( filename, relative_filename, compress_type=zipfile.ZIP_DEFLATED )
 
