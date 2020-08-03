@@ -511,10 +511,10 @@ if not version:
 	print( "Error: You need pass the release version. For example: make release version=1.1", end="@NEWNEWLINE@" )
 	exit(1)
 
-CURRENT_DIRECTORY = os.path.dirname( os.path.realpath( __file__ ) )
+CURRENT_DIRECTORY = os.path.dirname( os.path.abspath( __file__ ) )
 print( "Packing files on %s" % CURRENT_DIRECTORY, end="@NEWNEWLINE@" )
 
-file_names = []
+file_names = set()
 initial_file_names = [
 	"Makefile",
 	"build.bat",
@@ -546,11 +546,11 @@ for direcory_name, dirs, files in os.walk(CURRENT_DIRECTORY, followlinks=True):
 				):
 			continue
 
-		file_names.append( filepath )
+		file_names.add( filepath )
 
 for filename in initial_file_names:
 	filepath = os.path.join( CURRENT_DIRECTORY, filename )
-	file_names.append( filepath )
+	file_names.add( filepath )
 
 versionname = version if version.endswith( ".zip" ) else version + ".zip"
 zipfilepath = os.path.join( CURRENT_DIRECTORY, versionname )
