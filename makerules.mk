@@ -536,9 +536,14 @@ for direcory_name, dirs, files in os.walk(CURRENT_DIRECTORY, followlinks=True):
 	for filename in files:
 		filepath = os.path.join( direcory_name, filename )
 
-		if ".git" in filepath or not ( filepath.endswith( ".tex" )
-				or filepath.endswith( ".bib" )
-				or filepath.endswith( ".pdf" ) ):
+		if ".git" in filepath or not (
+					filepath.endswith( ".tex" )
+					or filepath.endswith( ".png" )
+					or filepath.endswith( ".jpg" )
+					or filepath.endswith( ".svg" )
+					or filepath.endswith( ".bib" )
+					or filepath.endswith( ".pdf" )
+				):
 			continue
 
 		file_names.append( filepath )
