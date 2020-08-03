@@ -12,7 +12,7 @@ portanto tratou-se de buscar a criação deste novo modelo que utiliza a classe 
 No diretório do seu projeto faça um clone (recursivo) dos arquivos do repositório,
 em uma pasta chamada `setup` dentro do template da sua tese:
 ```bash
-git clone --recursive https://github.com/evandrocoan/ufscthesisx-setup setup
+git clone --recursive https://github.com/ufsc/ufscthesisx-setup setup
 ```
 
 Para usá-lo,
@@ -43,14 +43,13 @@ e em seu arquivo principal incluir o seguinte cabeçalho para carregar os pacote
 
 ### Mudanças
 
-Para ver as mudanças, acesse o histórico do `git` no endereço:
-1. https://github.com/evandrocoan/ufscthesisx-setup/commits/master
+Para ver as mudanças, acesse o histórico do `git` no endereço [commits/master](../../commits/master).
 
 Ou clone este repositório e execute seguinte comando do cliente git:
 ```bash
+# https://git-scm.com/book/en/v2/Git-Basics-Viewing-the-Commit-History
 git log
 ```
-1. https://git-scm.com/book/en/v2/Git-Basics-Viewing-the-Commit-History
 
 
 ## Compilação
@@ -193,7 +192,4 @@ AUTORES OU TITULARES DE DIREITOS AUTORAIS SERÃO RESPONSÁVEIS POR QUALQUER RECL
 RESPONSABILIDADE, SEJA EM AÇÃO DE CONTRATO, DELITO OU DE OUTRA FORMA, DECORRENTE, DESTE OU
 RELACIONADO COM DOS ARQUIVOS DESTE REPOSITÓRIO OU O USO OU OUTRAS NEGOCIAÇÕES NO MODELO E SOFTWARE.
 ```
-
-
-
 
